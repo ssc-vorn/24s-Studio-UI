@@ -27,7 +27,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="!uiStore.isPreloaderDone" ref="el" class="bg-navy-900 fixed inset-0 z-[100] flex items-center justify-center" aria-hidden="true">
-    <span ref="textEl" class="text-h2 font-extrabold text-white">NEX<span class="text-primary-300">O</span>RA</span>
+  <div v-if="!uiStore.isPreloaderDone" ref="el" class="fixed inset-0 z-[100] flex items-center justify-center bg-black" aria-hidden="true">
+    <span ref="textEl" class="scale-150">
+      <BrandLogo inverse />
+    </span>
   </div>
 </template>

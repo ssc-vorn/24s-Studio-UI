@@ -1,7 +1,9 @@
 import type { gsap as GsapType } from 'gsap'
+import type { ScrollTrigger as ScrollTriggerType } from 'gsap/ScrollTrigger'
 
 type ScrollAnimationSetup = (context: {
   gsap: typeof GsapType
+  ScrollTrigger: typeof ScrollTriggerType
   root: HTMLElement
   reduced: boolean
 }) => void
@@ -20,10 +22,10 @@ export function useScrollAnimation(setup: ScrollAnimationSetup) {
     let ctx: ReturnType<typeof GsapType.context> | undefined
 
     onMounted(() => {
-      const { gsap } = useGsap()
+      const { gsap, ScrollTrigger } = useGsap()
       if (!root.value) return
       ctx = gsap.context(() => {
-        setup({ gsap, root: root.value as HTMLElement, reduced: reduced.value })
+        setup({ gsap, ScrollTrigger, root: root.value as HTMLElement, reduced: reduced.value })
       }, root.value)
     })
 

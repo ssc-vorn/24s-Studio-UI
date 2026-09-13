@@ -1,35 +1,36 @@
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Nexora — Creative Digital Studio',
+  title: '24 Seven Studio — Creative Studio, Cambodia × Worldwide',
   description:
-    'A premium creative studio building brands, digital experiences, video and motion for ambitious companies.',
-  ogTitle: 'Nexora — Creative Digital Studio',
+    'A cinematic, art-directed creative studio building brands, digital experiences and visual stories for ambitious clients in Cambodia and worldwide.',
+  ogTitle: '24 Seven Studio — Creative Studio, Cambodia × Worldwide',
   ogDescription:
-    'A premium creative studio building brands, digital experiences, video and motion for ambitious companies.',
+    'A cinematic, art-directed creative studio building brands, digital experiences and visual stories for ambitious clients in Cambodia and worldwide.',
   ogImage: 'https://picsum.photos/1200/630?random=1',
   ogType: 'website',
   twitterCard: 'summary_large_image',
-  twitterTitle: 'Nexora — Creative Digital Studio',
+  twitterTitle: '24 Seven Studio — Creative Studio',
   twitterDescription:
-    'A premium creative studio building brands, digital experiences, video and motion for ambitious companies.',
+    'A cinematic, art-directed creative studio building brands, digital experiences and visual stories for ambitious clients in Cambodia and worldwide.',
   twitterImage: 'https://picsum.photos/1200/630?random=1'
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: 'https://nexora.studio' }]
+  link: [{ rel: 'canonical', href: 'https://24seven.studio' }]
 })
 </script>
 
 <template>
   <main id="main-content">
     <HeroSection />
-    <PortfolioSection />
-    <ServicesSection />
-    <AboutSection />
-    <TestimonialsSection />
-    <PricingSection />
-    <FaqSection />
-    <BlogSection />
-    <ContactSection />
+    <ManifestoSection />
+    <SelectedWork />
+    <ServiceList />
+    <AboutTeaser />
+    <ProcessSection />
+    <FeaturedCaseStudy />
+    <TestimonialSection />
+    <JournalTeaser />
+    <FinalCta />
   </main>
 </template>

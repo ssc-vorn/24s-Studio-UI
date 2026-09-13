@@ -1,36 +1,22 @@
 export const useNavigationStore = defineStore('navigation', () => {
-  const isMobileMenuOpen = ref(false)
-  const activeSection = ref<string>('hero')
+  const isMenuOpen = ref(false)
   const isScrolled = ref(false)
 
-  function openMobileMenu() {
-    isMobileMenuOpen.value = true
+  function openMenu() {
+    isMenuOpen.value = true
   }
 
-  function closeMobileMenu() {
-    isMobileMenuOpen.value = false
+  function closeMenu() {
+    isMenuOpen.value = false
   }
 
-  function toggleMobileMenu() {
-    isMobileMenuOpen.value = !isMobileMenuOpen.value
-  }
-
-  function setActiveSection(id: string) {
-    activeSection.value = id
+  function toggleMenu() {
+    isMenuOpen.value = !isMenuOpen.value
   }
 
   function setScrolled(value: boolean) {
     isScrolled.value = value
   }
 
-  return {
-    isMobileMenuOpen,
-    activeSection,
-    isScrolled,
-    openMobileMenu,
-    closeMobileMenu,
-    toggleMobileMenu,
-    setActiveSection,
-    setScrolled
-  }
+  return { isMenuOpen, isScrolled, openMenu, closeMenu, toggleMenu, setScrolled }
 })

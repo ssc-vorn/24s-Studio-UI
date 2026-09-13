@@ -2,7 +2,7 @@ export interface ContactFormState {
   name: string
   email: string
   company: string
-  service: string
+  projectType: string
   message: string
 }
 

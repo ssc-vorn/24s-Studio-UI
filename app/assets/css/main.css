@@ -9,26 +9,35 @@
 @source '../../layouts';
 
 html {
-  background-color: var(--color-off-white);
+  background-color: var(--color-surface);
   scroll-behavior: auto;
+  color-scheme: dark;
+}
+
+.light html,
+html.light {
+  color-scheme: light;
 }
 
 body {
-  background-color: var(--color-off-white);
+  background-color: var(--color-surface);
   color: var(--color-ink);
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
+  transition:
+    background-color 0.4s var(--ease-editorial),
+    color 0.4s var(--ease-editorial);
 }
 
 ::selection {
-  background-color: var(--color-navy-900);
-  color: var(--color-off-white);
+  background-color: var(--color-electric);
+  color: var(--color-warm);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-navy-900);
+  outline: 2px solid var(--color-electric);
   outline-offset: 3px;
 }
 
@@ -37,10 +46,10 @@ body {
   top: -100%;
   left: 1rem;
   z-index: 100;
-  background: var(--color-navy-900);
+  background: var(--color-electric);
   color: white;
   padding: 0.75rem 1.25rem;
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-weight: 600;
   transition: top 0.2s var(--ease-editorial);
 }

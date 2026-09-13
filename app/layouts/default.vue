@@ -1,8 +1,8 @@
 <template>
   <div class="site-shell">
     <a href="#main-content" class="skip-link">Skip to content</a>
-    <TheNavbar />
+    <SiteHeader />
     <slot />
-    <TheFooter />
+    <Footer />
   </div>
 </template>

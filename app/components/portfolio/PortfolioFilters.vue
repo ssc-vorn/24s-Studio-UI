@@ -9,18 +9,23 @@ const emit = defineEmits<{ change: [string] }>()
 </script>
 
 <template>
-  <div class="flex flex-wrap gap-2" role="tablist" aria-label="Filter portfolio by category">
+  <div class="flex flex-wrap gap-x-8 gap-y-3" role="tablist" aria-label="Filter work by category">
     <button
       v-for="category in categories"
       :key="category"
       type="button"
       role="tab"
       :aria-selected="active === category"
-      class="rounded-full px-4 py-2 text-sm font-medium transition-colors"
-      :class="active === category ? 'bg-primary-900 text-white' : 'bg-black/5 text-ink/60 hover:bg-black/10 hover:text-ink'"
+      class="text-ui relative pb-1 uppercase tracking-widest transition-colors"
+      :class="active === category ? 'text-ink' : 'text-ink-muted hover:text-ink'"
       @click="emit('change', category)"
     >
       {{ category }}
+      <span
+        class="bg-accent absolute inset-x-0 -bottom-0.5 h-px origin-left transition-transform duration-300 ease-out"
+        :class="active === category ? 'scale-x-100' : 'scale-x-0'"
+        aria-hidden="true"
+      />
     </button>
   </div>
 </template>

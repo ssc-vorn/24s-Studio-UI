@@ -13,32 +13,31 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  colorMode: {
+    preference: 'dark',
+    fallback: 'dark',
+    classSuffix: ''
+  },
+
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: 'Nexora — Creative Digital Studio',
+      title: '24 Seven Studio — Creative Studio, Cambodia × Worldwide',
       titleTemplate: '%s',
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }
       ],
-      meta: [
-        { name: 'theme-color', content: '#011a40' }
-      ]
+      meta: [{ name: 'theme-color', content: '#032268' }]
     }
   },
 
   fonts: {
     families: [
-      { name: 'Syne', provider: 'google', weights: [400, 500, 600, 700, 800] },
+      { name: 'Fraunces', provider: 'google', weights: [400, 500, 600] },
       { name: 'Inter', provider: 'google', weights: [400, 500, 600, 700] }
     ]
-  },
-
-  routeRules: {
-    '/': { prerender: true },
-    '/blog': { prerender: true }
   },
 
   typescript: {
@@ -48,7 +47,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['three', 'gsap', 'gsap/ScrollTrigger', 'lenis']
+      include: ['gsap', 'gsap/ScrollTrigger', 'lenis']
     }
   }
 })

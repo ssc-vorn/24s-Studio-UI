@@ -1,8 +1,7 @@
 export interface Testimonial {
   id: number
+  quote: string
   name: string
   role: string
   company: string
-  quote: string
-  avatar: string
 }
