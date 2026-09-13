@@ -20,8 +20,21 @@ export const projectService = {
     return all[(index + 1) % all.length]
   },
 
-  /** Unique client names across every project, for trust-signal display (logo strip, etc). */
-  getClientNames(): string[] {
-    return Array.from(new Set(projectRepository.list().map((project) => project.client)))
+  /**
+   * One entry per unique client, linked to its case study — backs trust-signal
+   * displays (e.g. the "Trusted By" strip) with something to click through to,
+   * rather than inert logo text.
+   */
+  getTrustedClients(): { name: string; slug: string }[] {
+    const seen = new Set<string>()
+    const entries: { name: string; slug: string }[] = []
+
+    for (const project of projectRepository.list()) {
+      if (seen.has(project.client)) continue
+      seen.add(project.client)
+      entries.push({ name: project.client, slug: project.slug })
+    }
+
+    return entries
   }
 }
