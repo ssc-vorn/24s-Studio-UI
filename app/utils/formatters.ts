@@ -1,0 +1,12 @@
+export function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  })
+}
+
+export function truncate(text: string, length = 140) {
+  if (text.length <= length) return text
+  return `${text.slice(0, length).trimEnd()}…`
+}

@@ -1,0 +1,81 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@import './tokens.css';
+@import './typography.css';
+
+@source '../../components';
+@source '../../pages';
+@source '../../layouts';
+
+html {
+  background-color: var(--color-off-white);
+  scroll-behavior: auto;
+}
+
+body {
+  background-color: var(--color-off-white);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background-color: var(--color-navy-900);
+  color: var(--color-off-white);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-navy-900);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  background: var(--color-navy-900);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  transition: top 0.2s var(--ease-editorial);
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.max-content {
+  max-width: var(--container-content);
+  margin-inline: auto;
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Reduced motion baseline */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
