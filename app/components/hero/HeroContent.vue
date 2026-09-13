@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ArrowRight } from 'lucide-vue-next'
 import { animateHeroEntrance } from '~/animations/sections/hero'
 
 const eyebrowEl = ref<HTMLElement | null>(null)
@@ -42,7 +43,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="relative z-10 flex h-full flex-col justify-end pb-20 lg:justify-center lg:pb-0">
+  <div class="relative z-10 flex h-full flex-col justify-end pt-32 pb-20 lg:justify-center lg:pt-24 lg:pb-0">
     <span ref="eyebrowEl" class="text-label mb-6 text-white/70">Creative Studio</span>
 
     <h1 class="text-display text-white">
@@ -55,8 +56,9 @@ onUnmounted(() => {
     </p>
 
     <div ref="ctaEl" class="mt-10">
-      <MagneticButton as="a" href="#portfolio" variant="outline" class="border-white! text-white! hover:bg-white! hover:text-primary-900!" @click="handleClick">
+      <MagneticButton as="a" href="#portfolio" class="bg-white! text-primary-900! hover:bg-white/90!" @click="handleClick">
         View Portfolio
+        <ArrowRight class="size-4" aria-hidden="true" />
       </MagneticButton>
     </div>
   </div>

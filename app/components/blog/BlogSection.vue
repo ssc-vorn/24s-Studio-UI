@@ -33,19 +33,23 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
 </script>
 
 <template>
-  <section id="blog" ref="root" class="bg-mist py-28 lg:py-40">
+  <section id="blog" ref="root" class="bg-off-white py-28 lg:py-40">
     <Container>
-      <div data-reveal="heading" class="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-        <SectionHeading eyebrow="Journal" title="Notes on craft, strategy and process." />
+      <div data-reveal="heading" class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <SectionHeading eyebrow="Latest Articles" title="Blog" />
         <AnimatedLink to="/blog" class="shrink-0">View All Blog</AnimatedLink>
       </div>
 
-      <div class="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-14 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
         <div v-for="post in previewPosts" :key="post.id" data-blog-card>
           <NuxtLink :to="`/blog#post-${post.id}`">
             <BlogCard :post="post" />
           </NuxtLink>
         </div>
+      </div>
+
+      <div class="mt-14 flex justify-center">
+        <MagneticButton as="NuxtLink" href="/blog">View All Blog</MagneticButton>
       </div>
     </Container>
   </section>

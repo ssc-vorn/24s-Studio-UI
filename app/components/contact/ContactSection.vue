@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ArrowRight, Mail, MapPin, Phone } from 'lucide-vue-next'
 import type { ContactFormErrors, ContactFormState } from '~/types/contact'
 import { revealContact } from '~/animations/sections/contact'
 
@@ -9,6 +10,12 @@ const serviceOptions = [
   'Motion Graphics',
   'Digital Experiences',
   'Digital Marketing'
+]
+
+const contactDetails = [
+  { icon: Mail, label: 'Email', value: 'hello@nexora.studio', href: 'mailto:hello@nexora.studio' },
+  { icon: Phone, label: 'Phone', value: '+1 (415) 555-0182', href: 'tel:+14155550182' },
+  { icon: MapPin, label: 'Studio', value: 'San Francisco, CA', href: undefined }
 ]
 
 const initialState = (): ContactFormState => ({ name: '', email: '', company: '', service: '', message: '' })
@@ -27,7 +34,7 @@ function validate(): boolean {
   if (!form.name.trim()) next.name = 'Please enter your name.'
   if (!form.email.trim()) next.email = 'Please enter your email.'
   else if (!emailPattern.test(form.email)) next.email = 'Please enter a valid email address.'
-  if (!form.service) next.service = 'Please select a service.'
+  if (!form.service) next.service = 'Please select a project type.'
   if (!form.message.trim()) next.message = 'Please tell us a little about your project.'
 
   errors.value = next
@@ -53,8 +60,8 @@ async function handleSubmit() {
   try {
     await simulateSubmit(form)
     toast.add({
-      title: 'Message sent',
-      description: 'Thanks for reaching out. We’ll get back to you shortly.',
+      title: 'Message sent successfully!',
+      description: 'We’ll get back to you soon.',
       color: 'primary'
     })
     Object.assign(form, initialState())
@@ -75,6 +82,9 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const form = root.querySelector('[data-reveal="form"]')
   revealContact(gsap, { info, form }, root, reduced)
 })
+
+const inputClass =
+  'mt-2 w-full rounded-xl border border-fog bg-white px-4 py-3 text-ink outline-none transition-colors focus-visible:border-primary-900'
 </script>
 
 <template>
@@ -84,36 +94,36 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
         <div data-reveal="info" class="lg:col-span-5">
           <SectionHeading
             eyebrow="Get In Touch"
-            title="Have a project in mind? Let’s build something worth talking about."
-            description="Tell us a little about what you’re working on — we reply within two business days."
+            title="Contact Us"
+            description="Let’s create something amazing together. We’d love to hear from you."
           />
 
-          <dl class="mt-14 flex flex-col gap-6">
-            <div>
-              <dt class="text-label text-sand-600">Email</dt>
-              <dd class="text-body-lg text-ink mt-1">hello@24s.studio</dd>
-            </div>
-            <div>
-              <dt class="text-label text-sand-600">Phone</dt>
-              <dd class="text-body-lg text-ink mt-1">+1 (415) 555-0182</dd>
-            </div>
-            <div>
-              <dt class="text-label text-sand-600">Studio</dt>
-              <dd class="text-body-lg text-ink mt-1">San Francisco, CA</dd>
-            </div>
-          </dl>
+          <ul class="mt-12 flex flex-col gap-5">
+            <li v-for="detail in contactDetails" :key="detail.label" class="flex items-center gap-4">
+              <span class="bg-primary-50 text-primary-900 flex size-11 shrink-0 items-center justify-center rounded-full">
+                <component :is="detail.icon" class="size-5" aria-hidden="true" />
+              </span>
+              <div>
+                <p class="text-caption text-sand-600">{{ detail.label }}</p>
+                <component :is="detail.href ? 'a' : 'p'" :href="detail.href" class="text-body font-medium text-ink">
+                  {{ detail.value }}
+                </component>
+              </div>
+            </li>
+          </ul>
         </div>
 
         <form data-reveal="form" novalidate class="lg:col-span-7" @submit.prevent="handleSubmit">
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div class="sm:col-span-1">
-              <label for="contact-name" class="text-label text-sand-600">Name</label>
+              <label for="contact-name" class="text-label text-sand-600">Name *</label>
               <input
                 id="contact-name"
                 v-model="form.name"
                 type="text"
                 autocomplete="name"
-                class="border-fog focus-visible:border-primary-900 mt-2 w-full border-b bg-transparent py-3 text-ink outline-none"
+                placeholder="Your name"
+                :class="inputClass"
                 :aria-invalid="Boolean(errors.name)"
                 :aria-describedby="errors.name ? 'contact-name-error' : undefined"
               >
@@ -121,13 +131,14 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
             </div>
 
             <div class="sm:col-span-1">
-              <label for="contact-email" class="text-label text-sand-600">Email</label>
+              <label for="contact-email" class="text-label text-sand-600">Email *</label>
               <input
                 id="contact-email"
                 v-model="form.email"
                 type="email"
                 autocomplete="email"
-                class="border-fog focus-visible:border-primary-900 mt-2 w-full border-b bg-transparent py-3 text-ink outline-none"
+                placeholder="your@email.com"
+                :class="inputClass"
                 :aria-invalid="Boolean(errors.email)"
                 :aria-describedby="errors.email ? 'contact-email-error' : undefined"
               >
@@ -141,32 +152,34 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
                 v-model="form.company"
                 type="text"
                 autocomplete="organization"
-                class="border-fog focus-visible:border-primary-900 mt-2 w-full border-b bg-transparent py-3 text-ink outline-none"
+                placeholder="Company (optional)"
+                :class="inputClass"
               >
             </div>
 
             <div class="sm:col-span-1">
-              <label for="contact-service" class="text-label text-sand-600">Service</label>
+              <label for="contact-service" class="text-label text-sand-600">Project Type</label>
               <select
                 id="contact-service"
                 v-model="form.service"
-                class="border-fog focus-visible:border-primary-900 mt-2 w-full border-b bg-transparent py-3 text-ink outline-none"
+                :class="inputClass"
                 :aria-invalid="Boolean(errors.service)"
                 :aria-describedby="errors.service ? 'contact-service-error' : undefined"
               >
-                <option value="" disabled>Select a service</option>
+                <option value="" disabled>Select an option</option>
                 <option v-for="option in serviceOptions" :key="option" :value="option">{{ option }}</option>
               </select>
               <p v-if="errors.service" id="contact-service-error" class="text-body-sm mt-2 text-red-600">{{ errors.service }}</p>
             </div>
 
             <div class="sm:col-span-2">
-              <label for="contact-message" class="text-label text-sand-600">Message</label>
+              <label for="contact-message" class="text-label text-sand-600">Message *</label>
               <textarea
                 id="contact-message"
                 v-model="form.message"
-                rows="4"
-                class="border-fog focus-visible:border-primary-900 mt-2 w-full resize-none border-b bg-transparent py-3 text-ink outline-none"
+                rows="5"
+                placeholder="Tell us about your project..."
+                :class="[inputClass, 'resize-none']"
                 :aria-invalid="Boolean(errors.message)"
                 :aria-describedby="errors.message ? 'contact-message-error' : undefined"
               />
@@ -174,8 +187,9 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
             </div>
           </div>
 
-          <MagneticButton type="submit" class="mt-10 disabled:cursor-not-allowed disabled:opacity-60" :disabled="isSubmitting">
+          <MagneticButton type="submit" class="mt-8 w-full justify-center disabled:cursor-not-allowed disabled:opacity-60" :disabled="isSubmitting">
             {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+            <ArrowRight v-if="!isSubmitting" class="size-4" aria-hidden="true" />
           </MagneticButton>
         </form>
       </div>

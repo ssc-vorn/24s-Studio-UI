@@ -1,22 +1,22 @@
 <script setup lang="ts">
 useSeoMeta({
-  title: '24S Studio — Creative Digital Studio',
+  title: 'Nexora — Creative Digital Studio',
   description:
     'A premium creative studio building brands, digital experiences, video and motion for ambitious companies.',
-  ogTitle: '24S Studio — Creative Digital Studio',
+  ogTitle: 'Nexora — Creative Digital Studio',
   ogDescription:
     'A premium creative studio building brands, digital experiences, video and motion for ambitious companies.',
   ogImage: 'https://picsum.photos/1200/630?random=1',
   ogType: 'website',
   twitterCard: 'summary_large_image',
-  twitterTitle: '24S Studio — Creative Digital Studio',
+  twitterTitle: 'Nexora — Creative Digital Studio',
   twitterDescription:
     'A premium creative studio building brands, digital experiences, video and motion for ambitious companies.',
   twitterImage: 'https://picsum.photos/1200/630?random=1'
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: 'https://24s.studio' }]
+  link: [{ rel: 'canonical', href: 'https://nexora.studio' }]
 })
 </script>
 

@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: '24S Studio — Creative Digital Studio',
+      title: 'Nexora — Creative Digital Studio',
       titleTemplate: '%s',
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },

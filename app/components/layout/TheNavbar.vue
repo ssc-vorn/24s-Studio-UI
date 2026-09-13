@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Menu, X } from 'lucide-vue-next'
+import { ArrowRight, Menu, X } from 'lucide-vue-next'
 
 interface NavLink {
   label: string
@@ -7,9 +7,12 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
+  { label: 'Home', href: '#hero' },
+  { label: 'Portfolio', href: '#portfolio' },
   { label: 'Services', href: '#services' },
-  { label: 'Work', href: '#portfolio' },
   { label: 'About', href: '#about' },
+  { label: 'Testimonials', href: '#testimonials' },
+  { label: 'Pricing', href: '#pricing' },
   { label: 'Blog', href: '#blog' },
   { label: 'Contact', href: '#contact' }
 ]
@@ -21,7 +24,7 @@ const route = useRoute()
 
 const isHome = computed(() => route.path === '/')
 
-const overlayEl = ref<HTMLElement | null>(null)
+const backdropEl = ref<HTMLElement | null>(null)
 const panelEl = ref<HTMLElement | null>(null)
 const itemEls = ref<HTMLElement[]>([])
 const firstLinkEl = ref<HTMLElement | null>(null)
@@ -50,19 +53,21 @@ function handleAnchorClick(event: MouseEvent, href: string) {
 
 function buildMenuTimeline() {
   const { gsap } = useGsap()
-  if (!overlayEl.value || !panelEl.value) return null
+  if (!backdropEl.value || !panelEl.value) return null
 
   const tl = gsap.timeline({ paused: true })
 
   if (reduced.value) {
-    tl.set(overlayEl.value, { autoAlpha: 1 }).set(itemEls.value, { autoAlpha: 1, y: 0 })
+    tl.set(backdropEl.value, { autoAlpha: 1 }).set(panelEl.value, { xPercent: 0 }).set(itemEls.value, { autoAlpha: 1, x: 0 })
     return tl
   }
 
-  tl.set(overlayEl.value, { autoAlpha: 0 })
-    .set(itemEls.value, { autoAlpha: 0, y: 24 })
-    .to(overlayEl.value, { autoAlpha: 1, duration: 0.35, ease: 'power2.out' })
-    .to(itemEls.value, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power3.out' }, '-=0.15')
+  tl.set(backdropEl.value, { autoAlpha: 0 })
+    .set(panelEl.value, { xPercent: 100 })
+    .set(itemEls.value, { autoAlpha: 0, x: 24 })
+    .to(backdropEl.value, { autoAlpha: 1, duration: 0.3, ease: 'power2.out' })
+    .to(panelEl.value, { xPercent: 0, duration: 0.5, ease: 'power4.out' }, '<')
+    .to(itemEls.value, { autoAlpha: 1, x: 0, duration: 0.4, stagger: 0.05, ease: 'power3.out' }, '-=0.25')
 
   return tl
 }
@@ -145,22 +150,22 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <header
-    class="fixed inset-x-0 top-0 z-50 transition-colors duration-500"
-    :class="navigation.isScrolled ? 'bg-off-white/90 backdrop-blur-md shadow-[0_1px_0_0_var(--color-fog)]' : 'bg-transparent'"
-  >
-    <Container as="nav" aria-label="Primary">
-      <div class="flex h-[var(--nav-height)] items-center justify-between">
-        <NuxtLink to="/" class="text-h4 tracking-tight text-ink" @click="navigation.closeMobileMenu()">
-          24S<span class="text-primary-900">.</span>
+  <header class="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 lg:px-8">
+    <nav aria-label="Primary" class="mx-auto max-w-6xl">
+      <div
+        class="flex h-16 items-center justify-between rounded-full border border-black/5 bg-white/95 px-4 shadow-[0_8px_30px_-12px_rgba(1,26,64,0.25)] backdrop-blur-md transition-shadow duration-500 sm:px-6"
+        :class="navigation.isScrolled ? 'shadow-[0_10px_35px_-10px_rgba(1,26,64,0.35)]' : ''"
+      >
+        <NuxtLink to="/" class="text-lg font-extrabold tracking-tight text-ink" @click="navigation.closeMobileMenu()">
+          NEX<span class="text-primary-600">O</span>RA
         </NuxtLink>
 
-        <ul class="hidden items-center gap-10 lg:flex">
+        <ul class="hidden items-center gap-7 xl:flex">
           <li v-for="link in navLinks" :key="link.href">
             <a
               :href="isHome ? link.href : `/${link.href}`"
-              class="text-label relative py-2 text-ink/70 underline-offset-8 transition-colors hover:text-ink"
-              :class="{ 'text-ink underline': navigation.activeSection === link.href.slice(1) }"
+              class="text-sm font-medium text-ink/60 transition-colors hover:text-ink"
+              :class="{ 'text-primary-700 font-semibold': navigation.activeSection === link.href.slice(1) }"
               @click="handleAnchorClick($event, link.href)"
             >
               {{ link.label }}
@@ -168,55 +173,79 @@ onUnmounted(() => {
           </li>
         </ul>
 
-        <div class="hidden lg:block">
-          <MagneticButton as="a" href="#contact" @click="handleAnchorClick($event, '#contact')">
-            Get Started
+        <div class="hidden xl:block">
+          <MagneticButton as="a" href="#portfolio" size="sm" @click="handleAnchorClick($event, '#portfolio')">
+            View Portfolio
+            <ArrowRight class="size-4" aria-hidden="true" />
           </MagneticButton>
         </div>
 
         <button
           ref="menuButtonEl"
           type="button"
-          class="inline-flex size-11 items-center justify-center text-ink lg:hidden"
+          class="inline-flex size-10 items-center justify-center rounded-full text-ink xl:hidden"
           aria-controls="mobile-menu"
           :aria-expanded="navigation.isMobileMenuOpen"
           aria-label="Toggle navigation menu"
           @click="navigation.toggleMobileMenu()"
         >
-          <Menu v-if="!navigation.isMobileMenuOpen" class="size-6" aria-hidden="true" />
-          <X v-else class="size-6" aria-hidden="true" />
+          <Menu class="size-5" aria-hidden="true" />
         </button>
       </div>
-    </Container>
+    </nav>
   </header>
 
   <Teleport to="body">
     <div
       id="mobile-menu"
-      ref="overlayEl"
-      class="fixed inset-0 z-40 bg-primary-900 lg:hidden"
+      class="fixed inset-0 z-[60] xl:hidden"
       :class="navigation.isMobileMenuOpen ? '' : 'pointer-events-none'"
       role="dialog"
       aria-modal="true"
       aria-label="Mobile navigation"
-      :style="{ visibility: navigation.isMobileMenuOpen ? 'visible' : 'hidden' }"
     >
-      <div ref="panelEl" class="flex h-full flex-col justify-center px-8">
-        <ul class="flex flex-col gap-2">
+      <div
+        ref="backdropEl"
+        class="absolute inset-0 bg-navy-950/50 backdrop-blur-sm"
+        :style="{ visibility: navigation.isMobileMenuOpen ? 'visible' : 'hidden' }"
+        @click="navigation.closeMobileMenu()"
+      />
+
+      <div
+        ref="panelEl"
+        class="bg-navy-900 absolute inset-y-0 right-0 flex w-full max-w-sm flex-col px-8 py-8"
+        :style="{ visibility: navigation.isMobileMenuOpen ? 'visible' : 'hidden' }"
+      >
+        <div class="flex items-center justify-between">
+          <span class="text-lg font-extrabold tracking-tight text-white">NEX<span class="text-primary-300">O</span>RA</span>
+          <button
+            type="button"
+            class="inline-flex size-10 items-center justify-center rounded-full text-white/80 hover:text-white"
+            aria-label="Close navigation menu"
+            @click="navigation.closeMobileMenu()"
+          >
+            <X class="size-5" aria-hidden="true" />
+          </button>
+        </div>
+
+        <ul class="mt-10 flex flex-1 flex-col gap-1 overflow-y-auto">
           <li v-for="(link, index) in navLinks" :key="link.href">
             <a
               :ref="(el) => setItemRef(el, index)"
               :href="isHome ? link.href : `/${link.href}`"
-              class="text-h3 block py-3 text-white/90 transition-colors hover:text-white"
+              class="block rounded-xl px-3 py-3 text-base font-medium text-white/80 transition-colors hover:bg-white/5 hover:text-white"
+              :class="{ 'text-white bg-white/5': navigation.activeSection === link.href.slice(1) }"
               @click="handleAnchorClick($event, link.href)"
             >
               {{ link.label }}
             </a>
           </li>
         </ul>
-        <div :ref="(el) => setItemRef(el, navLinks.length)" class="mt-8">
-          <MagneticButton as="a" href="#contact" variant="outline" class="border-white! text-white! hover:bg-white! hover:text-primary-900!" @click="handleAnchorClick($event, '#contact')">
-            Get Started
+
+        <div :ref="(el) => setItemRef(el, navLinks.length)">
+          <MagneticButton as="a" href="#portfolio" class="w-full justify-center" @click="handleAnchorClick($event, '#portfolio')">
+            View Portfolio
+            <ArrowRight class="size-4" aria-hidden="true" />
           </MagneticButton>
         </div>
       </div>

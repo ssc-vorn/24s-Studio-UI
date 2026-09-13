@@ -22,14 +22,13 @@ const { root } = useScrollAnimation(({ gsap, root }) => {
 <template>
   <section id="faq" ref="root" class="bg-off-white py-28 lg:py-40">
     <Container narrow>
-      <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-        <div data-reveal="heading" class="lg:col-span-4">
-          <SectionHeading eyebrow="FAQ" title="Questions, answered." description="Everything you need to know before reaching out." />
-        </div>
+      <div data-reveal="heading" class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <SectionHeading eyebrow="Frequently Asked Questions" title="FAQ" />
+        <AnimatedLink href="#faq" class="shrink-0">View All FAQs</AnimatedLink>
+      </div>
 
-        <div data-reveal="list" class="lg:col-span-8">
-          <FaqItem v-for="faq in faqs" :key="faq.id" :faq="faq" :is-open="activeId === faq.id" @toggle="toggle(faq.id)" />
-        </div>
+      <div data-reveal="list" class="mt-12 rounded-2xl border border-fog bg-white px-6 sm:px-8 [&>*:last-child]:border-b-0">
+        <FaqItem v-for="faq in faqs" :key="faq.id" :faq="faq" :is-open="activeId === faq.id" @toggle="toggle(faq.id)" />
       </div>
     </Container>
   </section>

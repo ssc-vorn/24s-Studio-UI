@@ -17,14 +17,9 @@ defineExpose({ cardEls })
 </script>
 
 <template>
-  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    <div
-      v-for="(project, index) in projects"
-      :key="project.id"
-      :ref="(el) => setCardRef(el as Element | null, index)"
-      :class="index % 5 === 0 ? 'sm:col-span-2 lg:col-span-2' : ''"
-    >
-      <PortfolioCard :project="project" :tall="index % 5 !== 0" />
+  <div class="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+    <div v-for="(project, index) in projects" :key="project.id" :ref="(el) => setCardRef(el as Element | null, index)">
+      <PortfolioCard :project="project" />
     </div>
   </div>
 

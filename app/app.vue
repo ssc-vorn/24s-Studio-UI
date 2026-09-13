@@ -5,7 +5,7 @@ useHead({
 </script>
 
 <template>
-  <UApp>
+  <UApp :toaster="{ position: 'bottom-right' }">
     <NuxtRouteAnnouncer />
     <Preloader />
     <NuxtLayout>

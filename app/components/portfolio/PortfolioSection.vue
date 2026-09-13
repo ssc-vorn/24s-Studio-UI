@@ -81,15 +81,12 @@ const { root: sectionRoot } = useScrollAnimation(({ gsap, root }) => {
 <template>
   <section id="portfolio" ref="sectionRoot" class="bg-off-white py-28 lg:py-40">
     <Container>
-      <div data-reveal="heading">
-        <SectionHeading
-          eyebrow="Selected Work"
-          title="Work built to move people, not just look good."
-          description="A selection of brand, digital and motion projects from the last three years."
-        />
+      <div data-reveal="heading" class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <SectionHeading eyebrow="Selected Work" title="Our Portfolio" />
+        <AnimatedLink href="#portfolio" class="shrink-0">View All Projects</AnimatedLink>
       </div>
 
-      <div data-reveal="filters" class="mt-14 border-b border-fog pb-8">
+      <div data-reveal="filters" class="mt-10">
         <PortfolioFilters :categories="categories" :active="activeCategory" @change="(category) => setFilter(category as Category)" />
       </div>
 

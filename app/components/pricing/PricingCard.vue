@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { Check } from 'lucide-vue-next'
 import type { PricingTier } from '~/types/pricing'
+import { formatCurrency } from '~/utils/formatters'
 
 interface Props {
   tier: PricingTier
+  billing: 'monthly' | 'yearly'
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const { scrollTo } = useLenis()
+
+const price = computed(() => (props.billing === 'yearly' ? props.tier.priceYearly : props.tier.priceMonthly))
 
 function handleClick(event: MouseEvent) {
   event.preventDefault()
@@ -18,21 +22,22 @@ function handleClick(event: MouseEvent) {
 
 <template>
   <div
-    class="flex h-full flex-col justify-between border p-8 transition-colors duration-300 lg:p-10"
-    :class="tier.highlighted ? 'border-primary-900 bg-primary-900 text-white' : 'border-fog bg-off-white text-ink'"
+    class="flex h-full flex-col justify-between rounded-2xl border p-8 transition-colors duration-300 lg:p-9"
+    :class="tier.highlighted ? 'border-primary-900 bg-navy-900 text-white' : 'border-fog bg-white text-ink'"
   >
     <div>
       <div class="flex items-center justify-between">
         <h3 class="text-h4">{{ tier.name }}</h3>
-        <span
-          v-if="tier.highlighted"
-          class="text-label bg-white px-2.5 py-1 text-primary-900"
-        >Popular</span>
+        <span v-if="tier.highlighted" class="text-primary-900 rounded-full bg-white px-2.5 py-1 text-xs font-semibold">Most Popular</span>
       </div>
       <p class="text-body-sm mt-3" :class="tier.highlighted ? 'text-white/70' : 'text-sand-600'">
         {{ tier.description }}
       </p>
-      <p class="text-h3 mt-8">{{ tier.price }}</p>
+
+      <p class="mt-8 flex items-baseline gap-1">
+        <span class="text-h2">{{ formatCurrency(price) }}</span>
+        <span class="text-body-sm" :class="tier.highlighted ? 'text-white/60' : 'text-sand-600'">{{ tier.unit }}</span>
+      </p>
 
       <ul class="mt-8 flex flex-col gap-3">
         <li v-for="feature in tier.features" :key="feature" class="text-body-sm flex items-start gap-2.5">
@@ -44,8 +49,8 @@ function handleClick(event: MouseEvent) {
 
     <a
       href="#contact"
-      class="text-label mt-10 inline-flex items-center justify-center border px-6 py-3.5 text-center transition-colors"
-      :class="tier.highlighted ? 'border-white text-white hover:bg-white hover:text-primary-900' : 'border-primary-900 text-primary-900 hover:bg-primary-900 hover:text-white'"
+      class="mt-10 inline-flex items-center justify-center rounded-full px-6 py-3.5 text-center text-sm font-semibold transition-colors"
+      :class="tier.highlighted ? 'bg-white text-primary-900 hover:bg-white/90' : 'bg-primary-900 text-white hover:bg-primary-800'"
       @click="handleClick"
     >
       {{ tier.cta }}

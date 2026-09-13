@@ -2,7 +2,9 @@ export interface PricingTier {
   id: number
   name: string
   description: string
-  price: string
+  priceMonthly: number
+  priceYearly: number
+  unit: string
   features: string[]
   highlighted: boolean
   cta: string

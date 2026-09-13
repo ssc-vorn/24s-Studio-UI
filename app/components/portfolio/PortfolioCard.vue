@@ -4,42 +4,41 @@ import type { Project } from '~/types/project'
 
 interface Props {
   project: Project
-  tall?: boolean
 }
 
-withDefaults(defineProps<Props>(), { tall: false })
-
-const imageEl = ref<HTMLElement | null>(null)
+defineProps<Props>()
 </script>
 
 <template>
   <a
     href="#"
-    class="group focus-visible:ring-primary-900 relative block overflow-hidden bg-sand-200 focus-visible:ring-2 focus-visible:ring-offset-2"
-    :class="tall ? 'aspect-[4/5]' : 'aspect-[4/3]'"
+    class="group focus-visible:ring-primary-900 block focus-visible:ring-2 focus-visible:ring-offset-2"
     :aria-label="`View project: ${project.title}`"
     @click.prevent
   >
-    <img
-      ref="imageEl"
-      :src="project.image"
-      :alt="`${project.title} — ${project.client}`"
-      loading="lazy"
-      class="size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06] group-focus-visible:scale-[1.06]"
-    >
+    <div class="relative aspect-square overflow-hidden rounded-2xl bg-sand-200">
+      <img
+        :src="project.image"
+        :alt="`${project.title} — ${project.client}`"
+        loading="lazy"
+        class="size-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
+      >
 
-    <div
-      class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-navy-900/85 via-navy-900/10 to-transparent p-6 opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100 sm:p-8"
-    >
-      <span class="text-label text-white/70">{{ project.category }} · {{ project.year }}</span>
-      <div class="mt-2 flex items-center justify-between gap-3">
-        <h3 class="text-h4 text-white">{{ project.title }}</h3>
-        <ArrowUpRight class="size-5 shrink-0 text-white transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true" />
-      </div>
+      <span class="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-ink shadow-sm">
+        {{ project.category }}
+      </span>
+
+      <span
+        class="bg-primary-900 absolute top-3 right-3 flex size-9 -translate-y-2 items-center justify-center rounded-full text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+        aria-hidden="true"
+      >
+        <ArrowUpRight class="size-4" />
+      </span>
     </div>
 
-    <div class="absolute inset-x-6 bottom-6 flex items-center justify-between text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0 sm:inset-x-8 sm:bottom-8">
-      <span class="text-label bg-navy-900/70 px-3 py-1.5 backdrop-blur-sm">{{ project.category }}</span>
+    <div class="mt-3 flex items-center justify-between gap-2">
+      <h3 class="text-sm font-semibold text-ink">{{ project.title }}</h3>
+      <span class="text-xs text-sand-600">{{ project.category }}</span>
     </div>
   </a>
 </template>

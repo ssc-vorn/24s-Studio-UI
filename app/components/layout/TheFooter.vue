@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Instagram, Linkedin, Twitter, Dribbble } from 'lucide-vue-next'
+import { Dribbble, Instagram, Linkedin, Twitter } from 'lucide-vue-next'
 
 const { scrollTo } = useLenis()
 const route = useRoute()
@@ -8,19 +8,17 @@ const isHome = computed(() => route.path === '/')
 const year = new Date().getFullYear()
 
 const explore = [
-  { label: 'Work', href: '#portfolio' },
-  { label: 'About', href: '#about' },
-  { label: 'Blog', href: '#blog' },
-  { label: 'Contact', href: '#contact' }
+  { label: 'Home', href: '#hero' },
+  { label: 'Portfolio', href: '#portfolio' },
+  { label: 'Services', href: '#services' },
+  { label: 'About', href: '#about' }
 ]
 
-const serviceLinks = [
-  'Graphic Design',
-  'Branding & Identity',
-  'Video Production',
-  'Motion Graphics',
-  'Digital Experiences',
-  'Digital Marketing'
+const more = [
+  { label: 'Testimonials', href: '#testimonials' },
+  { label: 'Pricing', href: '#pricing' },
+  { label: 'Blog', href: '#blog' },
+  { label: 'Contact', href: '#contact' }
 ]
 
 const socials = [
@@ -57,21 +55,45 @@ onMounted(() => {
 </script>
 
 <template>
-  <footer ref="el" class="border-t border-fog bg-off-white pt-20 pb-10">
+  <footer ref="el" class="bg-navy-900 pt-20 pb-10">
     <Container>
       <div class="grid grid-cols-1 gap-14 sm:grid-cols-2 lg:grid-cols-4">
         <div class="sm:col-span-2 lg:col-span-1">
-          <p class="text-h4 text-ink">24S<span class="text-primary-900">.</span></p>
-          <p class="text-body-sm mt-4 max-w-xs text-sand-600">
+          <p class="text-lg font-extrabold tracking-tight text-white">NEX<span class="text-primary-300">O</span>RA</p>
+          <p class="text-body-sm mt-4 max-w-xs text-white/60">
             A creative studio building brands, digital experiences and visual systems that move people.
           </p>
+          <ul class="mt-6 flex items-center gap-3" aria-label="Social media">
+            <li v-for="social in socials" :key="social.label">
+              <a
+                :href="social.href"
+                target="_blank"
+                rel="noopener noreferrer"
+                :aria-label="social.label"
+                class="inline-flex size-10 items-center justify-center rounded-full bg-white/5 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <component :is="social.icon" class="size-4" aria-hidden="true" />
+              </a>
+            </li>
+          </ul>
         </div>
 
         <nav aria-label="Footer navigation">
-          <p class="text-label text-sand-600">Explore</p>
+          <p class="text-label text-white/40">Explore</p>
           <ul class="mt-5 flex flex-col gap-3">
             <li v-for="link in explore" :key="link.href">
-              <a :href="isHome ? link.href : `/${link.href}`" class="text-body text-ink/80 transition-colors hover:text-ink" @click="handleClick($event, link.href)">
+              <a :href="isHome ? link.href : `/${link.href}`" class="text-body text-white/70 transition-colors hover:text-white" @click="handleClick($event, link.href)">
+                {{ link.label }}
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Footer navigation continued">
+          <p class="text-label text-white/40">More</p>
+          <ul class="mt-5 flex flex-col gap-3">
+            <li v-for="link in more" :key="link.href">
+              <a :href="isHome ? link.href : `/${link.href}`" class="text-body text-white/70 transition-colors hover:text-white" @click="handleClick($event, link.href)">
                 {{ link.label }}
               </a>
             </li>
@@ -79,42 +101,20 @@ onMounted(() => {
         </nav>
 
         <div>
-          <p class="text-label text-sand-600">Services</p>
-          <ul class="mt-5 flex flex-col gap-3">
-            <li v-for="service in serviceLinks" :key="service" class="text-body text-ink/80">
-              {{ service }}
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <p class="text-label text-sand-600">Contact</p>
+          <p class="text-label text-white/40">Contact</p>
           <ul class="mt-5 flex flex-col gap-3">
             <li>
-              <a href="mailto:hello@24s.studio" class="text-body text-ink/80 transition-colors hover:text-ink">hello@24s.studio</a>
+              <a href="mailto:hello@nexora.studio" class="text-body text-white/70 transition-colors hover:text-white">hello@nexora.studio</a>
             </li>
-            <li class="text-body text-ink/80">+1 (415) 555-0182</li>
-            <li class="text-body text-ink/80">San Francisco, CA</li>
-          </ul>
-          <ul class="mt-6 flex items-center gap-4" aria-label="Social media">
-            <li v-for="social in socials" :key="social.label">
-              <a
-                :href="social.href"
-                target="_blank"
-                rel="noopener noreferrer"
-                :aria-label="social.label"
-                class="inline-flex size-10 items-center justify-center border border-fog text-ink/70 transition-colors hover:border-primary-900 hover:text-primary-900"
-              >
-                <component :is="social.icon" class="size-4" aria-hidden="true" />
-              </a>
-            </li>
+            <li class="text-body text-white/70">+1 (415) 555-0182</li>
+            <li class="text-body text-white/70">San Francisco, CA</li>
           </ul>
         </div>
       </div>
 
-      <div class="mt-16 flex flex-col items-start justify-between gap-4 border-t border-fog pt-8 sm:flex-row sm:items-center">
-        <p class="text-body-sm text-sand-600">© {{ year }} 24S Studio. All rights reserved.</p>
-        <p class="text-body-sm text-sand-600">Graphic Design · Branding · Video · Motion · Digital · Marketing</p>
+      <div class="mt-16 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center">
+        <p class="text-body-sm text-white/50">© {{ year }} Nexora. All rights reserved.</p>
+        <p class="text-body-sm text-white/50">Graphic Design · Branding · Video · Motion · Digital · Marketing</p>
       </div>
     </Container>
   </footer>

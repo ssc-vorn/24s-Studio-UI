@@ -18,17 +18,20 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
 </script>
 
 <template>
-  <section id="testimonials" ref="root" class="bg-navy-900 py-28 lg:py-40">
+  <section id="testimonials" ref="root" class="bg-mist py-28 lg:py-40">
     <Container>
-      <div data-reveal="heading" class="max-w-2xl">
-        <span class="text-label mb-6 flex items-center gap-3 text-white/60">
-          <span class="h-px w-8 bg-white/40" aria-hidden="true" />
-          Client Voices
-        </span>
-        <h2 class="text-h2 text-balance text-white">Trusted by teams who care about craft as much as we do.</h2>
+      <div data-reveal="heading" class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <span class="text-label text-primary-900 mb-4 flex items-center gap-3">
+            <span class="h-px w-8 bg-primary-900" aria-hidden="true" />
+            Testimonials
+          </span>
+          <h2 class="text-h2 text-ink">What Our Clients Say</h2>
+        </div>
+        <AnimatedLink href="#testimonials" class="shrink-0">View All Testimonials</AnimatedLink>
       </div>
 
-      <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <div v-for="testimonial in testimonials" :key="testimonial.id" data-testimonial-card>
           <TestimonialCard :testimonial="testimonial" />
         </div>
