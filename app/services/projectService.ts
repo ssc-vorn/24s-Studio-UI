@@ -18,5 +18,10 @@ export const projectService = {
     const index = all.findIndex((project) => project.slug === currentSlug)
     if (index === -1) return all[0]
     return all[(index + 1) % all.length]
+  },
+
+  /** Unique client names across every project, for trust-signal display (logo strip, etc). */
+  getClientNames(): string[] {
+    return Array.from(new Set(projectRepository.list().map((project) => project.client)))
   }
 }

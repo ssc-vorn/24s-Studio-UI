@@ -23,6 +23,7 @@ useHead({
 <template>
   <main id="main-content">
     <HeroSection />
+    <TrustedBySection />
     <ManifestoSection />
     <SelectedWork />
     <ServiceList />
