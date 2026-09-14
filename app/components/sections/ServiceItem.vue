@@ -18,7 +18,7 @@ const OPEN = {
   summary: 'rgba(255,255,255,0.75)',
   tag: 'rgba(255,255,255,0.7)',
   tagBorder: 'rgba(255,255,255,0.25)',
-  indexColor: 'rgba(255,255,255,0.45)'
+  indexColor: 'rgba(255,255,255,0.16)'
 }
 const CLOSED = {
   bg: '#f5f5f2',
@@ -27,7 +27,7 @@ const CLOSED = {
   summary: 'rgba(11,13,18,0.6)',
   tag: 'rgba(11,13,18,0.6)',
   tagBorder: 'rgba(11,13,18,0.2)',
-  indexColor: 'rgba(11,13,18,0.45)'
+  indexColor: 'rgba(11,13,18,0.16)'
 }
 
 /**
@@ -39,6 +39,13 @@ const CLOSED = {
  * Template defaults to the closed (title-only) state for SSR/no-JS safety;
  * reduced motion skips the scrub and settles permanently open instead of
  * leaving an unopenable title-only tab.
+ *
+ * The motion here is untouched from prior rounds — the visual layout it
+ * drives is what changed: a giant ghost-numeral watermark instead of a
+ * small corner label, and a two-column split (summary / capabilities as a
+ * right-aligned underlined list) instead of a single stacked column with
+ * bordered tag chips. Every element the timeline below targets keeps its
+ * data-* hook regardless of layout, so none of this needed to change.
  */
 const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const card = root.querySelector<HTMLElement>('[data-card]')
@@ -114,22 +121,32 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
         aria-hidden="true"
       />
 
-      <div data-content class="relative flex items-start justify-between gap-6 px-8 pt-7 pb-7 lg:px-12 lg:pt-9 lg:pb-9">
-        <div class="min-w-0">
-          <h3 class="text-heading">{{ service.title }}</h3>
+      <div data-content class="relative px-8 pt-7 pb-7 lg:px-12 lg:pt-9 lg:pb-9">
+        <div class="flex items-start justify-between gap-4">
+          <h3 class="text-heading max-w-xl">{{ service.title }}</h3>
+          <span
+            data-index
+            class="pointer-events-none shrink-0 font-serif text-[2.25rem] leading-none font-light select-none lg:text-[4.75rem]"
+            style="color: rgba(11,13,18,0.16)"
+            aria-hidden="true"
+          >
+            {{ service.index }}
+          </span>
+        </div>
 
-          <div data-detail-wrap class="overflow-hidden" style="height: 0">
-            <div data-detail-inner class="max-w-xl pt-4" style="opacity: 0">
-              <p data-summary class="text-body-lg" style="color: rgba(11,13,18,0.6)">
+        <div data-detail-wrap class="overflow-hidden" style="height: 0">
+          <div data-detail-inner style="opacity: 0">
+            <div class="grid gap-6 pt-6 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-16">
+              <p data-summary class="text-body-lg max-w-md" style="color: rgba(11,13,18,0.6)">
                 {{ service.summary }}
               </p>
 
-              <ul class="mt-6 flex flex-wrap gap-2">
+              <ul class="flex flex-col gap-3 lg:items-end">
                 <li
                   v-for="capability in service.capabilities"
                   :key="capability"
                   data-tag
-                  class="text-label border px-3 py-1.5"
+                  class="text-label border-b pb-2 text-right lg:whitespace-nowrap"
                   style="color: rgba(11,13,18,0.6); border-color: rgba(11,13,18,0.2)"
                 >
                   {{ capability }}
@@ -138,10 +155,6 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
             </div>
           </div>
         </div>
-
-        <span data-index class="text-body-sm shrink-0 pt-1 font-sans tabular-nums" style="color: rgba(11,13,18,0.45)">
-          {{ service.index }}
-        </span>
       </div>
     </div>
   </div>
