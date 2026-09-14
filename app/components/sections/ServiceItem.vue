@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ArrowUpRight } from 'lucide-vue-next'
 import type { Service } from '~/types/service'
 
 interface Props {
@@ -16,36 +15,52 @@ defineProps<Props>()
 <template>
   <div data-story-stage class="sticky" :style="{ top: `calc(var(--nav-height) + ${index * 1}rem)` }">
     <div
-      class="border-border-subtle bg-surface-elevated relative overflow-hidden rounded-3xl border shadow-2xl shadow-black/30 transition-[padding] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-      :class="active ? 'px-8 py-9 lg:px-12 lg:py-11' : 'px-8 py-6 lg:px-12 lg:py-7'"
+      class="relative overflow-hidden rounded-3xl border transition-colors duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+      :class="active ? 'bg-black text-white border-transparent' : 'bg-warm text-charcoal border-charcoal/10'"
     >
-      <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,22rem)_1fr] lg:gap-10">
-        <!-- Masthead column — index and title stay put while the detail column beside it does the expanding, an editorial split rather than a top-to-bottom stack. -->
-        <div class="flex items-center justify-between gap-4 lg:block">
-          <span class="text-body-sm text-ink-muted font-sans tabular-nums">{{ service.index }}</span>
-          <h3 class="text-subheading text-ink mt-0 lg:mt-3">
-            {{ service.title }}
-          </h3>
-        </div>
+      <div
+        class="pointer-events-none absolute inset-y-0 right-0 w-2/5 transition-opacity duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        :class="active ? 'opacity-100' : 'opacity-0'"
+        style="background: linear-gradient(100deg, transparent 20%, rgb(255 255 255 / 0.12) 100%)"
+        aria-hidden="true"
+      />
 
-        <div class="grid transition-[grid-template-rows] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" :style="{ gridTemplateRows: active ? '1fr' : '0fr' }">
-          <div class="max-w-xl overflow-hidden">
-            <div class="flex items-start gap-5">
-              <p class="text-body-lg text-ink-muted">{{ service.summary }}</p>
-              <ArrowUpRight class="text-accent mt-1 hidden size-6 shrink-0 lg:block" aria-hidden="true" />
-            </div>
+      <div
+        class="relative flex items-start justify-between gap-6 transition-[padding] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        :class="active ? 'px-8 py-9 lg:px-12 lg:py-11' : 'px-8 py-6 lg:px-12 lg:py-7'"
+      >
+        <div class="min-w-0">
+          <h3 class="text-heading">{{ service.title }}</h3>
 
-            <ul class="mt-6 flex flex-wrap gap-2">
-              <li
-                v-for="capability in service.capabilities"
-                :key="capability"
-                class="text-label text-ink-muted border-border-subtle border px-3 py-1.5"
+          <div class="grid transition-[grid-template-rows] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" :style="{ gridTemplateRows: active ? '1fr' : '0fr' }">
+            <div class="max-w-xl overflow-hidden">
+              <p
+                class="text-body-lg mt-4 transition-colors duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                :class="active ? 'text-white/75' : 'text-charcoal/60'"
               >
-                {{ capability }}
-              </li>
-            </ul>
+                {{ service.summary }}
+              </p>
+
+              <ul class="mt-6 flex flex-wrap gap-2">
+                <li
+                  v-for="capability in service.capabilities"
+                  :key="capability"
+                  class="text-label border px-3 py-1.5 transition-colors duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                  :class="active ? 'text-white/70 border-white/25' : 'text-charcoal/60 border-charcoal/20'"
+                >
+                  {{ capability }}
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
+
+        <span
+          class="text-body-sm shrink-0 pt-1 font-sans tabular-nums transition-colors duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          :class="active ? 'text-white/45' : 'text-charcoal/45'"
+        >
+          {{ service.index }}
+        </span>
       </div>
     </div>
   </div>
