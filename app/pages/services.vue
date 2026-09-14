@@ -7,9 +7,9 @@ import type { ProjectCategory } from '~/types/project'
 
 useSeoMeta({
   title: 'Services — 24 Seven Studio',
-  description: 'Branding, digital, video & motion and marketing — full-service creative work from strategy through execution.',
+  description: 'Digital product design, web design & development, digital marketing and brand identity — full-service creative work from strategy through execution.',
   ogTitle: 'Services — 24 Seven Studio',
-  ogDescription: 'Branding, digital, video & motion and marketing — full-service creative work from strategy through execution.',
+  ogDescription: 'Digital product design, web design & development, digital marketing and brand identity — full-service creative work from strategy through execution.',
   ogImage: 'https://picsum.photos/1200/630?random=4',
   twitterCard: 'summary_large_image'
 })
@@ -21,10 +21,11 @@ useHead({
 const serviceList = serviceRepository.list()
 
 const categoryByService: Record<string, ProjectCategory> = {
-  branding: 'Branding',
-  digital: 'Digital',
-  'video-motion': 'Video',
-  marketing: 'Marketing'
+  'digital-product-design': 'Digital',
+  'web-design-development': 'Digital',
+  'digital-marketing-advertising': 'Marketing',
+  'brand-identity': 'Branding',
+  'web-design-development-2': 'Digital'
 }
 
 function relatedProjects(slug: string) {
@@ -47,7 +48,7 @@ function serviceTestimonial(slug: string) {
         </span>
         <h1 class="text-display-xl max-w-4xl text-ink">Full-service creative, held to one standard.</h1>
         <p class="text-body-lg text-ink-muted mt-8 max-w-xl">
-          Four disciplines, run by one studio, so nothing gets lost in translation between strategy, design and production.
+          Every discipline you need, run by one studio, so nothing gets lost in translation between strategy, design and production.
         </p>
       </Container>
     </section>

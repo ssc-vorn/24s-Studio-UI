@@ -18,9 +18,9 @@ export const testimonials: Testimonial[] = [
     role: 'Chief Marketing Officer',
     company: 'Solene Cosmetics',
     project: 'Brand Identity & Packaging',
-    service: 'Branding',
+    service: 'Brand Identity',
     projectSlug: 'solene-cosmetics',
-    serviceSlug: 'branding',
+    serviceSlug: 'brand-identity',
     featured: true
   },
   {
@@ -31,9 +31,9 @@ export const testimonials: Testimonial[] = [
     role: 'Head of Product',
     company: 'Halo Health',
     project: 'Patient Portal Redesign',
-    service: 'Digital',
+    service: 'Web Design & Development',
     projectSlug: 'halo-health',
-    serviceSlug: 'digital',
+    serviceSlug: 'web-design-development',
     featured: false
   },
   {
@@ -44,9 +44,9 @@ export const testimonials: Testimonial[] = [
     role: 'Founder',
     company: 'Northfield Capital',
     project: 'Digital Experience Platform',
-    service: 'Digital',
+    service: 'Digital Product Design',
     projectSlug: 'northfield-capital',
-    serviceSlug: 'digital',
+    serviceSlug: 'digital-product-design',
     featured: true
   },
   {
@@ -70,9 +70,9 @@ export const testimonials: Testimonial[] = [
     role: 'Head of Marketing',
     company: 'Tidal Energy',
     project: 'European Campaign Platform',
-    service: 'Marketing',
+    service: 'Digital Marketing & Advertising',
     projectSlug: 'tidal-energy',
-    serviceSlug: 'marketing',
+    serviceSlug: 'digital-marketing-advertising',
     featured: true
   }
 ]
