@@ -32,25 +32,30 @@ defineProps<Props>()
         <div class="min-w-0">
           <h3 class="text-heading">{{ service.title }}</h3>
 
-          <div class="grid transition-[grid-template-rows] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" :style="{ gridTemplateRows: active ? '1fr' : '0fr' }">
+          <div class="grid transition-[grid-template-rows] duration-[850ms] ease-[cubic-bezier(0.16,1,0.3,1)]" :style="{ gridTemplateRows: active ? '1fr' : '0fr' }">
             <div class="max-w-xl overflow-hidden">
-              <p
-                class="text-body-lg mt-4 transition-colors duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                :class="active ? 'text-white/75' : 'text-charcoal/60'"
+              <div
+                class="transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                :class="active ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-3 opacity-0 delay-0'"
               >
-                {{ service.summary }}
-              </p>
-
-              <ul class="mt-6 flex flex-wrap gap-2">
-                <li
-                  v-for="capability in service.capabilities"
-                  :key="capability"
-                  class="text-label border px-3 py-1.5 transition-colors duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                  :class="active ? 'text-white/70 border-white/25' : 'text-charcoal/60 border-charcoal/20'"
+                <p
+                  class="text-body-lg mt-4 transition-colors duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                  :class="active ? 'text-white/75' : 'text-charcoal/60'"
                 >
-                  {{ capability }}
-                </li>
-              </ul>
+                  {{ service.summary }}
+                </p>
+
+                <ul class="mt-6 flex flex-wrap gap-2">
+                  <li
+                    v-for="capability in service.capabilities"
+                    :key="capability"
+                    class="text-label border px-3 py-1.5 transition-colors duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    :class="active ? 'text-white/70 border-white/25' : 'text-charcoal/60 border-charcoal/20'"
+                  >
+                    {{ capability }}
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
