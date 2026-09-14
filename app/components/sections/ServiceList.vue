@@ -8,7 +8,11 @@ const serviceList = serviceRepository.list()
  * CSS position: sticky (a slightly larger top offset per card, so earlier
  * cards peek out above), compositor-friendly with no scroll-linked JS
  * driving the pin/cover motion itself. Each card then opens its own detail
- * independently, scroll-scrubbed — see ServiceItem.
+ * independently, scroll-scrubbed — see ServiceItem. The open transition
+ * itself only consumes a slice of each card's runway (min-h below); the
+ * remaining scroll distance is a deliberate quiet hold with nothing
+ * animating, giving a card a few seconds fully open and readable before
+ * the next one's own zone begins.
  */
 const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const heading = root.querySelector('[data-reveal="heading"]')
@@ -41,7 +45,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
           v-for="(service, index) in serviceList"
           :key="service.id"
           class="pb-3 last:pb-0"
-          :class="index !== serviceList.length - 1 ? 'min-h-[18vh] lg:min-h-[24vh]' : ''"
+          :class="index !== serviceList.length - 1 ? 'min-h-[42vh] lg:min-h-[50vh]' : ''"
         >
           <ServiceItem :service="service" :index="index" />
         </div>

@@ -40,39 +40,53 @@ const CLOSED = {
  */
 const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const card = root.querySelector<HTMLElement>('[data-card]')
+  const content = root.querySelector<HTMLElement>('[data-content]')
   const gradient = root.querySelector<HTMLElement>('[data-gradient]')
   const detailWrap = root.querySelector<HTMLElement>('[data-detail-wrap]')
   const detailInner = root.querySelector<HTMLElement>('[data-detail-inner]')
   const summary = root.querySelector<HTMLElement>('[data-summary]')
   const tags = Array.from(root.querySelectorAll<HTMLElement>('[data-tag]'))
   const indexEl = root.querySelector<HTMLElement>('[data-index]')
-  if (!card || !gradient || !detailWrap || !detailInner || !summary || !indexEl) return
+  if (!card || !content || !gradient || !detailWrap || !detailInner || !summary || !indexEl) return
 
   if (reduced) {
     gsap.set(card, { backgroundColor: OPEN.bg, borderColor: OPEN.border, color: OPEN.text })
+    gsap.set(content, { paddingBottom: 48 })
     gsap.set(gradient, { opacity: 1 })
     gsap.set(detailWrap, { height: 'auto' })
-    gsap.set(detailInner, { y: 0, opacity: 1 })
+    gsap.set(detailInner, { opacity: 1 })
     gsap.set(summary, { color: OPEN.summary })
     gsap.set(tags, { color: OPEN.tag, borderColor: OPEN.tagBorder })
     gsap.set(indexEl, { color: OPEN.indexColor })
     return
   }
 
-  const naturalHeight = detailInner.scrollHeight
+  // Measured fresh each time the tween starts (function-based value, with
+  // ScrollTrigger set to invalidate and re-measure on refresh) rather than
+  // captured once up front — robust against layout not having fully
+  // settled yet (fonts, wrapped capability tags) at mount time. A few
+  // spare pixels guard against sub-pixel rounding clipping the last row.
+  const measureHeight = () => detailInner.scrollHeight + 2
 
+  // The open transition itself plays out over a short scroll distance
+  // ('top 65%' to 'top 42%'); the rest of the card's runway (set in
+  // ServiceList) is deliberately quiet scroll distance with nothing
+  // animating — a hold, giving a card a few seconds fully open and
+  // readable before the next one's own zone begins.
   gsap.timeline({
     scrollTrigger: {
       trigger: card,
       start: 'top 65%',
       end: 'top 42%',
-      scrub: 0.5
+      scrub: 0.5,
+      invalidateOnRefresh: true
     }
   })
     .fromTo(card, { backgroundColor: CLOSED.bg, borderColor: CLOSED.border, color: CLOSED.text }, { backgroundColor: OPEN.bg, borderColor: OPEN.border, color: OPEN.text, ease: 'none' }, 0)
+    .fromTo(content, { paddingBottom: 28 }, { paddingBottom: 48, ease: 'none' }, 0)
     .fromTo(gradient, { opacity: 0 }, { opacity: 1, ease: 'none' }, 0)
-    .fromTo(detailWrap, { height: 0 }, { height: naturalHeight, ease: 'none' }, 0)
-    .fromTo(detailInner, { y: 14, opacity: 0 }, { y: 0, opacity: 1, ease: 'none' }, 0)
+    .fromTo(detailWrap, { height: 0 }, { height: measureHeight, ease: 'none' }, 0)
+    .fromTo(detailInner, { opacity: 0 }, { opacity: 1, ease: 'none' }, 0)
     .fromTo(summary, { color: CLOSED.summary }, { color: OPEN.summary, ease: 'none' }, 0)
     .fromTo(tags, { color: CLOSED.tag, borderColor: CLOSED.tagBorder }, { color: OPEN.tag, borderColor: OPEN.tagBorder, ease: 'none' }, 0)
     .fromTo(indexEl, { color: CLOSED.indexColor }, { color: OPEN.indexColor, ease: 'none' }, 0)
@@ -93,13 +107,13 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
         aria-hidden="true"
       />
 
-      <div class="relative flex items-start justify-between gap-6 px-8 py-7 lg:px-12 lg:py-9">
+      <div data-content class="relative flex items-start justify-between gap-6 px-8 pt-7 lg:px-12 lg:pt-9" style="padding-bottom: 28px">
         <div class="min-w-0">
           <h3 class="text-heading">{{ service.title }}</h3>
 
           <div data-detail-wrap class="overflow-hidden" style="height: 0">
-            <div data-detail-inner class="max-w-xl" style="opacity: 0; transform: translateY(14px)">
-              <p data-summary class="text-body-lg mt-4" style="color: rgba(11,13,18,0.6)">
+            <div data-detail-inner class="max-w-xl pt-4" style="opacity: 0">
+              <p data-summary class="text-body-lg" style="color: rgba(11,13,18,0.6)">
                 {{ service.summary }}
               </p>
 
