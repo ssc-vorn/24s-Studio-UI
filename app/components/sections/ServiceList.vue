@@ -1,33 +1,47 @@
 <script setup lang="ts">
 import { serviceRepository } from '~/repositories/serviceRepository'
+import { animateServiceFocusChange } from '~/animations/sections/services'
 
 const serviceList = serviceRepository.list()
 
+// The GSAP focus crossfade (ghost title + list title opacity/scale) only
+// makes sense paired with the sticky ghost panel, which is desktop-only
+// (`hidden lg:block`). On mobile there's nothing for a dimmed title to
+// contrast against, so skip the animation there entirely — the CSS
+// class-driven color change (text-ink vs text-ink-muted) stays as the only,
+// much subtler cue. Mirrors Creative Process exactly.
+const { isDesktop } = useBreakpoints()
+
 /**
- * HOME / Services — Big List. The list itself is the visual language: the
- * active row's title balloons into giant serif type with its summary and
- * capabilities expanding inline beneath it, while the rest recede to small,
- * muted type — no split column, no separate preview panel. Active state
- * tracks scroll via the shared `useScrollStory` machinery; clicking or
- * hovering a row overrides it directly on any breakpoint, writing to the
- * same ref the scroll tracking uses.
+ * HOME / Services — Layered Scroll Narrative, pure scroll-driven. No hover,
+ * no click: a sticky ghost-typography panel crossfades through the active
+ * service's title as the user scrolls, the same motion language as Creative
+ * Process's numeral walk, so the two sections read as one continuous idea.
  */
 const { root, activeIndex } = useScrollStory({
-  stageSelector: '[data-service-stage]',
   setup: ({ gsap, root }) => {
     const heading = root.querySelector('[data-reveal="heading"]')
-    const list = root.querySelector('[data-reveal="list"]')
+    if (heading) {
+      gsap.fromTo(
+        heading,
+        { opacity: 0, y: 32 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
+      )
+    }
 
-    gsap.fromTo(
-      [heading, list],
-      { opacity: 0, y: 32 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
-    )
+    return {
+      onChange: (index, previousIndex) => {
+        if (!isDesktop.value) return
+        const ghosts = Array.from(root.querySelectorAll('[data-service-ghost]'))
+        const titles = Array.from(root.querySelectorAll('[data-service-title]'))
+        animateServiceFocusChange(gsap, ghosts, titles, index, previousIndex)
+      }
+    }
   }
 })
 
-/** Reduced motion parks `activeIndex` at the -1 sentinel; fall back to the first row so the list still reads as one deliberate composition rather than a flat, hierarchy-less stack. */
-const displayIndex = computed(() => (activeIndex.value === -1 ? 0 : activeIndex.value))
+const totalLabel = String(serviceList.length).padStart(2, '0')
+const activeLabel = computed(() => serviceList[activeIndex.value]?.index ?? serviceList[0]!.index)
 </script>
 
 <template>
@@ -44,15 +58,46 @@ const displayIndex = computed(() => (activeIndex.value === -1 ? 0 : activeIndex.
         <AnimatedLink to="/services" class="shrink-0">All Services</AnimatedLink>
       </div>
 
-      <div data-reveal="list" class="mt-14 lg:mt-20">
-        <ServiceItem
-          v-for="(service, index) in serviceList"
-          :key="service.id"
-          data-service-stage
-          :service="service"
-          :active="displayIndex === index"
-          @hover="activeIndex = index"
-        />
+      <div class="mt-16 grid grid-cols-1 gap-14 lg:mt-24 lg:grid-cols-12 lg:gap-12">
+        <!-- Sticky ghost panel — the section's single visual anchor; no
+             card, no image, just oversized type crossfading in place. -->
+        <div class="hidden lg:col-span-5 lg:block">
+          <div class="sticky top-32">
+            <div class="relative h-[22rem] overflow-hidden">
+              <span
+                v-for="(service, index) in serviceList"
+                :key="service.id"
+                data-service-ghost
+                class="text-ink/[0.08] absolute inset-0 flex items-center font-serif text-[5.5rem] leading-[0.95] font-light uppercase select-none"
+                :class="index === 0 ? 'opacity-100' : 'opacity-0'"
+                aria-hidden="true"
+              >
+                {{ service.title }}
+              </span>
+            </div>
+
+            <div class="mt-6 flex items-center gap-4" aria-hidden="true">
+              <span class="text-label text-ink-muted tabular-nums">{{ activeLabel }} / {{ totalLabel }}</span>
+              <div class="bg-border-subtle relative h-px flex-1 overflow-hidden">
+                <span
+                  class="bg-accent absolute inset-y-0 left-0 h-full origin-left transition-transform duration-500 ease-out"
+                  :style="{ transform: `scaleX(${(Math.max(activeIndex, 0) + 1) / serviceList.length})` }"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service list — no boxes, just hairline dividers and typography
+             settling into and out of focus as it becomes the active service. -->
+        <div class="lg:col-span-7">
+          <ServiceItem
+            v-for="(service, index) in serviceList"
+            :key="service.id"
+            :service="service"
+            :active="activeIndex === -1 ? index === 0 : activeIndex === index"
+          />
+        </div>
       </div>
     </Container>
   </section>
