@@ -68,11 +68,9 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   // spare pixels guard against sub-pixel rounding clipping the last row.
   const measureHeight = () => detailInner.scrollHeight + 2
 
-  // The open transition itself plays out over a short scroll distance
-  // ('top 65%' to 'top 42%'); the rest of the card's runway (set in
-  // ServiceList) is deliberately quiet scroll distance with nothing
-  // animating — a hold, giving a card a few seconds fully open and
-  // readable before the next one's own zone begins.
+  // Scroll-scrubbed over a short distance ('top 65%' to 'top 42%'), matching
+  // the tight runway ServiceList gives each card so the stack reads as
+  // close together rather than one card filling the viewport at a time.
   gsap.timeline({
     scrollTrigger: {
       trigger: card,
