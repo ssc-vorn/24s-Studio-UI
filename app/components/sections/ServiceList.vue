@@ -5,13 +5,19 @@ import { revealServiceRows } from '~/animations/sections/services'
 const serviceList = serviceRepository.list()
 
 /**
- * HOME / Services — full-width content grid. No split column, no sticky
- * panel, no single service singled out as "active" — a deliberately
- * different composition from Creative Process's sticky-ghost numeral walk.
- * Every service sits at equal weight in a bordered spec-sheet grid, and the
- * whole set reveals as one staggered cascade as the section scrolls in.
+ * HOME / Services — full-width bordered content grid with a two-layer
+ * scroll narrative, no split panel and no single "active" card. Every
+ * service card clips into place with just its title showing (stage one);
+ * scrolling further reveals that card's own detail — summary and
+ * capabilities — independently per card (stage two), so it reads as a
+ * continuous unfolding story rather than a single card swapping focus.
+ * Default state is fully revealed (safe without JS, and under reduced
+ * motion); JS collapses the detail only once GSAP actually initialises,
+ * then reveals each card's detail via its own ScrollTrigger as it scrolls in.
  */
-const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
+const revealedDetails = ref<boolean[]>(serviceList.map(() => true))
+
+const { root } = useScrollAnimation(({ gsap, root, reduced, ScrollTrigger }) => {
   const heading = root.querySelector('[data-reveal="heading"]')
   const rows = Array.from(root.querySelectorAll('[data-service-row]'))
 
@@ -24,6 +30,19 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   }
 
   revealServiceRows(gsap, rows, root, reduced)
+
+  if (reduced) return
+
+  revealedDetails.value = serviceList.map(() => false)
+  rows.forEach((row, index) => {
+    ScrollTrigger.create({
+      trigger: row,
+      start: 'top 70%',
+      onEnter: () => {
+        revealedDetails.value[index] = true
+      }
+    })
+  })
 })
 </script>
 
@@ -42,7 +61,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
       </div>
 
       <div class="border-border-subtle mt-14 grid grid-cols-1 border-t border-l lg:mt-20 lg:grid-cols-2">
-        <ServiceItem v-for="service in serviceList" :key="service.id" :service="service" />
+        <ServiceItem v-for="(service, index) in serviceList" :key="service.id" :service="service" :revealed="revealedDetails[index] ?? true" />
       </div>
     </Container>
   </section>
