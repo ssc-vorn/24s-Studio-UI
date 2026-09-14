@@ -69,6 +69,8 @@ const capabilities = serviceRepository.list()
       </Container>
     </section>
 
+    <TrustedBySection variant="compact" />
+
     <section class="bg-charcoal py-28 lg:py-40">
       <Container>
         <span class="text-label text-accent mb-5 flex items-center gap-3">

@@ -52,6 +52,8 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
       </Container>
     </section>
 
+    <TrustedBySection variant="compact" />
+
     <section ref="root" class="bg-surface pb-28 lg:pb-40">
       <Container>
         <div class="grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-10">

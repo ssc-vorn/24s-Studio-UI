@@ -18,23 +18,5 @@ export const projectService = {
     const index = all.findIndex((project) => project.slug === currentSlug)
     if (index === -1) return all[0]
     return all[(index + 1) % all.length]
-  },
-
-  /**
-   * One entry per unique client, linked to its case study — backs trust-signal
-   * displays (e.g. the "Trusted By" strip) with something to click through to,
-   * rather than inert logo text.
-   */
-  getTrustedClients(): { name: string; slug: string }[] {
-    const seen = new Set<string>()
-    const entries: { name: string; slug: string }[] = []
-
-    for (const project of projectRepository.list()) {
-      if (seen.has(project.client)) continue
-      seen.add(project.client)
-      entries.push({ name: project.client, slug: project.slug })
-    }
-
-    return entries
   }
 }
