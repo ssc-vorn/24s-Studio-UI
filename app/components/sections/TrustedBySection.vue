@@ -12,21 +12,29 @@ const brands = trustedBrandRepository.list()
 
 /**
  * HOME / Trusted By Brands — scroll — border lines draw in from center (full
- * variant only), an accent rule sweeps in before the label, brand cells
- * clip-reveal in a stagger.
- * Library: GSAP + ScrollTrigger. Duration: ~1.4s total. Easing: power3 in/out.
- * Mobile: identical timeline, shorter travel since the grid wraps narrower.
+ * variant only), an accent rule sweeps in before the label, then the brand
+ * strip (marquee track, full variant, or the item row, compact variant)
+ * fades up as one block.
+ * Library: GSAP + ScrollTrigger. Duration: ~1.2s total. Easing: power3 in/out.
+ * Mobile: identical timeline, shorter travel since the layout wraps narrower.
  * Reduced motion: every target snaps straight to its resting state, no draw.
+ *
+ * The marquee's own auto-scroll (full variant) is deliberately pure CSS
+ * (see `<style>` below), not GSAP — it needs to run even if JavaScript
+ * never initializes, which is the strongest form of the "animation is
+ * enhancement, not dependency" rule this codebase follows elsewhere with
+ * GSAP fallback states. `prefers-reduced-motion` and hover/focus-pause are
+ * both handled in plain CSS too, so this motion never depends on JS at all.
  */
 const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const borders = root.querySelectorAll('[data-reveal="border"]')
   const line = root.querySelector('[data-reveal="line"]')
   const label = root.querySelector('[data-reveal="label"]')
   const heading = root.querySelector('[data-reveal="heading"]')
-  const items = Array.from(root.querySelectorAll('[data-reveal="item"]'))
+  const items = root.querySelector('[data-reveal="items"]')
 
   if (reduced) {
-    gsap.set([...borders, line, label, heading, ...items], { opacity: 1, scaleX: 1, x: 0, y: 0, clipPath: 'inset(0 0 0% 0)' })
+    gsap.set([...borders, line, label, heading, items], { opacity: 1, scaleX: 1, x: 0, y: 0 })
     return
   }
 
@@ -38,12 +46,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
 
   if (heading) tl.fromTo(heading, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.2')
 
-  tl.fromTo(
-    items,
-    { opacity: 0, y: 14, clipPath: 'inset(0 0 100% 0)' },
-    { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 0.7, stagger: 0.06, ease: 'power3.out' },
-    '-=0.3'
-  )
+  if (items) tl.fromTo(items, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.3')
 })
 </script>
 
@@ -73,9 +76,20 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
           </p>
         </div>
 
-        <div class="border-border-subtle divide-border-subtle mt-16 grid grid-cols-2 divide-x divide-y border sm:grid-cols-4">
-          <div v-for="brand in brands" :key="brand.id" data-reveal="item" class="flex h-28 items-center justify-center px-4 sm:h-32">
-            <TrustedByItem :brand="brand" />
+        <div data-reveal="items" class="border-border-subtle marquee-viewport mt-16 overflow-hidden border-y py-10 sm:py-12">
+          <!--
+            Trailing margin (not container `gap`) on every item, including
+            the very last one — so the doubled track is exactly two equal
+            "item + spacing" halves and `translateX(-50%)` loops without
+            the half-gap jump a `gap`-based track would have at the seam.
+          -->
+          <div class="marquee-track flex w-max items-center">
+            <div v-for="brand in brands" :key="`a-${brand.id}`" class="mr-16 flex shrink-0 items-center justify-center sm:mr-24">
+              <TrustedByItem :brand="brand" />
+            </div>
+            <div v-for="brand in brands" :key="`b-${brand.id}`" class="mr-16 flex shrink-0 items-center justify-center sm:mr-24" inert>
+              <TrustedByItem :brand="brand" />
+            </div>
           </div>
         </div>
       </template>
@@ -86,8 +100,8 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
           <p data-reveal="label" class="text-label text-ink-muted whitespace-nowrap">Trusted By</p>
         </div>
 
-        <ul class="flex flex-1 flex-wrap items-center gap-x-10 gap-y-5 lg:justify-between">
-          <li v-for="brand in brands" :key="brand.id" data-reveal="item">
+        <ul data-reveal="items" class="flex flex-1 flex-wrap items-center gap-x-10 gap-y-5 lg:justify-between">
+          <li v-for="brand in brands" :key="brand.id">
             <TrustedByItem :brand="brand" />
           </li>
         </ul>
@@ -95,3 +109,43 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
     </Container>
   </section>
 </template>
+
+<style scoped>
+/*
+ * Infinite marquee — deliberately plain CSS, not GSAP. The brand strip is
+ * rendered twice back-to-back (the second copy is `inert`, so it never
+ * reaches the accessibility tree or tab order); translating the track by
+ * exactly -50% of its own width loops it seamlessly, since the second
+ * half is pixel-identical to the first. Running this off `animation`
+ * rather than a scroll-linked tween means it never depends on JavaScript
+ * initializing at all, and `prefers-reduced-motion` is handled natively.
+ */
+.marquee-track {
+  animation: trusted-by-marquee 34s linear infinite;
+}
+
+.marquee-track:hover,
+.marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+.marquee-viewport {
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
+@keyframes trusted-by-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+</style>
