@@ -4,24 +4,23 @@ import { serviceRepository } from '~/repositories/serviceRepository'
 const serviceList = serviceRepository.list()
 
 /**
- * HOME / Services — rounded accordion stack. One card at a time reads as
- * active: an inverted-color panel (dark on light theme, light on dark) with
- * its description unfolding and a soft diagonal sweep across it, while the
- * rest sit collapsed to a title bar. Active state tracks scroll position via
- * the shared useScrollStory machinery, same as the rest of the site's
- * scroll-narrative sections, but the card-stack visual language here is its
- * own thing — no sticky panel, no split column.
+ * HOME / Services — sticky card stack. Every card pins in place as it
+ * reaches the top of the viewport (a slightly larger `top` offset per card
+ * so a sliver of each earlier card peeks out above), then gets gracefully
+ * covered as the next one scrolls up over it — pure CSS `position: sticky`,
+ * no scroll-linked JS driving the motion, so it stays smooth and compositor-
+ * friendly at any frame rate. Each card sits in a tall "runway" wrapper so
+ * there's real scroll distance for it to hold its pinned position before
+ * the next card arrives.
  */
-const { root, activeIndex } = useScrollStory({
-  setup: ({ gsap, root }) => {
-    const heading = root.querySelector('[data-reveal="heading"]')
-    if (heading) {
-      gsap.fromTo(
-        heading,
-        { opacity: 0, y: 32 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
-      )
-    }
+const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
+  const heading = root.querySelector('[data-reveal="heading"]')
+  if (heading) {
+    gsap.fromTo(
+      heading,
+      { opacity: 0, y: 32 },
+      { opacity: 1, y: 0, duration: reduced ? 0.001 : 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
+    )
   }
 })
 </script>
@@ -40,13 +39,15 @@ const { root, activeIndex } = useScrollStory({
         <AnimatedLink to="/services" class="shrink-0">All Services</AnimatedLink>
       </div>
 
-      <div class="mt-14 flex flex-col gap-3 lg:mt-20 lg:gap-4">
-        <ServiceItem
+      <div class="mt-14 lg:mt-20">
+        <div
           v-for="(service, index) in serviceList"
           :key="service.id"
-          :service="service"
-          :active="activeIndex === -1 ? index === 0 : activeIndex === index"
-        />
+          class="pb-6 last:pb-0"
+          :class="index !== serviceList.length - 1 ? 'min-h-[55vh] lg:min-h-[65vh]' : ''"
+        >
+          <ServiceItem :service="service" :index="index" />
+        </div>
       </div>
     </Container>
   </section>
