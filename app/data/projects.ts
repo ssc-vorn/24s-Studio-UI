@@ -74,7 +74,7 @@ export const projects: Project[] = [
     creativeDirection: 'Handheld documentary cinematography, natural light only, a restrained sound design built from location audio rather than a scored soundtrack.',
     execution: 'A five-day shoot across three cities, edited into a long-form cut and fourteen short-form variants for paid and organic social distribution.',
     result: 'The film screened at two regional festivals and became Aperture’s highest-performing acquisition asset of the year.',
-    featured: false
+    featured: true
   },
   {
     id: 4,
@@ -137,7 +137,7 @@ export const projects: Project[] = [
     creativeDirection: 'A restrained, data-forward visual system built around real infrastructure photography rather than abstract renewable-energy stock imagery.',
     execution: 'A twelve-month paid media system, localisation toolkit, and quarterly content calendar handed off to Tidal’s regional teams.',
     result: 'Brand awareness metrics rose across all four target markets within two quarters of launch.',
-    featured: false
+    featured: true
   },
   {
     id: 7,
