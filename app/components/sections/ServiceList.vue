@@ -13,16 +13,62 @@ const serviceList = serviceRepository.list()
  * unfolds its full detail; every other card collapses to a title-only tab,
  * so scrolling down through the stack reads as: title, then detail, then
  * collapse back to a title as the next card takes over.
+ *
+ * `useScrollStory`'s activeIndex defaults to 0 the instant the component
+ * mounts — before the user has scrolled anywhere near this section — so
+ * binding `active` straight to it would expand the first card immediately
+ * on page load. `hasActivated` only flips once a stage's own ScrollTrigger
+ * actually fires, so every card genuinely starts as a title-only tab and
+ * only expands once the user scrolls to reach it.
  */
+const hasActivated = ref(false)
+const showAllForReducedMotion = ref(false)
+
 const { root, activeIndex } = useScrollStory({
-  setup: ({ gsap, root }) => {
+  setup: ({ gsap, root, reduced, ScrollTrigger, stages }) => {
     const heading = root.querySelector('[data-reveal="heading"]')
     if (heading) {
       gsap.fromTo(
         heading,
         { opacity: 0, y: 32 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
+        { opacity: 1, y: 0, duration: reduced ? 0.001 : 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
       )
+    }
+
+    // useScrollStory never calls onChange under reduced motion, so
+    // hasActivated would stay false forever — show every card's detail
+    // outright instead of leaving reduced-motion users with title-only tabs
+    // they have no way to expand.
+    if (reduced) {
+      showAllForReducedMotion.value = true
+      return
+    }
+
+    // activeIndex already defaults to 0, so the first card's own onEnter
+    // never actually calls onChange — activate() treats "still index 0" as
+    // a no-op — which would otherwise skip straight from "nothing shown" to
+    // the *second* card's detail, with the first card never getting its
+    // moment. Watch its zone directly so hasActivated flips at the real
+    // scroll point a user reaches it.
+    const firstStage = stages[0]
+    if (firstStage) {
+      ScrollTrigger.create({
+        trigger: firstStage,
+        start: 'top 55%',
+        end: 'bottom 45%',
+        onEnter: () => {
+          hasActivated.value = true
+        },
+        onEnterBack: () => {
+          hasActivated.value = true
+        }
+      })
+    }
+
+    return {
+      onChange: () => {
+        hasActivated.value = true
+      }
     }
   }
 })
@@ -49,7 +95,7 @@ const { root, activeIndex } = useScrollStory({
           class="pb-6 last:pb-0"
           :class="index !== serviceList.length - 1 ? 'min-h-[55vh] lg:min-h-[65vh]' : ''"
         >
-          <ServiceItem :service="service" :index="index" :active="activeIndex === -1 ? index === 0 : activeIndex === index" />
+          <ServiceItem :service="service" :index="index" :active="showAllForReducedMotion || (hasActivated && activeIndex === index)" />
         </div>
       </div>
     </Container>
