@@ -9,6 +9,8 @@ interface Props {
 
 defineProps<Props>()
 
+const { isDesktop } = useBreakpoints()
+
 const OPEN = {
   bg: '#050608',
   border: 'rgba(5,6,8,0)',
@@ -49,9 +51,12 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const indexEl = root.querySelector<HTMLElement>('[data-index]')
   if (!card || !content || !gradient || !detailWrap || !detailInner || !summary || !indexEl) return
 
+  const paddingClosed = isDesktop.value ? 36 : 28
+  const paddingOpen = isDesktop.value ? 56 : 48
+
   if (reduced) {
     gsap.set(card, { backgroundColor: OPEN.bg, borderColor: OPEN.border, color: OPEN.text })
-    gsap.set(content, { paddingBottom: 48 })
+    gsap.set(content, { paddingBottom: paddingOpen })
     gsap.set(gradient, { opacity: 1 })
     gsap.set(detailWrap, { height: 'auto' })
     gsap.set(detailInner, { opacity: 1 })
@@ -81,7 +86,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
     }
   })
     .fromTo(card, { backgroundColor: CLOSED.bg, borderColor: CLOSED.border, color: CLOSED.text }, { backgroundColor: OPEN.bg, borderColor: OPEN.border, color: OPEN.text, ease: 'none' }, 0)
-    .fromTo(content, { paddingBottom: 28 }, { paddingBottom: 48, ease: 'none' }, 0)
+    .fromTo(content, { paddingBottom: paddingClosed }, { paddingBottom: paddingOpen, ease: 'none' }, 0)
     .fromTo(gradient, { opacity: 0 }, { opacity: 1, ease: 'none' }, 0)
     .fromTo(detailWrap, { height: 0 }, { height: measureHeight, ease: 'none' }, 0)
     .fromTo(detailInner, { opacity: 0 }, { opacity: 1, ease: 'none' }, 0)
@@ -105,7 +110,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
         aria-hidden="true"
       />
 
-      <div data-content class="relative flex items-start justify-between gap-6 px-8 pt-7 lg:px-12 lg:pt-9" style="padding-bottom: 28px">
+      <div data-content class="relative flex items-start justify-between gap-6 px-8 pt-7 pb-7 lg:px-12 lg:pt-9 lg:pb-9">
         <div class="min-w-0">
           <h3 class="text-heading">{{ service.title }}</h3>
 
