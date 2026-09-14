@@ -26,11 +26,6 @@ export const projects: Project[] = [
       'We delivered the full identity system, packaging for eleven SKUs, a modular web experience and a photography direction guide, all shipped inside an eight-week production window alongside the in-house team.',
     result:
       'The relaunched line sold through its first production run ahead of forecast, and the identity has since been adopted as the reference system for two subsequent product lines.',
-    testimonial: {
-      quote: 'They didn’t just design a brand — they gave us a point of view. Every deliverable felt considered, and the process was the smoothest we’ve had with any studio.',
-      name: 'Elena Marchetti',
-      role: 'Chief Marketing Officer, Solene Cosmetics'
-    },
     featured: true
   },
   {
@@ -58,11 +53,6 @@ export const projects: Project[] = [
       'A fully modular Nuxt front end with a custom data-visualisation layer, built to be maintained by Northfield’s internal content team without further studio involvement.',
     result:
       'Average session duration on the research section more than doubled within the first quarter post-launch, and the site now anchors every institutional pitch deck.',
-    testimonial: {
-      quote: 'Rare to find a partner equally strong in strategy and craft. They challenged our thinking and still shipped on time, every time.',
-      name: 'Priya Nair',
-      role: 'Founder, Northfield Capital'
-    },
     featured: true
   },
   {

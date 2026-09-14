@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Mail, MapPin, Phone } from 'lucide-vue-next'
+import { testimonialService } from '~/services/testimonialService'
 
 useSeoMeta({
   title: 'Contact — 24 Seven Studio',
@@ -19,6 +20,8 @@ const contactDetails = [
   { icon: Phone, label: 'Phone', value: '+855 (0) 23 555 0182', href: 'tel:+85523555018' },
   { icon: MapPin, label: 'Studio', value: 'Phnom Penh, Cambodia', href: undefined }
 ]
+
+const trustQuote = testimonialService.getSecondary()
 
 const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const info = root.querySelector('[data-reveal="info"]')
@@ -75,6 +78,13 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
                 </div>
               </li>
             </ul>
+
+            <blockquote v-if="trustQuote" class="border-border-subtle mt-12 border-l-2 pl-5">
+              <p class="text-body-sm text-ink-muted italic">“{{ trustQuote.quote }}”</p>
+              <footer class="text-caption text-ink-muted/70 mt-3 not-italic">
+                {{ trustQuote.clientName }}, {{ trustQuote.company }}
+              </footer>
+            </blockquote>
           </div>
 
           <div data-reveal="form" class="lg:col-span-8">

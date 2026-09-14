@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { serviceRepository } from '~/repositories/serviceRepository'
+import { testimonialService } from '~/services/testimonialService'
 import { processStages, studioStats, studioValues, teamMembers } from '~/data/studio'
 
 useSeoMeta({
@@ -16,6 +17,7 @@ useHead({
 })
 
 const capabilities = serviceRepository.list()
+const trustQuote = testimonialService.getSecondary()
 </script>
 
 <template>
@@ -141,6 +143,12 @@ const capabilities = serviceRepository.list()
             <p class="text-body-sm text-ink-muted">{{ member.role }}</p>
           </div>
         </ScrollReveal>
+      </Container>
+    </section>
+
+    <section v-if="trustQuote" class="bg-charcoal py-28 lg:py-40">
+      <Container narrow>
+        <TestimonialQuote :testimonial="trustQuote" size="compact" tone="white" />
       </Container>
     </section>
 

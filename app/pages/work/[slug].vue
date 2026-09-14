@@ -2,6 +2,7 @@
 import { ArrowUpRight } from 'lucide-vue-next'
 import { projectRepository } from '~/repositories/projectRepository'
 import { projectService } from '~/services/projectService'
+import { testimonialService } from '~/services/testimonialService'
 
 const route = useRoute()
 const slug = route.params.slug as string
@@ -12,6 +13,7 @@ if (!project) {
 }
 
 const nextProject = computed(() => projectService.getNext(project.slug))
+const testimonial = computed(() => testimonialService.getByProject(project.slug))
 
 useSeoMeta({
   title: `${project.title} — 24 Seven Studio`,
@@ -42,12 +44,10 @@ useHead({
       </Container>
     </section>
 
-    <section v-if="project.testimonial" class="bg-charcoal py-28 lg:py-40">
+    <section v-if="testimonial" class="bg-charcoal py-28 lg:py-40">
       <Container narrow>
-        <figure class="mx-auto max-w-4xl text-center">
-          <blockquote class="text-heading text-balance text-white">“{{ project.testimonial.quote }}”</blockquote>
-          <figcaption class="text-body-sm mt-8 text-white/50">{{ project.testimonial.name }} — {{ project.testimonial.role }}</figcaption>
-        </figure>
+        <p class="text-label mb-10 text-center text-white/50">Client Testimonial</p>
+        <TestimonialQuote :testimonial="testimonial" tone="white" />
       </Container>
     </section>
 

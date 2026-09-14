@@ -2,6 +2,7 @@
 import { ArrowRight, Check } from 'lucide-vue-next'
 import { serviceRepository } from '~/repositories/serviceRepository'
 import { projectRepository } from '~/repositories/projectRepository'
+import { testimonialService } from '~/services/testimonialService'
 import type { ProjectCategory } from '~/types/project'
 
 useSeoMeta({
@@ -29,6 +30,10 @@ const categoryByService: Record<string, ProjectCategory> = {
 function relatedProjects(slug: string) {
   const category = categoryByService[slug]
   return category ? projectRepository.listByCategory(category).slice(0, 2) : []
+}
+
+function serviceTestimonial(slug: string) {
+  return testimonialService.getByService(slug)
 }
 </script>
 
@@ -93,6 +98,10 @@ function relatedProjects(slug: string) {
               </div>
             </div>
           </div>
+        </div>
+
+        <div v-if="serviceTestimonial(service.slug)" class="border-border-subtle mt-16 border-t pt-16">
+          <TestimonialQuote :testimonial="serviceTestimonial(service.slug)!" size="compact" />
         </div>
       </Container>
     </section>

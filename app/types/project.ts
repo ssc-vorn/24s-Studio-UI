@@ -1,11 +1,5 @@
 export type ProjectCategory = 'Branding' | 'Digital' | 'Video' | 'Marketing'
 
-export interface ProjectTestimonial {
-  quote: string
-  name: string
-  role: string
-}
-
 export interface Project {
   id: number
   slug: string
@@ -22,6 +16,5 @@ export interface Project {
   creativeDirection: string
   execution: string
   result: string
-  testimonial?: ProjectTestimonial
   featured?: boolean
 }
