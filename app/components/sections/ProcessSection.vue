@@ -39,27 +39,26 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
         >
           <div
             data-layer-card
-            class="border-white/10 bg-charcoal relative overflow-hidden rounded-[28px] border shadow-[0_40px_100px_-30px_rgba(0,0,0,0.5)] will-change-transform lg:sticky lg:top-32"
+            class="border-white/10 bg-charcoal relative overflow-hidden rounded-[28px] border shadow-[0_40px_100px_-30px_rgba(0,0,0,0.5)] will-change-transform lg:sticky lg:top-32 lg:min-h-[75vh]"
             :style="{ zIndex: index + 1 }"
           >
             <div data-layer-overlay class="pointer-events-none absolute inset-0 z-10 bg-black opacity-0" aria-hidden="true" />
 
-            <div class="relative grid grid-cols-1 lg:grid-cols-2">
-              <div class="flex flex-col justify-center p-8 sm:p-12 lg:p-16">
-                <span class="text-label text-accent">{{ stage.index }} / {{ String(processStages.length).padStart(2, '0') }}</span>
-                <h3 class="text-display mt-6 text-white">{{ stage.title }}</h3>
-                <p class="text-body-lg mt-6 text-white/80">{{ stage.description }}</p>
-                <p class="text-body mt-4 text-white/50">{{ stage.detail }}</p>
-              </div>
+            <!-- Layered typography: an oversized, near-invisible repeat of the
+                 stage title sits behind the readable content — the "layers"
+                 in Layered Scroll Narrative are typographic, not photographic. -->
+            <span
+              class="pointer-events-none absolute inset-y-0 right-0 hidden items-center justify-end pr-8 font-serif text-[13rem] leading-none font-medium whitespace-nowrap text-white/[0.06] select-none lg:flex"
+              aria-hidden="true"
+            >
+              {{ stage.title }}
+            </span>
 
-              <div class="relative aspect-4/3 overflow-hidden lg:aspect-auto">
-                <img
-                  :src="stage.image"
-                  :alt="`${stage.title} — ${stage.description}`"
-                  loading="lazy"
-                  class="absolute inset-0 size-full object-cover opacity-90"
-                >
-              </div>
+            <div class="relative flex min-h-[420px] flex-col justify-center p-8 sm:p-12 lg:min-h-[75vh] lg:max-w-xl lg:p-16">
+              <span class="text-label text-accent">{{ stage.index }} / {{ String(processStages.length).padStart(2, '0') }}</span>
+              <h3 class="text-display mt-6 text-white">{{ stage.title }}</h3>
+              <p class="text-body-lg mt-6 max-w-md text-white/80">{{ stage.description }}</p>
+              <p class="text-body mt-4 max-w-md text-white/50">{{ stage.detail }}</p>
             </div>
           </div>
         </div>
