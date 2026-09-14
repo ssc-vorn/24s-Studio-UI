@@ -11,7 +11,11 @@ const serviceList = serviceRepository.list()
  * runway (min-h below) is short enough that several sit stacked in the
  * viewport at once rather than each filling most of it before the next
  * arrives. Each card then opens its own detail independently, scroll-
- * scrubbed — see ServiceItem.
+ * scrubbed — see ServiceItem. The runway needs to be a bit more than just
+ * "tight": each card's own transition zone (a fixed viewport-percentage
+ * range) needs enough clear scroll distance ahead of the next card's zone
+ * to actually finish, or cards deep in the stack cascade open almost
+ * simultaneously and read as unresponsive to scroll.
  */
 const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const heading = root.querySelector('[data-reveal="heading"]')
@@ -44,7 +48,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
           v-for="(service, index) in serviceList"
           :key="service.id"
           class="pb-3 last:pb-0"
-          :class="index !== serviceList.length - 1 ? 'min-h-[18vh] lg:min-h-[24vh]' : ''"
+          :class="index !== serviceList.length - 1 ? 'min-h-[26vh] lg:min-h-[32vh]' : ''"
         >
           <ServiceItem :service="service" :index="index" />
         </div>

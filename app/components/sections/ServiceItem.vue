@@ -73,14 +73,18 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   // spare pixels guard against sub-pixel rounding clipping the last row.
   const measureHeight = () => detailInner.scrollHeight + 2
 
-  // Scroll-scrubbed over a short distance ('top 65%' to 'top 42%'), matching
-  // the tight runway ServiceList gives each card so the stack reads as
-  // close together rather than one card filling the viewport at a time.
+  // Scroll-scrubbed over a short, snappy distance — with ServiceList's tight
+  // per-card runway, a wider zone here left almost no separation between
+  // consecutive cards' transitions (each one's zone started well before the
+  // previous had finished), so cards further down the stack cascaded open
+  // almost simultaneously and read as unresponsive. Narrower zone completes
+  // each card's own transition faster, freeing up genuine settled scroll
+  // distance before the next card's zone begins.
   gsap.timeline({
     scrollTrigger: {
       trigger: card,
-      start: 'top 65%',
-      end: 'top 42%',
+      start: 'top 62%',
+      end: 'top 48%',
       scrub: 0.5,
       invalidateOnRefresh: true
     }
