@@ -17,7 +17,7 @@ defineProps<Props>()
   <div data-story-stage class="sticky" :style="{ top: `calc(var(--nav-height) + ${index * 1}rem)` }">
     <div
       class="border-border-subtle bg-surface-elevated relative overflow-hidden rounded-3xl border shadow-2xl shadow-black/30 transition-[padding] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-      :class="active ? 'px-8 py-10 lg:px-12 lg:py-14' : 'px-8 py-6 lg:px-12 lg:py-7'"
+      :class="active ? 'px-8 py-9 lg:px-12 lg:py-11' : 'px-8 py-6 lg:px-12 lg:py-7'"
     >
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,22rem)_1fr] lg:gap-10">
         <!-- Masthead column — index and title stay put while the detail column beside it does the expanding, an editorial split rather than a top-to-bottom stack. -->
@@ -29,13 +29,13 @@ defineProps<Props>()
         </div>
 
         <div class="grid transition-[grid-template-rows] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" :style="{ gridTemplateRows: active ? '1fr' : '0fr' }">
-          <div class="overflow-hidden">
-            <div class="flex flex-col items-start gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <p class="text-body-lg text-ink-muted max-w-lg">{{ service.summary }}</p>
-              <ArrowUpRight class="text-accent hidden size-8 shrink-0 lg:block" aria-hidden="true" />
+          <div class="max-w-xl overflow-hidden">
+            <div class="flex items-start gap-5">
+              <p class="text-body-lg text-ink-muted">{{ service.summary }}</p>
+              <ArrowUpRight class="text-accent mt-1 hidden size-6 shrink-0 lg:block" aria-hidden="true" />
             </div>
 
-            <ul class="mt-8 flex flex-wrap gap-2">
+            <ul class="mt-6 flex flex-wrap gap-2">
               <li
                 v-for="capability in service.capabilities"
                 :key="capability"
