@@ -1,48 +1,28 @@
 <script setup lang="ts">
 import { serviceRepository } from '~/repositories/serviceRepository'
-import { revealServiceRows } from '~/animations/sections/services'
 
 const serviceList = serviceRepository.list()
 
 /**
- * HOME / Services — full-width bordered content grid with a two-layer
- * scroll narrative, no split panel and no single "active" card. Every
- * service card clips into place with just its title showing (stage one);
- * scrolling further reveals that card's own detail — summary and
- * capabilities — independently per card (stage two), so it reads as a
- * continuous unfolding story rather than a single card swapping focus.
- * Default state is fully revealed (safe without JS, and under reduced
- * motion); JS collapses the detail only once GSAP actually initialises,
- * then reveals each card's detail via its own ScrollTrigger as it scrolls in.
+ * HOME / Services — rounded accordion stack. One card at a time reads as
+ * active: an inverted-color panel (dark on light theme, light on dark) with
+ * its description unfolding and a soft diagonal sweep across it, while the
+ * rest sit collapsed to a title bar. Active state tracks scroll position via
+ * the shared useScrollStory machinery, same as the rest of the site's
+ * scroll-narrative sections, but the card-stack visual language here is its
+ * own thing — no sticky panel, no split column.
  */
-const revealedDetails = ref<boolean[]>(serviceList.map(() => true))
-
-const { root } = useScrollAnimation(({ gsap, root, reduced, ScrollTrigger }) => {
-  const heading = root.querySelector('[data-reveal="heading"]')
-  const rows = Array.from(root.querySelectorAll('[data-service-row]'))
-
-  if (heading) {
-    gsap.fromTo(
-      heading,
-      { opacity: 0, y: 32 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
-    )
+const { root, activeIndex } = useScrollStory({
+  setup: ({ gsap, root }) => {
+    const heading = root.querySelector('[data-reveal="heading"]')
+    if (heading) {
+      gsap.fromTo(
+        heading,
+        { opacity: 0, y: 32 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
+      )
+    }
   }
-
-  revealServiceRows(gsap, rows, root, reduced)
-
-  if (reduced) return
-
-  revealedDetails.value = serviceList.map(() => false)
-  rows.forEach((row, index) => {
-    ScrollTrigger.create({
-      trigger: row,
-      start: 'top 70%',
-      onEnter: () => {
-        revealedDetails.value[index] = true
-      }
-    })
-  })
 })
 </script>
 
@@ -60,8 +40,13 @@ const { root } = useScrollAnimation(({ gsap, root, reduced, ScrollTrigger }) => 
         <AnimatedLink to="/services" class="shrink-0">All Services</AnimatedLink>
       </div>
 
-      <div class="border-border-subtle mt-14 grid grid-cols-1 border-t border-l lg:mt-20 lg:grid-cols-2">
-        <ServiceItem v-for="(service, index) in serviceList" :key="service.id" :service="service" :revealed="revealedDetails[index] ?? true" />
+      <div class="mt-14 flex flex-col gap-3 lg:mt-20 lg:gap-4">
+        <ServiceItem
+          v-for="(service, index) in serviceList"
+          :key="service.id"
+          :service="service"
+          :active="activeIndex === -1 ? index === 0 : activeIndex === index"
+        />
       </div>
     </Container>
   </section>
