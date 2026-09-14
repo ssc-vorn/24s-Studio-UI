@@ -5,6 +5,13 @@
   --color-navy: #032268;
   --color-navy-800: #051c4d;
   --color-navy-600: #0a2f7a;
+  /* Same hue/saturation as --color-navy, lifted in lightness — needed
+     because the brand navy itself (#032268) sits too close to black to
+     read as an accent (~1.6:1 contrast on #050608, well under the 4.5:1
+     WCAG AA floor). This tint is what "navy as the accent" resolves to
+     wherever the surface is dark; --color-navy itself stays reserved for
+     surfaces where it acts as a background/ink, not thin accent text. */
+  --color-navy-tint: #5a7ad9;
   --color-black: #050608;
   --color-charcoal: #0b0d12;
   --color-charcoal-200: #14161d;
@@ -33,7 +40,11 @@
   --color-ink-muted: #a3a5ad;
   --color-ink-inverse: var(--color-charcoal);
   --color-border-subtle: #1c1f28;
-  --color-accent: var(--color-electric);
+  /* Brand navy is the accent; on dark surfaces it resolves to the lighter
+     --color-navy-tint step for contrast (see that token's comment) — the
+     electric family stays reserved for the few genuinely restrained
+     touches (text selection, focus rings) rather than being the default. */
+  --color-accent: var(--color-navy-tint);
 
   /* ---------------------------------------------------------------- */
   /* Fonts                                                             */
@@ -67,6 +78,8 @@
   --color-ink-muted: #5a5d68;
   --color-ink-inverse: var(--color-warm);
   --color-border-subtle: #e4e3dd;
+  /* Full-strength navy reads clearly against warm/paper — no tint needed. */
+  --color-accent: var(--color-navy);
 }
 
 .dark {
@@ -77,6 +90,7 @@
   --color-ink-muted: #a3a5ad;
   --color-ink-inverse: var(--color-charcoal);
   --color-border-subtle: #1c1f28;
+  --color-accent: var(--color-navy-tint);
 }
 
 :root {
