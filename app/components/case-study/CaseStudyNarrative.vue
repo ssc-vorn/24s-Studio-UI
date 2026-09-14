@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { animateStageChange } from '~/animations/sections/process'
+import { animateStageChange } from '~/animations/sections/narrative'
 
 interface NarrativeStep {
   label: string
@@ -21,10 +21,10 @@ function imageFor(index: number) {
 /**
  * CASE STUDY / narrative — scroll — a sticky image panel stays in view while
  * the Challenge/Strategy/Creative Direction/Execution/Result text scrolls
- * past beside it; the panel crossfades to match whichever step is active
- * (reusing the Creative Process stage-change animation — same visual
- * language, one shared implementation). Desktop only: on mobile the panel
- * is hidden and the steps read as a plain stacked list in normal flow.
+ * past beside it; the panel crossfades to match whichever step is active,
+ * via the shared `animateStageChange` crossfade. Desktop only: on mobile
+ * the panel is hidden and the steps read as a plain stacked list in
+ * normal flow.
  * Library: useScrollStory (GSAP + ScrollTrigger, discrete zones — no pin).
  * Reduced motion: handled by useScrollStory itself (sentinel index, no
  * crossfade fires).

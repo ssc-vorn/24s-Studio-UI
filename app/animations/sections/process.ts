@@ -1,37 +1,31 @@
 import type { gsap as GsapType } from 'gsap'
 
 /**
- * HOME / Creative Process — scroll — when the active stage changes (tracked
- * by `useScrollStory`), the outgoing sticky-panel visual settles back and
- * fades, the incoming one wipes in via clip-path with a slight scale-out-of-
- * zoom (matching the Featured Case Study's image-reveal language), and both
- * titles nudge between a dimmed/resting state and full presence.
- * Library: GSAP (direct tween on state change, not scrubbed — the change
- * itself is discrete, but the tween makes it read as continuous).
- * Duration: ~0.6–0.8s. Easing: power2/power3 out.
+ * HOME / Creative Process — scroll — "Layered Scroll Narrative". Each stage
+ * is a self-contained card pinned via CSS `position: sticky` with an
+ * increasing z-index per stage, so later cards physically cover earlier
+ * ones as the page scrolls — that core stacking effect is pure CSS and
+ * works even if GSAP never initializes. This only adds the recede
+ * flourish on top of it: as a card's own wrapper scrolls past, its scale
+ * eases down and a dark overlay scrubs in, so it reads as sliding back in
+ * depth under the next layer rather than being abruptly clipped away.
+ * Library: GSAP + ScrollTrigger (one scrub per card, no pin — CSS sticky
+ * already handles that part). Duration: tied to scroll, not time.
+ * Reduced motion: caller should skip calling this entirely — cards still
+ * stack correctly via CSS, just without the scale/dim motion.
  */
-export function animateStageChange(
-  gsapInstance: typeof GsapType,
-  visuals: Element[],
-  titles: Element[],
-  activeIndex: number,
-  previousIndex: number
-) {
-  const previousVisual = previousIndex >= 0 ? visuals[previousIndex] : undefined
-  const previousTitle = previousIndex >= 0 ? titles[previousIndex] : undefined
-  if (previousIndex !== activeIndex && previousVisual && previousTitle) {
-    gsapInstance.to(previousVisual, { opacity: 0, scale: 1.04, duration: 0.6, ease: 'power2.out' })
-    gsapInstance.to(previousTitle, { opacity: 0.4, scale: 0.98, duration: 0.5, ease: 'power2.out' })
-  }
+export function animateLayeredRecede(gsapInstance: typeof GsapType, stageEls: HTMLElement[]) {
+  stageEls.forEach((stage, index) => {
+    if (index === stageEls.length - 1) return
 
-  const activeVisual = visuals[activeIndex]
-  const activeTitle = titles[activeIndex]
-  if (!activeVisual || !activeTitle) return
+    const card = stage.querySelector('[data-layer-card]')
+    const overlay = stage.querySelector('[data-layer-overlay]')
+    if (!card) return
 
-  gsapInstance.fromTo(
-    activeVisual,
-    { opacity: 0, scale: 1.06, clipPath: 'inset(0 0 100% 0)' },
-    { opacity: 1, scale: 1, clipPath: 'inset(0 0 0% 0)', duration: 0.8, ease: 'power3.out' }
-  )
-  gsapInstance.to(activeTitle, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' })
+    const tl = gsapInstance.timeline({
+      scrollTrigger: { trigger: stage, start: 'bottom bottom', end: 'bottom top', scrub: true }
+    })
+    tl.to(card, { scale: 0.92, ease: 'none' }, 0)
+    if (overlay) tl.to(overlay, { opacity: 0.55, ease: 'none' }, 0)
+  })
 }
