@@ -49,7 +49,10 @@ const { root, activeIndex } = useScrollStory({
     // a no-op — which would otherwise skip straight from "nothing shown" to
     // the *second* card's detail, with the first card never getting its
     // moment. Watch its zone directly so hasActivated flips at the real
-    // scroll point a user reaches it.
+    // scroll point a user reaches it, and flips back off via onLeaveBack —
+    // scrolling up out of the section entirely leaves no zone active for
+    // useScrollStory to react to, so without this the first card would stay
+    // expanded forever once scrolled past it.
     const firstStage = stages[0]
     if (firstStage) {
       ScrollTrigger.create({
@@ -61,6 +64,9 @@ const { root, activeIndex } = useScrollStory({
         },
         onEnterBack: () => {
           hasActivated.value = true
+        },
+        onLeaveBack: () => {
+          hasActivated.value = false
         }
       })
     }
