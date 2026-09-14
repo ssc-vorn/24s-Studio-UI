@@ -40,15 +40,21 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
         </div>
         <AnimatedLink to="/work" class="shrink-0">View All Work</AnimatedLink>
       </div>
-    </Container>
 
-    <!-- Full-bleed, edge-to-edge — deliberately outside the section's
-         Container so each project reads as a large cinematic frame rather
-         than a card sitting inside the page's text margins. -->
-    <div class="mt-16 flex flex-col gap-4 lg:gap-6">
-      <div v-for="(project, index) in projects" :key="project.id" data-project-row>
-        <SelectedWorkPanel :project="project" :index="index" />
+      <!-- Editorial bento grid — every project visible at once as a single
+           curated composition, rather than a long cinematic scroll: one
+           large hero tile beside three smaller supporting tiles. -->
+      <div class="mt-16 grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6">
+        <div v-if="projects[0]" data-project-row class="lg:col-span-7">
+          <SelectedWorkPanel :project="projects[0]" :index="0" size="large" />
+        </div>
+
+        <div class="flex flex-col gap-4 lg:col-span-5 lg:gap-6">
+          <div v-for="(project, index) in projects.slice(1)" :key="project.id" data-project-row>
+            <SelectedWorkPanel :project="project" :index="index + 1" size="small" />
+          </div>
+        </div>
       </div>
-    </div>
+    </Container>
   </section>
 </template>
