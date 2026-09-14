@@ -40,18 +40,15 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
         </div>
         <AnimatedLink to="/work" class="shrink-0">View All Work</AnimatedLink>
       </div>
-
-      <div class="mt-16 flex flex-col gap-16 lg:gap-24">
-        <div
-          v-for="(project, index) in projects"
-          :key="project.id"
-          data-project-row
-          class="lg:w-[86%]"
-          :class="index % 2 === 1 ? 'lg:ml-auto' : ''"
-        >
-          <ProjectPreview :project="project" :index="index" />
-        </div>
-      </div>
     </Container>
+
+    <!-- Full-bleed, edge-to-edge — deliberately outside the section's
+         Container so each project reads as a large cinematic frame rather
+         than a card sitting inside the page's text margins. -->
+    <div class="mt-16 flex flex-col gap-4 lg:gap-6">
+      <div v-for="(project, index) in projects" :key="project.id" data-project-row>
+        <SelectedWorkPanel :project="project" :index="index" />
+      </div>
+    </div>
   </section>
 </template>

@@ -25,8 +25,8 @@ useHead({
     <HeroSection />
     <ManifestoSection />
     <TrustedBySection />
-    <SelectedWork />
     <ServiceList />
+    <SelectedWork />
     <AboutTeaser />
     <ProcessSection />
     <FeaturedCaseStudy />
