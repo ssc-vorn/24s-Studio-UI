@@ -15,6 +15,16 @@ if (!project) {
 const nextProject = computed(() => projectService.getNext(project.slug))
 const testimonial = computed(() => testimonialService.getByProject(project.slug))
 
+const openingSteps = [
+  { label: 'Challenge', text: project.challenge },
+  { label: 'Strategy', text: project.strategy }
+]
+const closingSteps = [
+  { label: 'Creative Direction', text: project.creativeDirection },
+  { label: 'Execution', text: project.execution },
+  { label: 'Result', text: project.result }
+]
+
 useSeoMeta({
   title: `${project.title} — 24 Seven Studio`,
   description: project.excerpt,
@@ -35,19 +45,16 @@ useHead({
     <CaseStudyHero :project="project" />
 
     <section class="bg-surface py-28 lg:py-40">
-      <Container class="flex flex-col gap-24 lg:gap-32">
-        <CaseStudySection label="Challenge" :text="project.challenge" :image="project.gallery[0]" />
-        <CaseStudySection label="Strategy" :text="project.strategy" :image="project.gallery[1]" reverse />
+      <Container>
+        <CaseStudyNarrative :steps="openingSteps" :images="project.gallery" />
       </Container>
 
       <div class="my-24 lg:my-32">
         <CaseStudyVisualBreak :image="project.coverImage" :alt="`${project.title} — ${project.client}`" />
       </div>
 
-      <Container class="flex flex-col gap-24 lg:gap-32">
-        <CaseStudySection label="Creative Direction" :text="project.creativeDirection" :image="project.gallery[0]" />
-        <CaseStudySection label="Execution" :text="project.execution" :image="project.gallery[1]" reverse />
-        <CaseStudySection label="Result" :text="project.result" />
+      <Container>
+        <CaseStudyNarrative :steps="closingSteps" :images="project.gallery" />
       </Container>
     </section>
 

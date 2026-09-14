@@ -27,12 +27,12 @@ defineProps<Props>()
       </span>
     </div>
 
-    <div data-reveal="meta" class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-      <div class="flex items-baseline gap-4">
+    <div class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div data-reveal="meta-title" class="flex items-baseline gap-4">
         <span class="text-body-sm font-sans text-ink-muted">{{ String(index + 1).padStart(2, '0') }}</span>
         <h3 class="text-heading text-ink transition-colors duration-300 group-hover:text-accent">{{ project.title }}</h3>
       </div>
-      <div class="text-body-sm text-ink-muted flex items-center gap-3 sm:pl-14">
+      <div data-reveal="meta-detail" class="text-body-sm text-ink-muted flex items-center gap-3 sm:pl-14">
         <span>{{ project.category }}</span>
         <span aria-hidden="true">·</span>
         <span>{{ project.year }}</span>

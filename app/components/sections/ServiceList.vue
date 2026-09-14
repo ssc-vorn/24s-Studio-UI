@@ -10,18 +10,28 @@ const previewImages = [
   'https://picsum.photos/900/1100?random=334'
 ]
 
-const activeIndex = ref(0)
+/**
+ * HOME / Services — scroll — which service reads as "active" (accent index,
+ * bold title, arrow nudge, preview crossfade) now tracks scroll position as
+ * the primary driver, via the same `useScrollStory` machinery as Creative
+ * Process; hovering a row still overrides it directly for a quick preview,
+ * writing to the same ref so the preview panel's plain CSS opacity
+ * crossfade responds identically either way — no separate GSAP path needed
+ * for a change this restrained.
+ */
+const { root, activeIndex } = useScrollStory({
+  stageSelector: '[data-service-stage]',
+  setup: ({ gsap, root }) => {
+    const heading = root.querySelector('[data-reveal="heading"]')
+    const list = root.querySelector('[data-reveal="list"]')
+    const preview = root.querySelector('[data-reveal="preview"]')
 
-const { root } = useScrollAnimation(({ gsap, root }) => {
-  const heading = root.querySelector('[data-reveal="heading"]')
-  const list = root.querySelector('[data-reveal="list"]')
-  const preview = root.querySelector('[data-reveal="preview"]')
-
-  gsap.fromTo(
-    [heading, list, preview],
-    { opacity: 0, y: 32 },
-    { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
-  )
+    gsap.fromTo(
+      [heading, list, preview],
+      { opacity: 0, y: 32 },
+      { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
+    )
+  }
 })
 </script>
 
@@ -44,6 +54,7 @@ const { root } = useScrollAnimation(({ gsap, root }) => {
           <ServiceItem
             v-for="(service, index) in serviceList"
             :key="service.id"
+            data-service-stage
             :service="service"
             :active="activeIndex === index"
             @hover="activeIndex = index"

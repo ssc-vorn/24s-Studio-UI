@@ -1,52 +1,11 @@
 import type { gsap as GsapType } from 'gsap'
-import type { ScrollTrigger as ScrollTriggerType } from 'gsap/ScrollTrigger'
 
 /**
- * HOME / Creative Process — scroll — active stage tracks scroll position.
- * Library: GSAP ScrollTrigger (no scrub, no pin — each stage owns its own
- * trigger zone in normal document flow, so the section degrades to a plain
- * stacked list if ScrollTrigger fails to init for any reason).
- * Mobile: identical logic, shorter trigger band.
- * Reduced motion: not registered — all stages render at equal, full opacity.
- */
-export function trackActiveStage(scrollTrigger: typeof ScrollTriggerType, stages: Element[], onActivate: (index: number) => void) {
-  stages.forEach((stage, index) => {
-    scrollTrigger.create({
-      trigger: stage,
-      start: 'top 55%',
-      end: 'bottom 45%',
-      onEnter: () => onActivate(index),
-      onEnterBack: () => onActivate(index)
-    })
-  })
-}
-
-/**
- * HOME / Creative Process — scroll — a vertical fill line tracks how far the
- * user has scrolled through the full stage list, as the section's progress
- * indicator. Set directly via ScrollTrigger's `onUpdate` (bypassing Vue
- * reactivity) so it stays smooth at scroll-frame rate without re-rendering.
- * Library: GSAP ScrollTrigger (scrub). Reduced motion: fill snaps to full.
- */
-export function trackStageProgress(gsapInstance: typeof GsapType, fillEl: Element, trigger: Element, reduced: boolean) {
-  if (reduced) {
-    gsapInstance.set(fillEl, { scaleY: 1 })
-    return
-  }
-  gsapInstance.set(fillEl, { scaleY: 0, transformOrigin: 'top center' })
-  gsapInstance.to(fillEl, {
-    scaleY: 1,
-    ease: 'none',
-    scrollTrigger: { trigger, start: 'top 55%', end: 'bottom 45%', scrub: 0.3 }
-  })
-}
-
-/**
- * HOME / Creative Process — scroll — when the active stage changes, the
- * outgoing sticky-panel visual settles back and fades, the incoming one
- * wipes in via clip-path with a slight scale-out-of-zoom (matching the
- * Featured Case Study's image-reveal language), and both titles nudge
- * between a dimmed/resting state and full presence.
+ * HOME / Creative Process — scroll — when the active stage changes (tracked
+ * by `useScrollStory`), the outgoing sticky-panel visual settles back and
+ * fades, the incoming one wipes in via clip-path with a slight scale-out-of-
+ * zoom (matching the Featured Case Study's image-reveal language), and both
+ * titles nudge between a dimmed/resting state and full presence.
  * Library: GSAP (direct tween on state change, not scrubbed — the change
  * itself is discrete, but the tween makes it read as continuous).
  * Duration: ~0.6–0.8s. Easing: power2/power3 out.

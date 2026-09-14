@@ -91,12 +91,12 @@ function serviceTestimonial(slug: string) {
               </Reveal>
             </div>
 
-            <div v-if="relatedProjects(service.slug).length" class="mt-14">
+            <Reveal v-if="relatedProjects(service.slug).length" as="div" :delay="0.2" class="mt-14">
               <p class="text-label text-ink-muted mb-5">Related Work</p>
               <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <ProjectPreview v-for="(project, index) in relatedProjects(service.slug)" :key="project.id" :project="project" :index="index" />
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
 

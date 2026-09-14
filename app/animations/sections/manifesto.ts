@@ -8,13 +8,14 @@ import type { gsap as GsapType } from 'gsap'
  */
 export function animateManifestoReveal(gsapInstance: typeof GsapType, words: Element[], trigger: Element, reduced: boolean) {
   if (reduced) {
-    gsapInstance.set(words, { opacity: 1 })
+    gsapInstance.set(words, { opacity: 1, y: 0 })
     return
   }
 
-  gsapInstance.set(words, { opacity: 0.18 })
+  gsapInstance.set(words, { opacity: 0.18, y: 6 })
   gsapInstance.to(words, {
     opacity: 1,
+    y: 0,
     stagger: 0.02,
     ease: 'none',
     scrollTrigger: {

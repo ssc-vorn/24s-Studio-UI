@@ -1,44 +1,26 @@
 <script setup lang="ts">
 import { processStages } from '~/data/studio'
-import { trackActiveStage, trackStageProgress, animateStageChange } from '~/animations/sections/process'
+import { animateStageChange } from '~/animations/sections/process'
 
-const activeIndex = ref(0)
+const { root, activeIndex } = useScrollStory({
+  setup: ({ gsap, root }) => {
+    const heading = root.querySelector('[data-reveal="heading"]')
+    if (heading) {
+      gsap.fromTo(
+        heading,
+        { opacity: 0, y: 32 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
+      )
+    }
 
-const { root } = useScrollAnimation(({ gsap, root, reduced: isReduced, ScrollTrigger }) => {
-  const heading = root.querySelector('[data-reveal="heading"]')
-  if (heading) {
-    gsap.fromTo(
-      heading,
-      { opacity: 0, y: 32 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
-    )
+    return {
+      onChange: (index, previousIndex) => {
+        const visuals = Array.from(root.querySelectorAll('[data-stage-visual]'))
+        const titles = Array.from(root.querySelectorAll('[data-stage-title]'))
+        animateStageChange(gsap, visuals, titles, index, previousIndex)
+      }
+    }
   }
-
-  const list = root.querySelector('[data-stage-list]')
-  const fill = root.querySelector('[data-progress-fill]')
-  if (list && fill) {
-    trackStageProgress(gsap, fill, list, isReduced)
-  }
-
-  if (isReduced) {
-    // No single stage should read as "active" when motion is reduced — flip
-    // to a sentinel index post-mount (a plain reactive update, not part of
-    // the SSR-compared render, so this can't trigger a hydration mismatch).
-    activeIndex.value = -1
-    return
-  }
-
-  const stageEls = Array.from(root.querySelectorAll('[data-stage]'))
-  let previousIndex = 0
-
-  trackActiveStage(ScrollTrigger, stageEls, (index) => {
-    if (index === activeIndex.value) return
-    const visuals = Array.from(root.querySelectorAll('[data-stage-visual]'))
-    const titles = Array.from(root.querySelectorAll('[data-stage-title]'))
-    animateStageChange(gsap, visuals, titles, index, previousIndex)
-    previousIndex = index
-    activeIndex.value = index
-  })
 })
 </script>
 
@@ -57,7 +39,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced: isReduced, ScrollTri
         <div class="hidden lg:col-span-2 lg:block">
           <div class="sticky top-32 flex gap-6">
             <div class="bg-border-subtle relative h-40 w-px shrink-0" aria-hidden="true">
-              <span data-progress-fill class="bg-accent absolute inset-x-0 top-0 h-full w-full" />
+              <span data-story-progress class="bg-accent absolute inset-x-0 top-0 h-full w-full" />
             </div>
             <div class="flex h-40 flex-col justify-between">
               <span
@@ -73,11 +55,11 @@ const { root } = useScrollAnimation(({ gsap, root, reduced: isReduced, ScrollTri
         </div>
 
         <div class="lg:col-span-5">
-          <div data-stage-list>
+          <div>
             <div
               v-for="(stage, index) in processStages"
               :key="stage.index"
-              :data-stage="index"
+              data-story-stage
               class="border-border-subtle border-t py-14 first:border-t-0 lg:py-20"
             >
               <h3

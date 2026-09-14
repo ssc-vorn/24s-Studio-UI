@@ -36,10 +36,10 @@ const rest = allArticles.slice(1)
     <section v-if="featured" class="bg-surface pb-20">
       <Container>
         <NuxtLink :to="`/blog/${featured.slug}`" class="group grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
-          <div class="bg-charcoal-200 overflow-hidden lg:col-span-7">
-            <img :src="featured.image" :alt="featured.title" class="aspect-4/3 size-full object-cover transition-transform duration-700 group-hover:scale-105">
-          </div>
-          <div class="flex flex-col justify-center lg:col-span-5">
+          <Reveal variant="clip" class="bg-charcoal-200 block aspect-4/3 overflow-hidden lg:col-span-7">
+            <img :src="featured.image" :alt="featured.title" class="size-full object-cover transition-transform duration-700 group-hover:scale-105">
+          </Reveal>
+          <Reveal as="div" :delay="0.15" class="flex flex-col justify-center lg:col-span-5">
             <div class="text-body-sm text-ink-muted flex items-center gap-3">
               <span class="text-accent font-medium">{{ featured.category }}</span>
               <span aria-hidden="true">·</span>
@@ -53,7 +53,7 @@ const rest = allArticles.slice(1)
               Read Article
               <ArrowRight class="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </span>
-          </div>
+          </Reveal>
         </NuxtLink>
       </Container>
     </section>

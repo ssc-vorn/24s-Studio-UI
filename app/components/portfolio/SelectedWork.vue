@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { projectService } from '~/services/projectService'
+import { animateCardReveal } from '~/animations/sections/portfolio'
 
 const projects = projectService.getSelectedWork(4)
 
@@ -16,23 +17,12 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   }
 
   rows.forEach((row) => {
-    const media = row.querySelector('[data-reveal="media"]')
-    const meta = row.querySelector('[data-reveal="meta"]')
-
     if (reduced) {
-      gsap.set([media, meta], { opacity: 1, y: 0, scale: 1, clipPath: 'inset(0 0 0% 0)' })
+      const targets = row.querySelectorAll('[data-reveal="media"], [data-reveal="meta-title"], [data-reveal="meta-detail"]')
+      gsap.set(targets, { opacity: 1, y: 0, scale: 1, clipPath: 'inset(0 0 0% 0)' })
       return
     }
-
-    // Media enters first — a clip-path wipe with a subtle zoom-settle —
-    // then metadata follows a beat behind, the same sequence for every
-    // project row so the interaction language stays consistent.
-    const tl = gsap.timeline({ scrollTrigger: { trigger: row, start: 'top 85%' } })
-    tl.fromTo(
-      media,
-      { clipPath: 'inset(0 0 100% 0)', scale: 1.06 },
-      { clipPath: 'inset(0 0 0% 0)', scale: 1, duration: 1, ease: 'power3.out' }
-    ).fromTo(meta, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.45')
+    animateCardReveal(gsap, row, 'top 85%')
   })
 })
 </script>

@@ -29,26 +29,26 @@ useHead({
   link: [{ rel: 'canonical', href: `https://24seven.studio/blog/${article.slug}` }]
 })
 
-const progress = ref(0)
-const articleBodyEl = ref<HTMLElement | null>(null)
+const progressFillEl = ref<HTMLElement | null>(null)
 const copied = ref(false)
 
-function handleScroll() {
-  const el = articleBodyEl.value
-  if (!el) return
-  const rect = el.getBoundingClientRect()
-  const total = rect.height - window.innerHeight
-  const scrolled = -rect.top
-  progress.value = Math.min(100, Math.max(0, (scrolled / total) * 100))
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
-  handleScroll()
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
+/**
+ * ARTICLE / reading progress — scroll — a thin top bar tracks how far the
+ * reader is through the article body. Driven by the same ScrollTrigger
+ * instance Lenis already keeps in sync (`onUpdate`), set directly via GSAP
+ * on a `scaleX` transform rather than the `width` property, so this never
+ * triggers a layout recalculation — no separate native scroll listener.
+ * Not gated behind reduced motion: this is a functional reading indicator
+ * driven 1:1 by the reader's own scrolling, not ambient/decorative motion.
+ */
+const { root: articleBodyEl } = useScrollAnimation(({ gsap, root, ScrollTrigger }) => {
+  if (!progressFillEl.value) return
+  ScrollTrigger.create({
+    trigger: root,
+    start: 'top top',
+    end: 'bottom bottom',
+    onUpdate: (self) => gsap.set(progressFillEl.value, { scaleX: self.progress })
+  })
 })
 
 async function copyLink() {
@@ -62,27 +62,29 @@ async function copyLink() {
 <template>
   <main id="main-content">
     <div class="bg-border-subtle fixed inset-x-0 top-0 z-40 h-0.5">
-      <div class="bg-accent h-full transition-[width] duration-150" :style="{ width: `${progress}%` }" />
+      <div ref="progressFillEl" class="bg-accent h-full w-full origin-left scale-x-0" aria-hidden="true" />
     </div>
 
     <article ref="articleBodyEl" class="bg-surface pt-44 pb-28 lg:pt-56 lg:pb-40">
       <Container narrow>
-        <div class="text-body-sm text-ink-muted flex flex-wrap items-center gap-3">
-          <span class="text-accent font-medium">{{ article.category }}</span>
-          <span aria-hidden="true">·</span>
-          <time :datetime="article.date">{{ formatDate(article.date) }}</time>
-          <span aria-hidden="true">·</span>
-          <span>{{ article.readingTime }}</span>
-        </div>
+        <Reveal as="div">
+          <div class="text-body-sm text-ink-muted flex flex-wrap items-center gap-3">
+            <span class="text-accent font-medium">{{ article.category }}</span>
+            <span aria-hidden="true">·</span>
+            <time :datetime="article.date">{{ formatDate(article.date) }}</time>
+            <span aria-hidden="true">·</span>
+            <span>{{ article.readingTime }}</span>
+          </div>
 
-        <h1 class="text-display mt-6 text-ink">{{ article.title }}</h1>
-        <p class="text-body-sm text-ink-muted mt-6">By {{ article.author }}</p>
+          <h1 class="text-display mt-6 text-ink">{{ article.title }}</h1>
+          <p class="text-body-sm text-ink-muted mt-6">By {{ article.author }}</p>
+        </Reveal>
       </Container>
 
       <Container class="mt-14">
-        <div class="bg-charcoal-200 aspect-16/9 overflow-hidden">
+        <Reveal variant="clip" :delay="0.15" class="bg-charcoal-200 block aspect-16/9 overflow-hidden">
           <img :src="article.image" :alt="article.title" class="size-full object-cover">
-        </div>
+        </Reveal>
       </Container>
 
       <Container narrow class="mt-16">
