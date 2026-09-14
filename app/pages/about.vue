@@ -36,9 +36,14 @@ const trustQuote = testimonialService.getSecondary()
 
     <section class="bg-surface py-28 lg:py-40">
       <Container narrow>
-        <Reveal as="p" class="text-heading text-ink text-balance">
-          24 Seven Studio began with a simple frustration — too many brands looked expensive without being built to last. We exist to close that gap.
-        </Reveal>
+        <p class="text-heading text-ink text-balance">
+          <Reveal as="span" class="block">
+            24 Seven Studio began with a simple frustration — too many brands looked expensive without being built to last.
+          </Reveal>
+          <Reveal as="span" :delay="0.25" class="text-ink-muted mt-2 block">
+            We exist to close that gap.
+          </Reveal>
+        </p>
       </Container>
     </section>
 
@@ -81,7 +86,7 @@ const trustQuote = testimonialService.getSecondary()
         </span>
         <h2 class="text-heading max-w-2xl text-white">Four stages, no shortcuts.</h2>
 
-        <ScrollReveal as="div" class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <ScrollReveal as="div" variant="split-left" :stagger="0.12" class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div v-for="stage in processStages" :key="stage.index" class="border-t border-white/15 pt-6">
             <span class="text-body-sm text-white/40">{{ stage.index }}</span>
             <h3 class="text-subheading mt-2 text-white">{{ stage.title }}</h3>
@@ -117,7 +122,7 @@ const trustQuote = testimonialService.getSecondary()
         </span>
         <h2 class="text-heading max-w-2xl text-ink">What we protect on every project.</h2>
 
-        <ScrollReveal as="div" class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <ScrollReveal as="div" :stagger="0.16" class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div v-for="value in studioValues" :key="value.title">
             <h3 class="text-subheading text-ink">{{ value.title }}</h3>
             <p class="text-body-sm text-ink-muted mt-3">{{ value.description }}</p>

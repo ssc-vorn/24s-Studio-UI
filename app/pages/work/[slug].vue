@@ -38,6 +38,13 @@ useHead({
       <Container class="flex flex-col gap-24 lg:gap-32">
         <CaseStudySection label="Challenge" :text="project.challenge" :image="project.gallery[0]" />
         <CaseStudySection label="Strategy" :text="project.strategy" :image="project.gallery[1]" reverse />
+      </Container>
+
+      <div class="my-24 lg:my-32">
+        <CaseStudyVisualBreak :image="project.coverImage" :alt="`${project.title} — ${project.client}`" />
+      </div>
+
+      <Container class="flex flex-col gap-24 lg:gap-32">
         <CaseStudySection label="Creative Direction" :text="project.creativeDirection" :image="project.gallery[0]" />
         <CaseStudySection label="Execution" :text="project.execution" :image="project.gallery[1]" reverse />
         <CaseStudySection label="Result" :text="project.result" />

@@ -20,28 +20,32 @@ export const processStages: ProcessStage[] = [
     title: 'Discover',
     description: 'We start by questioning the brief, not answering it.',
     detail:
-      'Workshops with your team, audits of the existing brand and competitive landscape, and enough uncomfortable questions to find the real problem before we design anything.'
+      'Workshops with your team, audits of the existing brand and competitive landscape, and enough uncomfortable questions to find the real problem before we design anything.',
+    image: 'https://picsum.photos/1200/1500?random=341'
   },
   {
     index: '02',
     title: 'Define',
     description: 'A single, defensible point of view — not three safe options.',
     detail:
-      'We narrow discovery into one positioning and one creative direction, tested against every real-world use case before a single pixel is refined.'
+      'We narrow discovery into one positioning and one creative direction, tested against every real-world use case before a single pixel is refined.',
+    image: 'https://picsum.photos/1200/1500?random=342'
   },
   {
     index: '03',
     title: 'Create',
     description: 'Design developed in the medium it will actually live in.',
     detail:
-      'Identity, interface and motion built together so nothing arrives disconnected — packaging tested under real light, interfaces built in the browser, film cut against real footage.'
+      'Identity, interface and motion built together so nothing arrives disconnected — packaging tested under real light, interfaces built in the browser, film cut against real footage.',
+    image: 'https://picsum.photos/1200/1500?random=343'
   },
   {
     index: '04',
     title: 'Deliver',
     description: 'Documentation your team can run without us.',
     detail:
-      'Every engagement ends with a system, not just a set of files — guidelines, component libraries and process notes built for a team that isn’t us.'
+      'Every engagement ends with a system, not just a set of files — guidelines, component libraries and process notes built for a team that isn’t us.',
+    image: 'https://picsum.photos/1200/1500?random=344'
   }
 ]
 

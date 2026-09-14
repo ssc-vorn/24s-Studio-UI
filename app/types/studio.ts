@@ -14,4 +14,5 @@ export interface ProcessStage {
   title: string
   description: string
   detail: string
+  image: string
 }

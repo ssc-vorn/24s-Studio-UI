@@ -12,7 +12,7 @@ defineProps<Props>()
 
 <template>
   <NuxtLink :to="`/work/${project.slug}`" class="group block">
-    <div class="relative aspect-16/10 overflow-hidden bg-charcoal-200">
+    <div data-reveal="media" class="relative aspect-16/10 overflow-hidden bg-charcoal-200">
       <img
         :src="project.coverImage"
         :alt="`${project.title} — ${project.client}`"
@@ -27,7 +27,7 @@ defineProps<Props>()
       </span>
     </div>
 
-    <div class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div data-reveal="meta" class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div class="flex items-baseline gap-4">
         <span class="text-body-sm font-sans text-ink-muted">{{ String(index + 1).padStart(2, '0') }}</span>
         <h3 class="text-heading text-ink transition-colors duration-300 group-hover:text-accent">{{ project.title }}</h3>
