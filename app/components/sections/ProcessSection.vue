@@ -1,32 +1,34 @@
 <script setup lang="ts">
 import { processStages } from '~/data/studio'
-import { animateLayerEntrance, animateLayeredRecede, trackActiveLayer } from '~/animations/sections/process'
+import { animateProcessFocusChange } from '~/animations/sections/process'
 
-const activeIndex = ref(0)
+// The GSAP focus crossfade (numeral + title opacity/scale) only makes sense
+// paired with the sticky numeral, which is desktop-only (`hidden lg:block`).
+// On mobile there's nothing for a dimmed title to contrast against, so
+// skip the animation there entirely — the CSS class-driven color change
+// (text-ink vs text-ink-muted) stays as the only, much subtler cue.
+const { isDesktop } = useBreakpoints()
 
-const { root } = useScrollAnimation(({ gsap, root, reduced, ScrollTrigger }) => {
-  const heading = root.querySelector('[data-reveal="heading"]')
-  if (heading) {
-    gsap.fromTo(
-      heading,
-      { opacity: 0, y: 32 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
-    )
+const { root, activeIndex } = useScrollStory({
+  setup: ({ gsap, root }) => {
+    const heading = root.querySelector('[data-reveal="heading"]')
+    if (heading) {
+      gsap.fromTo(
+        heading,
+        { opacity: 0, y: 32 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
+      )
+    }
+
+    return {
+      onChange: (index, previousIndex) => {
+        if (!isDesktop.value) return
+        const numerals = Array.from(root.querySelectorAll('[data-process-numeral]'))
+        const titles = Array.from(root.querySelectorAll('[data-process-title]'))
+        animateProcessFocusChange(gsap, numerals, titles, index, previousIndex)
+      }
+    }
   }
-
-  const stageEls = Array.from(root.querySelectorAll<HTMLElement>('[data-story-stage]'))
-
-  // Independent of the entrance/recede motion below, and safe under
-  // reduced motion — it's discrete state for the progress indicator, not
-  // scroll-scrubbed animation.
-  trackActiveLayer(ScrollTrigger, stageEls, (index) => {
-    activeIndex.value = index
-  })
-
-  if (reduced) return
-
-  animateLayerEntrance(gsap, stageEls)
-  animateLayeredRecede(gsap, stageEls)
 })
 
 const totalLabel = String(processStages.length).padStart(2, '0')
@@ -44,56 +46,55 @@ const activeLabel = computed(() => processStages[activeIndex.value]?.index ?? pr
         <h2 class="text-heading text-ink">A process built for craft, not just speed.</h2>
       </div>
 
-      <div class="mt-16 lg:mt-24">
-        <div class="sticky top-6 z-30 mb-6 flex items-center justify-end gap-4 lg:top-10" aria-hidden="true">
-          <span class="text-label text-ink-muted tabular-nums">{{ activeLabel }} / {{ totalLabel }}</span>
-          <div class="bg-border-subtle relative h-px w-20 overflow-hidden lg:w-28">
-            <span
-              class="bg-accent absolute inset-y-0 left-0 h-full origin-left transition-transform duration-500 ease-out"
-              :style="{ transform: `scaleX(${(activeIndex + 1) / processStages.length})` }"
-            />
+      <div class="mt-16 grid grid-cols-1 gap-14 lg:mt-24 lg:grid-cols-12 lg:gap-12">
+        <!-- Sticky editorial numeral — the section's single visual anchor;
+             no card, no image, just oversized type crossfading in place. -->
+        <div class="hidden lg:col-span-5 lg:block">
+          <div class="sticky top-32">
+            <div class="relative h-[22rem] overflow-hidden">
+              <span
+                v-for="(stage, index) in processStages"
+                :key="stage.index"
+                data-process-numeral
+                class="text-ink/[0.09] absolute inset-0 flex items-center font-serif text-[15rem] leading-none font-light select-none"
+                :class="index === 0 ? 'opacity-100' : 'opacity-0'"
+                aria-hidden="true"
+              >
+                {{ stage.index }}
+              </span>
+            </div>
+
+            <div class="mt-6 flex items-center gap-4" aria-hidden="true">
+              <span class="text-label text-ink-muted tabular-nums">{{ activeLabel }} / {{ totalLabel }}</span>
+              <div class="bg-border-subtle relative h-px flex-1 overflow-hidden">
+                <span
+                  class="bg-accent absolute inset-y-0 left-0 h-full origin-left transition-transform duration-500 ease-out"
+                  :style="{ transform: `scaleX(${(activeIndex + 1) / processStages.length})` }"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        <div
-          v-for="(stage, index) in processStages"
-          :key="stage.index"
-          data-story-stage
-          class="relative mb-6 last:mb-0 lg:mb-0 lg:h-[100vh]"
-        >
+        <!-- Stage list — no boxes, just hairline dividers and typography
+             settling into and out of focus as it becomes the active stage. -->
+        <div class="lg:col-span-7">
           <div
-            data-layer-card
-            class="border-white/10 bg-charcoal relative overflow-hidden rounded-[28px] border shadow-[0_40px_100px_-30px_rgba(0,0,0,0.5)] will-change-transform lg:sticky lg:top-32 lg:min-h-[75vh]"
-            :style="{ zIndex: index + 1 }"
+            v-for="(stage, index) in processStages"
+            :key="stage.index"
+            data-story-stage
+            class="border-border-subtle border-t py-14 first:border-t-0 lg:py-20"
           >
-            <div data-layer-overlay class="pointer-events-none absolute inset-0 z-10 bg-black opacity-0" aria-hidden="true" />
-
-            <!-- Layered typography: two oversized, near-invisible type
-                 elements sit behind the readable content — a giant stage
-                 number bleeding off the top-left corner, and a giant repeat
-                 of the title anchored right. The "layers" in Layered Scroll
-                 Narrative are typographic, not photographic, and read
-                 clearly through the crossfade as cards recede under one
-                 another. -->
-            <span
-              class="pointer-events-none absolute -top-16 -left-10 hidden font-serif text-[18rem] leading-none font-medium text-white/[0.035] select-none lg:block"
-              aria-hidden="true"
-            >
-              {{ stage.index }}
-            </span>
-            <span
-              class="pointer-events-none absolute inset-y-0 right-0 hidden items-center justify-end pr-8 font-serif text-[13rem] leading-none font-medium whitespace-nowrap text-white/[0.06] select-none lg:flex"
-              aria-hidden="true"
+            <span class="text-label text-accent lg:hidden">{{ stage.index }} / {{ totalLabel }}</span>
+            <h3
+              data-process-title
+              class="text-display text-ink mt-3 transition-colors duration-500 will-change-transform lg:mt-0"
+              :class="activeIndex !== -1 && activeIndex !== index ? 'text-ink-muted' : ''"
             >
               {{ stage.title }}
-            </span>
-
-            <div class="relative flex min-h-[420px] flex-col justify-center p-8 sm:p-12 lg:min-h-[75vh] lg:max-w-xl lg:p-16">
-              <span class="text-label text-accent">{{ stage.index }} / {{ totalLabel }}</span>
-              <h3 class="text-display mt-6 text-white">{{ stage.title }}</h3>
-              <p class="text-body-lg mt-6 max-w-md text-white/80">{{ stage.description }}</p>
-              <p class="text-body mt-4 max-w-md text-white/50">{{ stage.detail }}</p>
-            </div>
+            </h3>
+            <p class="text-body-lg text-ink mt-6 max-w-lg">{{ stage.description }}</p>
+            <p class="text-body text-ink-muted mt-4 max-w-lg">{{ stage.detail }}</p>
           </div>
         </div>
       </div>

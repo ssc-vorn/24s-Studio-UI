@@ -1,68 +1,37 @@
 import type { gsap as GsapType } from 'gsap'
-import type { ScrollTrigger as ScrollTriggerType } from 'gsap/ScrollTrigger'
 
 /**
- * HOME / Creative Process — scroll — "Layered Scroll Narrative" v2. Each
- * stage is a self-contained card pinned via CSS `position: sticky` with an
- * increasing z-index per stage, so later cards physically cover earlier
- * ones as the page scrolls — that core stacking effect is pure CSS and
- * works even if GSAP never initializes.
- *
- * Three independent GSAP layers sit on top of that CSS foundation:
- *  - `animateLayerEntrance` — a card lifts and fades into place the first
- *    time it's approached, so the sequence reads as enter → hold → recede
- *    rather than just appearing pre-placed.
- *  - `animateLayeredRecede` — as a card's wrapper scrolls past, it scales
- *    down, softens (a light blur) and dims under a dark overlay, reading
- *    as sliding back in depth under the next card rather than being
- *    abruptly clipped away.
- *  - `trackActiveLayer` — a lightweight, non-scrubbed tracker (independent
- *    of the two above) driving the section's progress indicator; safe to
- *    run under reduced motion since it's discrete state, not motion.
- *
- * Library: GSAP + ScrollTrigger. Reduced motion: caller should skip
- * entrance/recede entirely — cards still stack correctly via CSS alone.
+ * HOME / Creative Process — scroll — editorial numeral walk. No cards, no
+ * imagery: a single oversized, near-invisible numeral sits sticky beside
+ * the stage list and crossfades as the active stage changes, while the
+ * corresponding list item settles into focus (full color, full scale) and
+ * the one it replaces recedes (dimmed, slightly smaller). One shared
+ * crossfade drives both, called from `useScrollStory`'s `onChange` hook.
+ * Library: GSAP (direct tween on state change — the change itself is
+ * discrete, tracked by useScrollStory's ScrollTrigger zones, not scrubbed).
+ * Duration: ~0.5–0.8s. Easing: power2/power3 out.
+ * Reduced motion: `useScrollStory` never calls `onChange` when reduced, so
+ * this never runs — the template's default (first-stage) resting state
+ * holds, which is why callers must give it a valid default, not a hidden one.
  */
-export function animateLayerEntrance(gsapInstance: typeof GsapType, stageEls: HTMLElement[]) {
-  stageEls.forEach((stage) => {
-    const card = stage.querySelector('[data-layer-card]')
-    if (!card) return
-    gsapInstance.fromTo(
-      card,
-      { opacity: 0, y: 56 },
-      { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: stage, start: 'top 85%' } }
-    )
-  })
-}
-
-export function animateLayeredRecede(gsapInstance: typeof GsapType, stageEls: HTMLElement[]) {
-  stageEls.forEach((stage, index) => {
-    if (index === stageEls.length - 1) return
-
-    const card = stage.querySelector('[data-layer-card]')
-    const overlay = stage.querySelector('[data-layer-overlay]')
-    if (!card) return
-
-    const tl = gsapInstance.timeline({
-      scrollTrigger: { trigger: stage, start: 'bottom bottom', end: 'bottom top', scrub: true }
-    })
-    tl.to(card, { scale: 0.92, filter: 'blur(3px)', ease: 'none' }, 0)
-    if (overlay) tl.to(overlay, { opacity: 0.55, ease: 'none' }, 0)
-  })
-}
-
-export function trackActiveLayer(
-  scrollTrigger: typeof ScrollTriggerType,
-  stageEls: HTMLElement[],
-  onActivate: (index: number) => void
+export function animateProcessFocusChange(
+  gsapInstance: typeof GsapType,
+  numerals: Element[],
+  titles: Element[],
+  activeIndex: number,
+  previousIndex: number
 ) {
-  stageEls.forEach((stage, index) => {
-    scrollTrigger.create({
-      trigger: stage,
-      start: 'top 60%',
-      end: 'bottom 40%',
-      onEnter: () => onActivate(index),
-      onEnterBack: () => onActivate(index)
-    })
-  })
+  const previousNumeral = previousIndex >= 0 ? numerals[previousIndex] : undefined
+  const previousTitle = previousIndex >= 0 ? titles[previousIndex] : undefined
+  if (previousIndex !== activeIndex && previousNumeral && previousTitle) {
+    gsapInstance.to(previousNumeral, { opacity: 0, scale: 0.94, duration: 0.6, ease: 'power2.out' })
+    gsapInstance.to(previousTitle, { opacity: 0.4, scale: 0.97, duration: 0.5, ease: 'power2.out' })
+  }
+
+  const activeNumeral = numerals[activeIndex]
+  const activeTitle = titles[activeIndex]
+  if (!activeNumeral || !activeTitle) return
+
+  gsapInstance.fromTo(activeNumeral, { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' })
+  gsapInstance.to(activeTitle, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' })
 }
