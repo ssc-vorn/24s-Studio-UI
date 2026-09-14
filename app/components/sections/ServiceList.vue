@@ -92,8 +92,8 @@ const { root, activeIndex } = useScrollStory({
         <div
           v-for="(service, index) in serviceList"
           :key="service.id"
-          class="pb-6 last:pb-0"
-          :class="index !== serviceList.length - 1 ? 'min-h-[55vh] lg:min-h-[65vh]' : ''"
+          class="pb-3 last:pb-0"
+          :class="index !== serviceList.length - 1 ? 'min-h-[18vh] lg:min-h-[24vh]' : ''"
         >
           <ServiceItem :service="service" :index="index" :active="showAllForReducedMotion || (hasActivated && activeIndex === index)" />
         </div>
