@@ -2,9 +2,10 @@
 /**
  * HOME / Final CTA — scroll — typography and the CTA arrive in sequence (CTA
  * settling in with a slight scale, so it reads as the section's focal
- * point), while the background image drifts subtly against the scroll for
- * as long as the section is in view — restrained enough to never compete
- * with the CTA itself.
+ * point), while the background image slowly zooms and drifts against the
+ * scroll for as long as the section is in view — restrained enough to
+ * never compete with the CTA itself. The film's final scene, closing in
+ * slowly rather than sitting static.
  * Library: GSAP + ScrollTrigger (entrance timeline) + ScrollTrigger (scrub,
  * background drift only). Duration: ~1s entrance. Easing: power3.out.
  * Reduced motion: entrance snaps to final state, no background drift.
@@ -30,8 +31,8 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   if (bg) {
     gsap.fromTo(
       bg,
-      { yPercent: -8 },
-      { yPercent: 8, ease: 'none', scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: 0.6 } }
+      { yPercent: -8, scale: 1.05 },
+      { yPercent: 8, scale: 1.18, ease: 'none', scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: 0.6 } }
     )
   }
 })
