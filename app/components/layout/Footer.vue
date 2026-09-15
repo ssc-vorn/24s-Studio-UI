@@ -76,5 +76,18 @@ useScrollReveal(el, { start: 'top 95%' })
         <p class="text-body-sm">Graphic Design · Brand Identity · Video Editing · Digital Marketing · Advertising</p>
       </div>
     </Container>
+
+    <!-- Closing mark — the brand's own name, oversized, as the last thing a
+         visitor sees: an outlined ghost lockup rather than a solid fill, so
+         it reads as a geometric flourish rather than competing with the
+         copyright line above it. -->
+    <div class="mt-14 overflow-hidden select-none lg:mt-20" aria-hidden="true">
+      <p
+        class="text-center font-serif leading-none font-medium tracking-tight text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.18)]"
+        style="font-size: clamp(3.5rem, 15vw, 12rem)"
+      >
+        24s Studio
+      </p>
+    </div>
   </footer>
 </template>

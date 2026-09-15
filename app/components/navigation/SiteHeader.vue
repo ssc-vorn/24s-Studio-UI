@@ -51,6 +51,7 @@ onUnmounted(() => {
             aria-controls="fullscreen-menu"
             :aria-expanded="navigation.isMenuOpen"
             aria-label="Toggle navigation menu"
+            data-cursor="open"
             @click="navigation.toggleMenu()"
           >
             <span class="tracking-[0.16em]">Menu</span>

@@ -44,27 +44,7 @@ useHead({
   ]
 })
 
-const progressFillEl = ref<HTMLElement | null>(null)
 const copied = ref(false)
-
-/**
- * ARTICLE / reading progress — scroll — a thin top bar tracks how far the
- * reader is through the article body. Driven by the same ScrollTrigger
- * instance Lenis already keeps in sync (`onUpdate`), set directly via GSAP
- * on a `scaleX` transform rather than the `width` property, so this never
- * triggers a layout recalculation — no separate native scroll listener.
- * Not gated behind reduced motion: this is a functional reading indicator
- * driven 1:1 by the reader's own scrolling, not ambient/decorative motion.
- */
-const { root: articleBodyEl } = useScrollAnimation(({ gsap, root, ScrollTrigger }) => {
-  if (!progressFillEl.value) return
-  ScrollTrigger.create({
-    trigger: root,
-    start: 'top top',
-    end: 'bottom bottom',
-    onUpdate: (self) => gsap.set(progressFillEl.value, { scaleX: self.progress })
-  })
-})
 
 async function copyLink() {
   if (!import.meta.client) return
@@ -76,11 +56,9 @@ async function copyLink() {
 
 <template>
   <main id="main-content">
-    <div class="bg-border-subtle fixed inset-x-0 top-0 z-40 h-0.5">
-      <div ref="progressFillEl" class="bg-accent h-full w-full origin-left scale-x-0" aria-hidden="true" />
-    </div>
+    <ScrollProgress target="article" />
 
-    <article ref="articleBodyEl" class="bg-surface pt-44 pb-28 lg:pt-56 lg:pb-40">
+    <article class="bg-surface pt-44 pb-28 lg:pt-56 lg:pb-40">
       <Container narrow>
         <Reveal as="div">
           <div class="text-body-sm text-ink-muted flex flex-wrap items-center gap-3">

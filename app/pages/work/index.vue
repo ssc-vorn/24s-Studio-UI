@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { gsap } from 'gsap'
 import { projectRepository } from '~/repositories/projectRepository'
+import { projectService } from '~/services/projectService'
 import type { ProjectCategory } from '~/types/project'
 import { filterEnter, filterExit } from '~/animations/sections/portfolio'
 
 type Category = 'All' | ProjectCategory
 
 const categories: Category[] = ['All', 'Branding', 'Digital', 'Video', 'Marketing']
+const reelProjects = projectService.getSelectedWork(6)
 
 useSeoMeta({
   title: 'Work — 24s Studio',
@@ -73,6 +75,13 @@ async function setFilter(category: Category) {
           Branding, digital, video & motion and marketing work built for founders, institutions and everyone in between.
         </p>
       </Container>
+    </section>
+
+    <section class="bg-surface pb-20 lg:pb-28">
+      <div class="mb-10 px-6 sm:px-10 lg:px-16">
+        <span class="text-label text-ink-muted">Featured Reel</span>
+      </div>
+      <HorizontalProjectScroll :projects="reelProjects" />
     </section>
 
     <section class="bg-surface pb-28 lg:pb-40">

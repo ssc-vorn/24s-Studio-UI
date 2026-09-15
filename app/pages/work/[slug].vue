@@ -42,6 +42,8 @@ useHead({
 
 <template>
   <main id="main-content">
+    <ScrollProgress target="#main-content" />
+
     <CaseStudyHero :project="project" />
 
     <section class="bg-surface py-28 lg:py-40">
