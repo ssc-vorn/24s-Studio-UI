@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { projectService } from '~/services/projectService'
 
-const projects = projectService.getSelectedWork(4)
+const projects = projectService.getSelectedWork(5)
 </script>
 
 <template>

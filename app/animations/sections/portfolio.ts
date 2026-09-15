@@ -115,6 +115,8 @@ export function animateCinematicReel(gsapInstance: typeof GsapType, pinRoot: Ele
       .fromTo(incoming.image, { scale: 1.18 }, { scale: 1, ease: 'none', duration: segment * 0.45 }, at + segment * 0.2)
       .fromTo(incoming.text, { opacity: 0, y: 40 }, { opacity: 1, y: 0, ease: 'none', duration: segment * 0.4 }, at + segment * 0.35)
   }
+
+  return tl
 }
 
 /** Phase 1 — outgoing cards. Fast, subtle exit before the dataset swaps. */
