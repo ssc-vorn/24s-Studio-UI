@@ -2,6 +2,7 @@
 import { animateHeroEntrance } from '~/animations/sections/hero'
 
 const backgroundEl = ref<HTMLElement | null>(null)
+const backgroundScrollWrap = ref<HTMLElement | null>(null)
 const eyebrowEl = ref<HTMLElement | null>(null)
 const lineEls = ref<HTMLElement[]>([])
 const paragraphEl = ref<HTMLElement | null>(null)
@@ -31,6 +32,27 @@ onMounted(() => {
       },
       reduced.value
     )
+
+    // Continuous background zoom for as long as Hero is scrolling past —
+    // independent of the entrance tween above (different element: this
+    // wrapper, not the img `background` targets), so the two never fight
+    // for control of the same transform.
+    if (!reduced.value && backgroundScrollWrap.value) {
+      gsap.fromTo(
+        backgroundScrollWrap.value,
+        { scale: 1 },
+        {
+          scale: 1.12,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: backgroundScrollWrap.value.closest('section'),
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.5
+          }
+        }
+      )
+    }
   })
 })
 
@@ -41,13 +63,15 @@ onUnmounted(() => {
 
 <template>
   <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
-    <img
-      ref="backgroundEl"
-      src="https://picsum.photos/2400/1600?random=201"
-      alt=""
-      fetchpriority="high"
-      class="size-full object-cover opacity-70 grayscale-[15%]"
-    >
+    <div ref="backgroundScrollWrap" class="absolute inset-0">
+      <img
+        ref="backgroundEl"
+        src="https://picsum.photos/2400/1600?random=201"
+        alt=""
+        fetchpriority="high"
+        class="size-full object-cover opacity-70 grayscale-[15%]"
+      >
+    </div>
     <div class="from-black/95 via-black/60 absolute inset-0 bg-gradient-to-t to-black/30" />
     <div class="absolute inset-0 bg-black/25" />
   </div>
