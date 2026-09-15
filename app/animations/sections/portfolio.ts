@@ -61,6 +61,62 @@ export function animateCinematicProject(
     .fromTo(targets.meta, { opacity: 0, y: 20 }, { opacity: 1, y: 0, ease: 'none' }, 0.5)
 }
 
+interface ReelScene {
+  root: Element
+  image: Element
+  text: Element
+}
+
+/**
+ * HOME / Selected Work — cinematic scene sequence — every featured project
+ * gets the "signature moment" treatment (not just project 01): each scene
+ * fills the pinned viewport, then scales/fades out as the next crops/fades
+ * in from a slightly larger scale, its text arriving a beat later so the
+ * image always reads as leading the transition. Same CSS-sticky pin
+ * technique as ManifestoSection/the old single-project cinematic moment —
+ * ScrollTrigger only drives the crossfade progress, it never sets `pin`.
+ * Library: GSAP + ScrollTrigger, one continuous scrub across the whole
+ * pinned runway (no per-scene ScrollTriggers) so the handoff between scenes
+ * never stutters against the user's own scroll velocity.
+ * Reduced motion: only the first scene renders, at rest — no pin, no scrub.
+ */
+export function animateCinematicReel(gsapInstance: typeof GsapType, pinRoot: Element, scenes: ReelScene[], reduced: boolean) {
+  if (reduced) {
+    scenes.forEach((scene, i) => gsapInstance.set(scene.root, { autoAlpha: i === 0 ? 1 : 0 }))
+    gsapInstance.set(
+      scenes.map((s) => s.text),
+      { opacity: 1, y: 0 }
+    )
+    return
+  }
+
+  scenes.forEach((scene, i) => {
+    gsapInstance.set(scene.root, { autoAlpha: i === 0 ? 1 : 0 })
+    gsapInstance.set(scene.image, { scale: i === 0 ? 1 : 1.18 })
+  })
+
+  const tl = gsapInstance.timeline({
+    scrollTrigger: { trigger: pinRoot, start: 'top top', end: 'bottom bottom', scrub: 0.7 }
+  })
+
+  const segment = 1 / scenes.length
+
+  tl.fromTo(scenes[0]!.text, { opacity: 0, y: 40 }, { opacity: 1, y: 0, ease: 'none', duration: segment * 0.4 }, 0)
+
+  for (let i = 1; i < scenes.length; i++) {
+    const outgoing = scenes[i - 1]!
+    const incoming = scenes[i]!
+    const at = (i - 1) * segment + segment * 0.55
+
+    tl.to(outgoing.text, { opacity: 0, y: -30, ease: 'none', duration: segment * 0.25 }, at)
+      .to(outgoing.image, { scale: 1.1, ease: 'none', duration: segment * 0.45 }, at)
+      .to(outgoing.root, { autoAlpha: 0, ease: 'none', duration: segment * 0.25 }, at + segment * 0.2)
+      .fromTo(incoming.root, { autoAlpha: 0 }, { autoAlpha: 1, ease: 'none', duration: segment * 0.25 }, at + segment * 0.2)
+      .fromTo(incoming.image, { scale: 1.18 }, { scale: 1, ease: 'none', duration: segment * 0.45 }, at + segment * 0.2)
+      .fromTo(incoming.text, { opacity: 0, y: 40 }, { opacity: 1, y: 0, ease: 'none', duration: segment * 0.4 }, at + segment * 0.35)
+  }
+}
+
 /** Phase 1 — outgoing cards. Fast, subtle exit before the dataset swaps. */
 export function filterExit(gsapInstance: typeof GsapType, cards: Element[], reduced: boolean) {
   return gsapInstance.timeline().to(cards, {
