@@ -49,7 +49,14 @@
   /* ---------------------------------------------------------------- */
   /* Fonts                                                             */
   /* ---------------------------------------------------------------- */
-  --font-serif: 'Fraunces', 'Georgia', serif;
+  /* Brand signature — a single-weight geometric display face used
+     deliberately (Hero headlines, section titles, large numbers, brand
+     statements), never for body copy or utility text. Kept under the
+     `--font-serif` name rather than renamed to `--font-display`: every
+     `.text-display*`/`.text-heading`/`.text-service-title` utility below
+     already routes through it, so renaming the token would mean touching
+     every one of those declarations for no behavioral gain. */
+  --font-serif: 'Zen Dots', 'Arial Narrow', sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
   /* ---------------------------------------------------------------- */

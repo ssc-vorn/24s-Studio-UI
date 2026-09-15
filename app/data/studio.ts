@@ -45,8 +45,13 @@ export const processStages: ProcessStage[] = [
   }
 ]
 
+// Deliberately not a claimed history of years/clients/projects — those
+// numbers don't exist yet for a studio this new, and stating them as fact
+// would be exactly the fabricated business claim the brief warns against.
+// Every value here is either literally true today (disciplines, services)
+// or a values statement, not a performance metric.
 export const studioStats = [
-  { value: '12+', label: 'Years Experience' },
-  { value: '50+', label: 'Clients Worldwide' },
-  { value: '100+', label: 'Projects Delivered' }
+  { value: '05', label: 'Core Disciplines' },
+  { value: '100%', label: 'Creative Focus' },
+  { value: '01', label: 'Unified Studio' }
 ]

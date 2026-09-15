@@ -13,10 +13,10 @@ const el = ref<HTMLElement | { $el: HTMLElement } | null>(null)
 useMagnetic(el, { strength: 0.15 })
 
 const wordmarkClass = computed(() => [
-  'font-serif text-lg italic transition-colors duration-300 sm:text-xl',
-  props.inverse ? 'text-white/60' : 'text-ink-muted'
+  'font-sans text-base italic tracking-wide transition-colors duration-300 sm:text-lg',
+  props.inverse ? 'text-white/50' : 'text-ink-muted'
 ])
-const hoverClass = computed(() => (props.inverse ? 'group-hover:text-white' : 'group-hover:text-ink'))
+const hoverClass = computed(() => 'group-hover:text-accent')
 </script>
 
 <template>

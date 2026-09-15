@@ -50,8 +50,8 @@ export default defineNuxtConfig({
 
   fonts: {
     families: [
-      { name: 'Fraunces', provider: 'google', weights: [400, 500, 600] },
-      { name: 'Inter', provider: 'google', weights: [400, 500, 600, 700] }
+      { name: 'Zen Dots', provider: 'google', weights: [400] },
+      { name: 'Inter', provider: 'google', weights: [400, 500, 600, 700], styles: ['normal', 'italic'] }
     ]
   },
 

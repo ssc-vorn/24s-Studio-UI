@@ -235,7 +235,7 @@ onUnmounted(() => {
          length. Drifts opposite the pointer and fades on scroll-exit. -->
     <span
       ref="numeralEl"
-      class="pointer-events-none absolute top-24 right-[4vw] z-[5] hidden font-serif text-[30vw] leading-none font-medium text-white/[0.06] select-none sm:block lg:-top-[6vw] lg:text-[26vw]"
+      class="pointer-events-none absolute top-24 right-[4vw] z-[5] hidden font-serif text-[30vw] leading-none font-normal text-white/[0.06] select-none sm:block lg:-top-[6vw] lg:text-[26vw]"
       aria-hidden="true"
     >24</span>
 
@@ -282,15 +282,15 @@ onUnmounted(() => {
       </h1>
 
       <p ref="paragraphEl" class="text-body-lg mt-8 max-w-md text-white/70">
-        Graphic design, brand identity, video editing, digital marketing and advertising — built as one continuous system, not five disconnected vendors.
+        Strategy. Design. Motion. Technology. We turn ideas into visual experiences.
       </p>
 
       <div ref="ctaEl" class="mt-10 flex flex-wrap items-center gap-4">
-        <MagneticButton as="NuxtLink" href="/contact" data-cursor="start" class="bg-white! text-black! hover:bg-accent! hover:text-white!">
-          Start a Project
+        <MagneticButton as="NuxtLink" href="/work" data-cursor="explore" class="bg-white! text-black! hover:bg-accent! hover:text-white!">
+          Explore Work →
         </MagneticButton>
-        <MagneticButton as="NuxtLink" href="/work" variant="outline" data-cursor="explore" class="border-white/40! text-white! hover:border-accent! hover:text-accent!">
-          Explore Our Work →
+        <MagneticButton as="NuxtLink" href="/contact" variant="outline" data-cursor="start" class="border-white/40! text-white! hover:border-accent! hover:text-accent!">
+          Start a Project
         </MagneticButton>
       </div>
     </Container>

@@ -13,18 +13,14 @@ const brands = trustedBrandRepository.list()
 /**
  * HOME / Trusted By Brands — scroll — border lines draw in from center (full
  * variant only), an accent rule sweeps in before the label, then the brand
- * strip (marquee track, full variant, or the item row, compact variant)
- * fades up as one block.
+ * strip (marquee, full variant, or the item row, compact variant) fades up
+ * as one block.
  * Library: GSAP + ScrollTrigger. Duration: ~1.2s total. Easing: power3 in/out.
  * Mobile: identical timeline, shorter travel since the layout wraps narrower.
  * Reduced motion: every target snaps straight to its resting state, no draw.
- *
- * The marquee's own auto-scroll (full variant) is deliberately pure CSS
- * (see `<style>` below), not GSAP — it needs to run even if JavaScript
- * never initializes, which is the strongest form of the "animation is
- * enhancement, not dependency" rule this codebase follows elsewhere with
- * GSAP fallback states. `prefers-reduced-motion` and hover/focus-pause are
- * both handled in plain CSS too, so this motion never depends on JS at all.
+ * The marquee itself (full variant) is the shared `<Marquee>` engine — see
+ * that component for the velocity-reactive/pause-on-hover/reduced-motion
+ * behaviour, which lives there rather than being duplicated here.
  */
 const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const borders = root.querySelectorAll('[data-reveal="border"]')
@@ -70,29 +66,17 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
         </div>
 
         <div data-reveal="heading" class="mt-5 max-w-2xl">
-          <h2 class="text-heading text-ink uppercase">Trusted By Brands</h2>
-          <p class="text-body-lg text-ink-muted mt-6">
-            We collaborate with ambitious brands, teams and businesses to create work that moves people.
-          </p>
+          <h2 class="text-heading text-ink">Trusted By</h2>
+          <p class="text-label text-ink-muted mt-4">Brands We've Worked With</p>
         </div>
 
-        <div data-reveal="items" class="border-border-subtle marquee-viewport mt-16 overflow-hidden border-y py-10 sm:py-12">
-          <!--
-            Trailing margin (not container `gap`) on every item, including
-            the very last one — so the doubled track is exactly two equal
-            "item + spacing" halves and `translateX(-50%)` loops without
-            the half-gap jump a `gap`-based track would have at the seam.
-          -->
-          <div class="marquee-track flex w-max items-center">
-            <div v-for="brand in brands" :key="`a-${brand.id}`" class="mr-16 flex shrink-0 items-center justify-center sm:mr-24">
+        <div data-reveal="items" class="mt-16">
+          <Marquee :bordered="false" edge-fade pause-on-hover :duration="30" class="border-border-subtle border-y py-10 sm:py-12">
+            <div v-for="brand in brands" :key="brand.id" class="mr-16 flex shrink-0 items-center justify-center sm:mr-24">
               <TrustedByItem :brand="brand" />
             </div>
-            <div v-for="brand in brands" :key="`b-${brand.id}`" class="mr-16 flex shrink-0 items-center justify-center sm:mr-24" inert>
-              <TrustedByItem :brand="brand" />
-            </div>
-          </div>
+          </Marquee>
         </div>
-
       </template>
 
       <div v-else class="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-14">
@@ -110,43 +94,3 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
     </Container>
   </section>
 </template>
-
-<style scoped>
-/*
- * Infinite marquee — deliberately plain CSS, not GSAP. The brand strip is
- * rendered twice back-to-back (the second copy is `inert`, so it never
- * reaches the accessibility tree or tab order); translating the track by
- * exactly -50% of its own width loops it seamlessly, since the second
- * half is pixel-identical to the first. Running this off `animation`
- * rather than a scroll-linked tween means it never depends on JavaScript
- * initializing at all, and `prefers-reduced-motion` is handled natively.
- */
-.marquee-track {
-  animation: trusted-by-marquee 34s linear infinite;
-}
-
-.marquee-track:hover,
-.marquee-track:focus-within {
-  animation-play-state: paused;
-}
-
-.marquee-viewport {
-  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-}
-
-@keyframes trusted-by-marquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
-}
-</style>
