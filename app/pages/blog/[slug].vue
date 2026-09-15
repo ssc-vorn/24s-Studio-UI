@@ -26,7 +26,22 @@ useSeoMeta({
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: `https://24twentyfour.studio/blog/${article.slug}` }]
+  link: [{ rel: 'canonical', href: `https://24twentyfour.studio/blog/${article.slug}` }],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: article.title,
+        description: article.excerpt,
+        image: article.image,
+        datePublished: article.date,
+        author: { '@type': 'Person', name: article.author },
+        publisher: { '@type': 'Organization', name: '24 Twenty Four Studio' }
+      })
+    }
+  ]
 })
 
 const progressFillEl = ref<HTMLElement | null>(null)

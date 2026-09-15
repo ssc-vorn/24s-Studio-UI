@@ -1,6 +1,23 @@
 <script setup lang="ts">
 useHead({
-  htmlAttrs: { lang: 'en' }
+  htmlAttrs: { lang: 'en' },
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: '24 Twenty Four Studio',
+        alternateName: '24s Studio',
+        url: 'https://24twentyfour.studio',
+        description:
+          'A cinematic, art-directed creative studio building brands, digital experiences and visual stories — Cambodia × Global.',
+        email: 'hello@24twentyfour.studio',
+        address: { '@type': 'PostalAddress', addressLocality: 'Phnom Penh', addressCountry: 'KH' },
+        sameAs: ['https://instagram.com', 'https://behance.net', 'https://linkedin.com']
+      })
+    }
+  ]
 })
 
 // Vite/Nuxt replace `import.meta.dev` at build time and strip the dead

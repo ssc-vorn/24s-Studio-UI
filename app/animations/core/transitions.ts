@@ -22,7 +22,7 @@ export function pageEnter(gsapInstance: typeof GsapType, el: Element, done?: () 
       opacity: 1,
       y: 0,
       clipPath: 'inset(0 0 0% 0)',
-      duration: DURATION.slow,
+      duration: DURATION.base,
       ease: EASE.out,
       onComplete: done
     }
