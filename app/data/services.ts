@@ -15,7 +15,8 @@ export const services: Service[] = [
       'UX flows and information architecture',
       'Interface design and prototyping',
       'Design system documentation and handoff'
-    ]
+    ],
+    image: 'https://picsum.photos/1200/1500?random=501'
   },
   {
     id: 2,
@@ -31,7 +32,8 @@ export const services: Service[] = [
       'Visual design in the browser, not just in the file',
       'Front-end build with production-grade engineering',
       'QA, launch and post-launch support'
-    ]
+    ],
+    image: 'https://picsum.photos/1200/1500?random=502'
   },
   {
     id: 3,
@@ -47,7 +49,8 @@ export const services: Service[] = [
       'Creative system and campaign platform',
       'Launch across paid, owned and earned channels',
       'Reporting cadence and iteration'
-    ]
+    ],
+    image: 'https://picsum.photos/1200/1500?random=503'
   },
   {
     id: 4,
@@ -63,22 +66,7 @@ export const services: Service[] = [
       'Concept direction — three distinct territories, not one safe option',
       'System development across every real-world touchpoint',
       'Documentation built for a team that isn’t us'
-    ]
-  },
-  {
-    id: 5,
-    slug: 'web-design-development-2',
-    index: '05',
-    title: 'Web Design & Development',
-    summary: 'Websites designed and engineered with the same rigour, from first sketch to production launch.',
-    description:
-      'Our web work pairs art direction with production-grade engineering — what you approve in design is exactly what ships. We build modular, maintainable sites your own team can extend long after we’re gone.',
-    capabilities: ['Web Design', 'Front-End Development', 'CMS Integration', 'Performance Optimisation'],
-    process: [
-      'Sitemap, wireframes and content strategy',
-      'Visual design in the browser, not just in the file',
-      'Front-end build with production-grade engineering',
-      'QA, launch and post-launch support'
-    ]
+    ],
+    image: 'https://picsum.photos/1200/1500?random=504'
   }
 ]

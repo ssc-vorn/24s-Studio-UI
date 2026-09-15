@@ -1,56 +1,110 @@
 <script setup lang="ts">
 import { serviceRepository } from '~/repositories/serviceRepository'
+import { animateServiceRowsReveal, crossfadeServiceMedia } from '~/animations/sections/services'
 
 const serviceList = serviceRepository.list()
 
-/**
- * HOME / Services — sticky card stack, kept close together: cards pin in
- * place with pure CSS position: sticky (a slightly larger top offset per
- * card, so earlier cards peek out above), compositor-friendly with no
- * scroll-linked JS driving the pin/cover motion itself, and each card's
- * runway (min-h below) is short enough that several sit stacked in the
- * viewport at once rather than each filling most of it before the next
- * arrives. Each card then opens its own detail independently, scroll-
- * scrubbed — see ServiceItem. The runway needs to be a bit more than just
- * "tight": each card's own transition zone (a fixed viewport-percentage
- * range) needs enough clear scroll distance ahead of the next card's zone
- * to actually finish, or cards deep in the stack cascade open almost
- * simultaneously and read as unresponsive to scroll.
- */
-const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
-  const heading = root.querySelector('[data-reveal="heading"]')
-  if (heading) {
-    gsap.fromTo(
-      heading,
-      { opacity: 0, y: 32 },
-      { opacity: 1, y: 0, duration: reduced ? 0.001 : 0.8, ease: 'power3.out', scrollTrigger: { trigger: root, start: 'top 78%' } }
-    )
+const activeIndex = ref(0)
+const reduced = useReducedMotion()
+
+interface RowExposed {
+  separatorEl: HTMLElement | null
+  titleEl: HTMLElement | null
+  metaEl: HTMLElement | null
+}
+const rowRefs = ref<(RowExposed | null)[]>([])
+const imageEls = ref<(HTMLElement | null)[]>([])
+
+function setRowRef(el: unknown, index: number) {
+  rowRefs.value[index] = el as RowExposed | null
+}
+
+function setImageRef(el: Element | null, index: number) {
+  imageEls.value[index] = el as HTMLElement | null
+}
+
+function activate(index: number) {
+  if (index === activeIndex.value) return
+  const previous = activeIndex.value
+  activeIndex.value = index
+
+  const { gsap } = useGsap()
+  const outgoing = imageEls.value[previous]
+  const incoming = imageEls.value[index]
+  if (!incoming) return
+
+  if (reduced.value) {
+    if (outgoing) gsap.set(outgoing, { opacity: 0 })
+    gsap.set(incoming, { opacity: 1, clipPath: 'inset(0 0 0% 0)', scale: 1 })
+    return
   }
+
+  crossfadeServiceMedia(gsap, outgoing ?? null, incoming)
+}
+
+/**
+ * HOME / Services — mount — heading handled separately by <SplitText>; this
+ * only owns the row-list entrance (separators + titles + metas, one
+ * coordinated timeline — see animateServiceRowsReveal) and setting the
+ * initial image-panel state (first service visible, rest hidden, no
+ * animation — the crossfade only ever runs in response to `activate()`).
+ */
+const { root } = useScrollAnimation(({ gsap, root, reduced: isReduced }) => {
+  const separators = rowRefs.value.map((r) => r?.separatorEl).filter((el): el is HTMLElement => !!el)
+  const titles = rowRefs.value.map((r) => r?.titleEl).filter((el): el is HTMLElement => !!el)
+  const metas = rowRefs.value.map((r) => r?.metaEl).filter((el): el is HTMLElement => !!el)
+
+  const images = imageEls.value.filter((el): el is HTMLElement => !!el)
+  images.forEach((img, index) => {
+    gsap.set(img, { opacity: index === 0 ? 1 : 0, clipPath: 'inset(0 0 0% 0)', scale: 1 })
+  })
+
+  if (isReduced) {
+    gsap.set([...separators, ...titles, ...metas], { opacity: 1, scaleX: 1, y: 0 })
+    return
+  }
+
+  animateServiceRowsReveal(gsap, { separators, titles, metas }, root)
 })
 </script>
 
 <template>
   <section id="services" ref="root" class="bg-surface py-28 lg:py-40">
     <Container>
-      <div data-reveal="heading" class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <span class="text-label text-accent mb-5 flex items-center gap-3">
-            <span class="bg-accent h-px w-8" aria-hidden="true" />
-            What We Do
-          </span>
-          <h2 class="text-heading text-ink">Every discipline, one studio.</h2>
-        </div>
-        <AnimatedLink to="/services" class="shrink-0">All Services</AnimatedLink>
+      <div class="max-w-3xl">
+        <SplitText as="h2" class="text-heading text-ink">Every discipline. One studio.</SplitText>
+        <p class="text-body-lg text-ink-muted mt-6">
+          We combine strategy, identity, digital experience, technology and motion to create work that moves people.
+        </p>
       </div>
 
-      <div class="mt-14 lg:mt-20">
-        <div
-          v-for="(service, index) in serviceList"
-          :key="service.id"
-          class="pb-3 last:pb-0"
-          :class="index !== serviceList.length - 1 ? 'min-h-[26vh] lg:min-h-[32vh]' : ''"
-        >
-          <ServiceItem :service="service" :index="index" />
+      <div class="mt-16 grid grid-cols-1 gap-x-12 lg:mt-24 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <ServiceRow
+            v-for="(service, index) in serviceList"
+            :key="service.id"
+            :ref="(el) => setRowRef(el, index)"
+            :service="service"
+            :active="activeIndex === index"
+            :is-last="index === serviceList.length - 1"
+            @activate="activate(index)"
+          />
+        </div>
+
+        <div class="relative mt-16 hidden lg:col-span-5 lg:mt-0 lg:block">
+          <div class="sticky top-32">
+            <div class="relative aspect-4/5 overflow-hidden">
+              <img
+                v-for="(service, index) in serviceList"
+                :key="service.id"
+                :ref="(el) => setImageRef(el as Element | null, index)"
+                :src="service.image"
+                :alt="`${service.title} — representative work`"
+                loading="lazy"
+                class="absolute inset-0 size-full object-cover"
+              >
+            </div>
+          </div>
         </div>
       </div>
     </Container>

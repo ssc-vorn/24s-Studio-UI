@@ -24,8 +24,7 @@ const categoryByService: Record<string, ProjectCategory> = {
   'digital-product-design': 'Digital',
   'web-design-development': 'Digital',
   'digital-marketing-advertising': 'Marketing',
-  'brand-identity': 'Branding',
-  'web-design-development-2': 'Digital'
+  'brand-identity': 'Branding'
 }
 
 function relatedProjects(slug: string) {

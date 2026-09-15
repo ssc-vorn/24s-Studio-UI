@@ -24,6 +24,19 @@
     font-size: clamp(2.1rem, 1.7rem + 2.2vw, 4.5rem);
   }
 
+  /* Service-row titles (Home Services list) — needs its own tier rather than
+     reusing .text-heading: it has to visually dominate a compact row (number
+     + title + meta on one line) at every viewport, not just read as a
+     section heading. clamp() range ~28px mobile / ~50px tablet / ~77px
+     desktop. */
+  .text-service-title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+    font-size: clamp(1.75rem, 1.2rem + 4vw, 5rem);
+  }
+
   .text-subheading {
     font-family: var(--font-serif);
     font-weight: 400;

@@ -15,6 +15,9 @@ const root = ref<HTMLElement | null>(null)
 const imgEl = ref<HTMLElement | null>(null)
 
 useImageReveal(root, imgEl, { parallax: props.parallax, parallaxDistance: props.parallaxDistance })
+
+/** Exposed so a parent can read the real `<img>` node directly — e.g. the shared-element Work → Case Study transition needs a raw ref to capture on click, not just the reveal behavior. */
+defineExpose({ imgEl })
 </script>
 
 <template>

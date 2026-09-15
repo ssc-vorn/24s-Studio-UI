@@ -7,4 +7,6 @@ export interface Service {
   description: string
   capabilities: string[]
   process: string[]
+  /** Representative image for the Home services list's hover/tap media panel. */
+  image: string
 }
