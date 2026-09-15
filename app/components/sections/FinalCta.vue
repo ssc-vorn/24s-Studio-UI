@@ -14,19 +14,17 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const heading = root.querySelector('[data-reveal="heading"]')
   const cta = root.querySelector('[data-reveal="cta"]')
   const bg = root.querySelector('[data-reveal="bg"]')
+  const mark = root.querySelector('[data-reveal="mark"]')
 
   if (reduced) {
-    gsap.set([heading, cta], { opacity: 1, y: 0, scale: 1 })
+    gsap.set([heading, cta, mark], { opacity: 1, y: 0, scale: 1 })
     return
   }
 
   const tl = gsap.timeline({ scrollTrigger: { trigger: root, start: 'top 75%' } })
-  tl.fromTo(heading, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }).fromTo(
-    cta,
-    { opacity: 0, y: 40, scale: 0.96 },
-    { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' },
-    '-=0.7'
-  )
+  tl.fromTo(mark, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out' }, 0)
+    .fromTo(heading, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, 0.15)
+    .fromTo(cta, { opacity: 0, y: 40, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'power3.out' }, '-=0.7')
 
   if (bg) {
     gsap.fromTo(
@@ -34,6 +32,14 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
       { yPercent: -8, scale: 1.05 },
       { yPercent: 8, scale: 1.18, ease: 'none', scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: 0.6 } }
     )
+  }
+
+  if (mark) {
+    gsap.to(mark, {
+      yPercent: -10,
+      ease: 'none',
+      scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: 0.6 }
+    })
   }
 })
 </script>
@@ -49,6 +55,16 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
       loading="lazy"
     >
     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/80" aria-hidden="true" />
+
+    <!-- Geometric 24s form — the brand's numeral, faint and asymmetric,
+         echoing the Hero's ghost mark without repeating its exact
+         placement/scale: bottom-right here, corner-cropped, closing the
+         film rather than opening it. -->
+    <span
+      data-reveal="mark"
+      class="pointer-events-none absolute -right-[6vw] -bottom-[8vw] z-0 hidden font-serif text-[26vw] leading-none text-white/[0.05] select-none sm:block"
+      aria-hidden="true"
+    >24</span>
 
     <Container class="relative z-10 flex flex-col items-center text-center">
       <h2 data-reveal="heading" class="text-display max-w-4xl text-white">

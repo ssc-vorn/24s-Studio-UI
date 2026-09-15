@@ -1,6 +1,10 @@
 export const useNavigationStore = defineStore('navigation', () => {
   const isMenuOpen = ref(false)
   const isScrolled = ref(false)
+  /** True while the header is floating over a section whose background is
+   * unconditionally light regardless of the site's dark/light theme (e.g.
+   * the Studio Introduction's cream field) — see useHeaderLightSection. */
+  const headerOnLight = ref(false)
 
   function openMenu() {
     isMenuOpen.value = true
@@ -18,5 +22,9 @@ export const useNavigationStore = defineStore('navigation', () => {
     isScrolled.value = value
   }
 
-  return { isMenuOpen, isScrolled, openMenu, closeMenu, toggleMenu, setScrolled }
+  function setHeaderOnLight(value: boolean) {
+    headerOnLight.value = value
+  }
+
+  return { isMenuOpen, isScrolled, headerOnLight, openMenu, closeMenu, toggleMenu, setScrolled, setHeaderOnLight }
 })

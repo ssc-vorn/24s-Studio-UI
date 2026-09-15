@@ -12,12 +12,15 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-  { index: '01', label: 'Work', to: '/work', image: projectRepository.list()[0]!.coverImage },
-  { index: '02', label: 'Services', to: '/services', image: serviceRepository.list()[0]!.image },
-  { index: '03', label: 'Studio', to: '/about', image: 'https://picsum.photos/1200/1500?random=220' },
-  { index: '04', label: 'Insights', to: '/insights', image: articleRepository.list()[0]!.image },
-  { index: '05', label: 'Contact', to: '/contact', image: 'https://picsum.photos/1200/1500?random=290' }
+  { index: '01', label: 'Home', to: '/', image: 'https://picsum.photos/1200/1500?random=201' },
+  { index: '02', label: 'About', to: '/about', image: 'https://picsum.photos/1200/1500?random=220' },
+  { index: '03', label: 'Services', to: '/services', image: serviceRepository.list()[0]!.image },
+  { index: '04', label: 'Work', to: '/work', image: projectRepository.list()[0]!.coverImage },
+  { index: '05', label: 'Insights', to: '/insights', image: articleRepository.list()[0]!.image },
+  { index: '06', label: 'Contact', to: '/contact', image: 'https://picsum.photos/1200/1500?random=290' }
 ]
+
+const serviceLabels = serviceRepository.list().map((service) => service.title)
 
 const navigation = useNavigationStore()
 const reduced = useReducedMotion()
@@ -207,24 +210,33 @@ onUnmounted(() => {
                drive it, so it's simply absent there rather than shown inert;
                the mobile nav is the plain single-column list on its own,
                not this layout with a piece removed. -->
-          <div class="relative hidden aspect-4/5 overflow-hidden bg-white/5 lg:col-span-5 lg:block">
-            <img
-              v-for="(link, index) in navLinks"
-              :key="link.to"
-              :ref="(el) => setPreviewRef(el as Element | null, index)"
-              :src="link.image"
-              :alt="`${link.label} preview`"
-              loading="lazy"
-              class="absolute inset-0 size-full object-cover transition-opacity duration-500 ease-out"
-              :class="activeIndex === index ? 'opacity-100' : 'opacity-0'"
-            >
-            <div class="from-black/60 pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent to-transparent" aria-hidden="true" />
+          <div class="hidden flex-col gap-6 lg:col-span-5 lg:flex">
+            <div class="relative aspect-4/5 overflow-hidden bg-white/5">
+              <img
+                v-for="(link, index) in navLinks"
+                :key="link.to"
+                :ref="(el) => setPreviewRef(el as Element | null, index)"
+                :src="link.image"
+                :alt="`${link.label} preview`"
+                loading="lazy"
+                class="absolute inset-0 size-full object-cover transition-opacity duration-500 ease-out"
+                :class="activeIndex === index ? 'opacity-100' : 'opacity-0'"
+              >
+              <div class="from-black/60 pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent to-transparent" aria-hidden="true" />
+            </div>
+
+            <ul class="flex flex-col gap-2" aria-label="Services">
+              <li v-for="label in serviceLabels" :key="label" class="text-label text-white/40">{{ label }}</li>
+            </ul>
           </div>
         </div>
 
-        <div class="flex flex-col gap-4 pt-8 text-white/50 sm:flex-row sm:items-center sm:justify-between">
-          <a href="mailto:hello@24s.studio" class="text-body-sm transition-colors hover:text-white">hello@24s.studio</a>
-          <p class="text-body-sm">Available Worldwide</p>
+        <div class="border-t border-white/10 pt-8">
+          <p class="font-serif text-2xl leading-tight text-white sm:text-3xl">Let's Make Something Matter.</p>
+          <div class="mt-6 flex flex-col gap-4 text-white/50 sm:flex-row sm:items-center sm:justify-between">
+            <a href="mailto:hello@24s.studio" class="text-body-sm transition-colors hover:text-white">hello@24s.studio</a>
+            <p class="text-body-sm">Available Worldwide</p>
+          </div>
         </div>
       </div>
     </div>
