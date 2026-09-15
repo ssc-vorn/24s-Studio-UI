@@ -1,11 +1,10 @@
 <script setup lang="ts">
-// TODO(brand): swap this text lockup for the official 24 Twenty Four Studio
-// logo asset once it's added to the repo (e.g. `public/brand/logo.svg`),
-// rendered as a plain <img :src="..." alt="24 Twenty Four Studio"> at the
-// same size. This text
-// lockup is a deliberate stand-in, not a redrawn version of the mark — the
-// original asset was supplied as a pasted image this session had no way to
-// save to disk, so it could not be embedded pixel-for-pixel.
+// The official mark (`public/brand/logo.svg`) is a single flat-fill navy
+// (#032268) shape — fine as a plain <img> on light surfaces, but unreadable
+// on the black Hero / dark floating nav. Rather than redraw or recolor the
+// source file, `inverse` renders the exact same silhouette through a CSS
+// mask so it can be painted white on dark surfaces without touching the
+// asset itself.
 interface Props {
   inverse?: boolean
 }
@@ -14,9 +13,24 @@ withDefaults(defineProps<Props>(), { inverse: false })
 </script>
 
 <template>
-  <span class="inline-flex items-baseline gap-1.5 leading-none" :class="inverse ? 'text-white' : 'text-ink'">
-    <span class="text-sm font-semibold tracking-[0.02em]">24</span>
-    <span class="text-sm font-semibold tracking-[0.02em]">Twenty Four</span>
-    <span class="font-serif text-sm font-normal tracking-[0.02em] italic opacity-70">Studio</span>
-  </span>
+  <img v-if="!inverse" src="/brand/logo.svg" alt="24 Twenty Four Studio" class="h-6 w-auto">
+  <span
+    v-else
+    class="mask-logo inline-block h-6 w-16 bg-white"
+    role="img"
+    aria-label="24 Twenty Four Studio"
+  />
 </template>
+
+<style scoped>
+.mask-logo {
+  mask-image: url('/brand/logo.svg');
+  mask-repeat: no-repeat;
+  mask-position: left center;
+  mask-size: contain;
+  -webkit-mask-image: url('/brand/logo.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: left center;
+  -webkit-mask-size: contain;
+}
+</style>

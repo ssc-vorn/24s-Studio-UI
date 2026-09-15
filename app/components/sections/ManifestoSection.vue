@@ -21,6 +21,15 @@ function setPhraseRef(el: Element | null, index: number) {
  * (also the entire reduced-motion/no-JS path): a normal short section, no
  * scroll runway, no sticky — phrases stacked in flow and fully visible.
  *
+ * Background is a hardcoded `bg-warm`, not the theme-reactive `bg-surface`
+ * token every other section uses — deliberate. This is the Hero's
+ * black-to-cream "signature moment": Hero is unconditionally black
+ * regardless of the site's dark/light toggle, so the section right after it
+ * has to be unconditionally cream to land that cut, not near-black in dark
+ * mode (which `bg-surface` would be). Safe to hardcode because this
+ * component is homepage-only (checked: no other route imports it) — it
+ * doesn't fight the theme system anywhere else.
+ *
  * The tall scroll-runway height and the sticky positioning are applied
  * imperatively here, only on the full-motion path, rather than as a
  * reactive template class/style binding. That's deliberate, not a style
@@ -52,7 +61,7 @@ const { root } = useScrollAnimation(({ gsap, reduced }) => {
 </script>
 
 <template>
-  <section ref="root" class="bg-surface">
+  <section ref="root" class="bg-warm">
     <div ref="pinRoot" class="relative">
       <div ref="stickyViewport" class="flex min-h-screen flex-col justify-center py-24">
         <Container narrow>
@@ -61,13 +70,13 @@ const { root } = useScrollAnimation(({ gsap, reduced }) => {
               v-for="(phrase, index) in phrases"
               :key="phrase"
               :ref="(el) => setPhraseRef(el as Element | null, index)"
-              class="text-display text-ink"
+              class="text-display text-charcoal"
             >
               {{ phrase }}
             </p>
           </div>
 
-          <p ref="supportingEl" class="text-body-lg text-ink-muted mt-10 max-w-xl">
+          <p ref="supportingEl" class="text-body-lg mt-10 max-w-xl text-charcoal/60">
             {{ supportingStatement }}
           </p>
         </Container>
