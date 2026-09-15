@@ -7,11 +7,13 @@ interface MagneticOptions {
 /**
  * Attaches a magnetic hover effect to an element. Returns a cleanup function.
  * Caller owns the gsap instance so this stays free of module-level GSAP imports.
+ * Default strength matches MagneticButton, the app's primary caller —
+ * TrustedByItem overrides it lower (0.15) for its smaller logo tiles.
  */
 export function attachMagnetic(
   gsapInstance: typeof GsapType,
   el: HTMLElement,
-  { strength = 0.35 }: MagneticOptions = {}
+  { strength = 0.2 }: MagneticOptions = {}
 ) {
   const quickX = gsapInstance.quickTo(el, 'x', { duration: 0.5, ease: 'power3.out' })
   const quickY = gsapInstance.quickTo(el, 'y', { duration: 0.5, ease: 'power3.out' })

@@ -87,6 +87,17 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   // almost simultaneously and read as unresponsive. Narrower zone completes
   // each card's own transition faster, freeing up genuine settled scroll
   // distance before the next card's zone begins.
+  //
+  // Deliberate exception to the transform/opacity/clip-path rule the rest of
+  // the motion system follows: color/backgroundColor/borderColor/padding are
+  // paint-only (no reflow), but `detailWrap`'s `height` genuinely triggers
+  // layout every frame. There's no compositor-only equivalent for "the card
+  // physically grows as its content becomes visible," which is the actual
+  // effect wanted here — a `maxHeight` cap or `clipPath` substitute would
+  // either need a hardcoded upper bound (breaks with dynamic content/font
+  // size) or lose the height-driven reflow entirely. Kept intentionally,
+  // scoped to this one component, over a short/narrow scrub zone rather than
+  // a long free-running tween.
   gsap.timeline({
     scrollTrigger: {
       trigger: card,

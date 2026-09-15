@@ -2,6 +2,18 @@ import Lenis from 'lenis'
 import { gsap, ScrollTrigger, registerGsap } from '~/animations/core/gsap'
 import { refreshScrollTriggerAfterFonts } from '~/animations/core/refresh'
 
+/**
+ * Created once for the app's entire session — this plugin runs a single
+ * time on initial load, not per-route, so there's no teardown/recreate path
+ * for the Lenis instance (no `.destroy()` call exists anywhere). That's
+ * correct for the app's only current motion switch, the OS-level
+ * `prefers-reduced-motion` media query, which is read once here before
+ * Lenis is ever constructed. It would stop being correct if the app grew an
+ * in-app "reduce motion" toggle that needs to flip Lenis on/off at runtime —
+ * that feature doesn't exist today, but implementing it would need this
+ * plugin restructured around a re-creatable instance, not just a one-line
+ * settings check.
+ */
 export default defineNuxtPlugin((nuxtApp) => {
   registerGsap()
 

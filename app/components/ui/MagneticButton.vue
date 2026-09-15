@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{ click: [MouseEvent] }>()
 
 const el = ref<HTMLElement | { $el: HTMLElement } | null>(null)
-useMagnetic(el, { strength: 0.2 })
+useMagnetic(el)
 </script>
 
 <template>
