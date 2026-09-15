@@ -50,7 +50,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   <section
     ref="root"
     class="bg-surface relative"
-    :class="props.variant === 'full' ? 'py-28 lg:py-40' : 'py-14 lg:py-16'"
+    :class="props.variant === 'full' ? 'py-32 lg:flex lg:min-h-screen lg:items-center lg:py-0' : 'py-14 lg:py-16'"
     aria-label="Trusted by brands"
   >
     <template v-if="props.variant === 'full'">
@@ -58,7 +58,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
       <span data-reveal="border" class="bg-border-subtle absolute inset-x-0 bottom-0 h-px" aria-hidden="true" />
     </template>
 
-    <Container>
+    <Container class="w-full">
       <template v-if="props.variant === 'full'">
         <div class="flex items-center gap-3">
           <span data-reveal="line" class="bg-accent h-px w-8 origin-left" aria-hidden="true" />
@@ -70,8 +70,8 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
           <p class="text-label text-ink-muted mt-4">Brands We've Worked With</p>
         </div>
 
-        <div data-reveal="items" class="mt-16">
-          <Marquee :bordered="false" edge-fade pause-on-hover :duration="30" class="border-border-subtle border-y py-10 sm:py-12">
+        <div data-reveal="items" class="group/wall mt-16">
+          <Marquee :bordered="false" edge-fade pause-on-hover :duration="30" class="border-border-subtle border-y py-12 sm:py-16">
             <div v-for="brand in brands" :key="brand.id" class="mr-16 flex shrink-0 items-center justify-center sm:mr-24">
               <TrustedByItem :brand="brand" />
             </div>

@@ -24,7 +24,7 @@ const hoverClass = computed(() => 'group-hover:text-accent')
     v-if="brand.caseStudySlug"
     ref="el"
     :to="`/work/${brand.caseStudySlug}`"
-    class="group relative inline-block will-change-transform"
+    class="group relative inline-block opacity-100 transition-[opacity,transform] duration-300 will-change-transform group-hover/wall:opacity-45 hover:scale-[1.04] hover:opacity-100!"
     :aria-label="`View the ${brand.name} case study`"
   >
     <span :class="[wordmarkClass, hoverClass]">{{ brand.name }}</span>
@@ -34,5 +34,5 @@ const hoverClass = computed(() => 'group-hover:text-accent')
     />
   </NuxtLink>
 
-  <span v-else :class="wordmarkClass">{{ props.brand.name }}</span>
+  <span v-else :class="[wordmarkClass, 'transition-opacity duration-300 group-hover/wall:opacity-45']">{{ props.brand.name }}</span>
 </template>

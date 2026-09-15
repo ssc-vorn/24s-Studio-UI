@@ -40,7 +40,7 @@ const onDarkSurface = computed(() => theme.isDark && !navigation.headerOnLight)
         <BrandLogo :inverse="onDarkSurface" />
       </NuxtLink>
 
-      <div class="hidden flex-col items-end text-right sm:flex" :class="onDarkSurface ? 'text-white/70' : 'text-ink/70'">
+      <div class="hidden flex-col items-end text-right sm:flex" :class="onDarkSurface ? 'text-white/70' : 'text-charcoal/70'">
         <span class="text-label">24s Studio</span>
         <span class="text-label">Digital Creative Studio</span>
       </div>
@@ -48,7 +48,7 @@ const onDarkSurface = computed(() => theme.isDark && !navigation.headerOnLight)
       <button
         type="button"
         class="group flex shrink-0 items-center gap-3 uppercase transition-colors"
-        :class="onDarkSurface ? 'text-white hover:text-accent' : 'text-ink hover:text-accent'"
+        :class="onDarkSurface ? 'text-white hover:text-accent' : 'text-charcoal hover:text-accent'"
         aria-controls="fullscreen-menu"
         :aria-expanded="navigation.isMenuOpen"
         aria-label="Toggle navigation menu"
