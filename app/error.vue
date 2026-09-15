@@ -4,6 +4,7 @@ import type { NuxtError } from '#app'
 const props = defineProps<{ error: NuxtError }>()
 
 const isNotFound = computed(() => props.error.statusCode === 404)
+const theme = useThemeStore()
 
 useSeoMeta({
   title: isNotFound.value ? 'Page Not Found — 24s Studio' : 'Something Went Wrong — 24s Studio'
@@ -19,7 +20,7 @@ function handleClear() {
     <header class="fixed inset-x-0 top-0 z-50 py-6">
       <Container>
         <NuxtLink to="/" @click.prevent="handleClear">
-          <BrandLogo />
+          <BrandLogo :inverse="theme.isDark" />
         </NuxtLink>
       </Container>
     </header>

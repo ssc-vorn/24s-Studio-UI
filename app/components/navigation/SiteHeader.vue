@@ -31,7 +31,7 @@ onUnmounted(() => {
           :class="navigation.isScrolled ? 'scale-90' : 'scale-100'"
           @click="navigation.closeMenu()"
         >
-          <BrandLogo />
+          <BrandLogo :inverse="theme.isDark" />
         </NuxtLink>
 
         <div class="flex items-center gap-5">
