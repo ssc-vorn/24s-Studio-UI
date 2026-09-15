@@ -95,7 +95,7 @@ export const projects: Project[] = [
     creativeDirection: 'Kinetic type fragments, cloth and fabric simulation tied to footstrike rhythm, and a sound design built around breath and stride cadence.',
     execution: 'A modular after-effects rig delivered to the in-house team, alongside the launch film and six cutdowns for paid media.',
     result: 'The motion system became the reference point for the brand’s entire visual identity going forward.',
-    featured: false
+    featured: true
   },
   {
     id: 5,

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { trustedBrandRepository } from '~/repositories/trustedBrandRepository'
+import { studioStats } from '~/data/studio'
 
 interface Props {
   /** `full` — standalone showcase with heading + copy + bordered brand wall (Home). `compact` — a slim inline trust line for embedding inside another page's section (About, Contact). */
@@ -32,9 +33,10 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const label = root.querySelector('[data-reveal="label"]')
   const heading = root.querySelector('[data-reveal="heading"]')
   const items = root.querySelector('[data-reveal="items"]')
+  const stats = root.querySelector('[data-reveal="stats"]')
 
   if (reduced) {
-    gsap.set([...borders, line, label, heading, items], { opacity: 1, scaleX: 1, x: 0, y: 0 })
+    gsap.set([...borders, line, label, heading, items, stats], { opacity: 1, scaleX: 1, x: 0, y: 0 })
     return
   }
 
@@ -47,6 +49,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   if (heading) tl.fromTo(heading, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.2')
 
   if (items) tl.fromTo(items, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.3')
+  if (stats) tl.fromTo(stats, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.35')
 })
 </script>
 
@@ -90,6 +93,13 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
             <div v-for="brand in brands" :key="`b-${brand.id}`" class="mr-16 flex shrink-0 items-center justify-center sm:mr-24" inert>
               <TrustedByItem :brand="brand" />
             </div>
+          </div>
+        </div>
+
+        <div data-reveal="stats" class="mt-14 grid grid-cols-3 gap-6 sm:mt-16 sm:max-w-xl">
+          <div v-for="stat in studioStats" :key="stat.label">
+            <p class="text-heading text-accent">{{ stat.value }}</p>
+            <p class="text-body-sm text-ink-muted mt-1">{{ stat.label }}</p>
           </div>
         </div>
       </template>

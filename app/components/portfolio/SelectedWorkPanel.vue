@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), { size: 'large' })
   <NuxtLink
     :to="`/work/${project.slug}`"
     class="group relative flex items-end overflow-hidden bg-black"
-    :class="size === 'large' ? 'aspect-4/5 sm:aspect-3/4' : 'aspect-16/11'"
+    :class="size === 'large' ? 'aspect-4/5 sm:aspect-2/1' : 'aspect-4/3'"
   >
     <div data-reveal="media" class="absolute inset-0">
       <img
@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), { size: 'large' })
 
     <div class="relative z-10 w-full p-6" :class="size === 'large' ? 'sm:p-8' : 'sm:p-6'">
       <div data-reveal="meta-title" class="flex flex-wrap items-end justify-between gap-4">
-        <h3 :class="size === 'large' ? 'text-display' : 'text-heading'" class="text-white">{{ project.title }}</h3>
+        <h3 :class="size === 'large' ? 'text-display' : 'text-subheading'" class="text-white">{{ project.title }}</h3>
         <span
           class="bg-white text-black flex shrink-0 items-center justify-center transition-all duration-400 group-hover:bg-accent group-hover:text-white"
           :class="size === 'large' ? 'size-14' : 'size-11'"
