@@ -2,7 +2,7 @@ import type { gsap as GsapType } from 'gsap'
 import { DURATION } from '../constants'
 
 interface HeroEntranceTargets {
-  visual: Element | null
+  background: Element | null
   eyebrow: Element | null
   headingLines: Element[]
   paragraph: Element | null
@@ -15,17 +15,14 @@ interface HeroEntranceTargets {
 /**
  * HOME / Hero — page load — cinematic entrance, timed to an explicit
  * schedule (absolute positions, not relative offsets) rather than this
- * codebase's usual "-=X" chaining: abstract visual 0 → eyebrow 0.35s → each
+ * codebase's usual "-=X" chaining: background 0 → eyebrow 0.35s → each
  * headline line 0.45/0.58/0.70s → paragraph 0.90s → CTAs 1.05s → clients
  * label 1.15s → client wordmarks 1.25s, landing everything by ~1.6s total.
  * Headline lines are GSAP SplitText `.lines` (mask-wrapped by SplitText
  * itself), so this only tweens opacity/y — the clip reveal is already the
  * mask, not a second clip-path animation on top of it.
  * Library: GSAP. Easing: power3/power4.out throughout, no bounce/overshoot.
- * Reduced motion: every target snaps directly to its resting state (the
- * abstract visual's own ambient drift loop is a separate CSS animation,
- * gated independently via `prefers-reduced-motion` in HeroContent's
- * stylesheet — this timeline only ever controls its one-time entrance).
+ * Reduced motion: every target snaps directly to its resting state.
  */
 export function animateHeroEntrance(gsapInstance: typeof GsapType, targets: HeroEntranceTargets, reduced: boolean) {
   const tl = gsapInstance.timeline({ defaults: { ease: 'power3.out' } })
@@ -33,7 +30,7 @@ export function animateHeroEntrance(gsapInstance: typeof GsapType, targets: Hero
   if (reduced) {
     tl.set(
       [
-        targets.visual,
+        targets.background,
         targets.eyebrow,
         ...targets.headingLines,
         targets.paragraph,
@@ -47,7 +44,7 @@ export function animateHeroEntrance(gsapInstance: typeof GsapType, targets: Hero
     return tl
   }
 
-  tl.fromTo(targets.visual, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 1.1, ease: 'power4.out' }, 0)
+  tl.fromTo(targets.background, { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 1.1, ease: 'power4.out' }, 0)
     .fromTo(targets.eyebrow, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: DURATION.fast }, 0.35)
 
   targets.headingLines.forEach((line, index) => {
@@ -79,14 +76,14 @@ interface HeroExitTargets {
 
 /**
  * HOME / Hero — scroll (scrub) — as the user scrolls the Hero out of view,
- * headline/copy/CTA lift and fade while the trust layer only dims to 50%
+ * headline/copy/CTA fade and lift while the trust layer only dims to 50%
  * opacity rather than disappearing (it's read as credibility, not primary
  * content, and the brief is explicit it should quiet down, not vanish).
  * Independent ScrollTrigger from the entrance timeline above (which has
- * none — it plays once on mount) and from the existing continuous visual
- * expand/drift scrub in HeroContent.vue (different elements — text layers
- * here, the abstract visual wrap there — so neither fights the other for
- * control of the same transform).
+ * none — it plays once on mount) and from the existing continuous
+ * background-zoom scrub in HeroContent.vue (different elements — text
+ * layers here, the background image there — so neither fights the other
+ * for control of the same transform).
  * Reduced motion: caller should skip calling this entirely.
  */
 export function animateHeroExit(gsapInstance: typeof GsapType, targets: HeroExitTargets) {
