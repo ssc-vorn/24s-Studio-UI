@@ -52,7 +52,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
 
     <Container class="relative z-10 flex flex-col items-center text-center">
       <h2 data-reveal="heading" class="text-display max-w-4xl text-white">
-        Have an idea worth building?
+        Let’s make something matter.
       </h2>
 
       <div data-reveal="cta" class="mt-12">

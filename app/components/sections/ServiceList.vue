@@ -2,6 +2,16 @@
 import { serviceRepository } from '~/repositories/serviceRepository'
 import { animateServiceRowsReveal, crossfadeServiceMedia } from '~/animations/sections/services'
 
+interface Props {
+  heading?: string
+  intro?: string
+}
+
+withDefaults(defineProps<Props>(), {
+  heading: 'Every discipline. One studio.',
+  intro: 'Graphic design, brand identity, video editing, digital marketing and advertising — five disciplines run as one continuous system.'
+})
+
 const serviceList = serviceRepository.list()
 
 const activeIndex = ref(0)
@@ -72,10 +82,8 @@ const { root } = useScrollAnimation(({ gsap, root, reduced: isReduced }) => {
   <section id="services" ref="root" class="bg-surface py-28 lg:py-40">
     <Container>
       <div class="max-w-3xl">
-        <SplitText as="h2" class="text-heading text-ink">Every discipline. One studio.</SplitText>
-        <p class="text-body-lg text-ink-muted mt-6">
-          We combine strategy, identity, digital experience, technology and motion to create work that moves people.
-        </p>
+        <SplitText as="h2" class="text-heading text-ink">{{ heading }}</SplitText>
+        <p class="text-body-lg text-ink-muted mt-6">{{ intro }}</p>
       </div>
 
       <div class="mt-16 grid grid-cols-1 gap-x-12 lg:mt-24 lg:grid-cols-12">

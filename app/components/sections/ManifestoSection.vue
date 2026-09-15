@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { animateManifestoSequence } from '~/animations/sections/manifesto'
 
-const phrases = ['We create', 'brands,', 'digital experiences', 'and visual stories', 'that move people.']
+const phrases = ['We are a', 'digital creative studio', 'building brands', 'with purpose.']
 const supportingStatement =
   'Every project starts with a point of view, not a template — and ends with something worth remembering.'
 

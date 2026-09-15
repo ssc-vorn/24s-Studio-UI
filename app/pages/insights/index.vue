@@ -4,16 +4,16 @@ import { articleRepository } from '~/repositories/articleRepository'
 import { formatDate } from '~/utils/formatters'
 
 useSeoMeta({
-  title: 'Journal — 24 Twenty Four Studio',
-  description: 'Notes on brand craft, motion design, digital product and strategy from the 24 Twenty Four Studio team.',
-  ogTitle: 'Journal — 24 Twenty Four Studio',
-  ogDescription: 'Notes on brand craft, motion design, digital product and strategy from the 24 Twenty Four Studio team.',
+  title: 'Insights — 24s Studio',
+  description: 'Notes on brand craft, motion design, digital marketing and creative strategy from the 24s Studio team.',
+  ogTitle: 'Insights — 24s Studio',
+  ogDescription: 'Notes on brand craft, motion design, digital marketing and creative strategy from the 24s Studio team.',
   ogImage: 'https://picsum.photos/1200/630?random=2',
   twitterCard: 'summary_large_image'
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: 'https://24twentyfour.studio/blog' }]
+  link: [{ rel: 'canonical', href: 'https://24s.studio/insights' }]
 })
 
 const allArticles = articleRepository.list()
@@ -27,7 +27,7 @@ const rest = allArticles.slice(1)
       <Container>
         <span class="text-label text-accent mb-6 flex items-center gap-3">
           <span class="bg-accent h-px w-8" aria-hidden="true" />
-          Journal
+          Insights
         </span>
         <h1 class="text-display-xl max-w-4xl text-ink">Ideas, process and craft from the studio.</h1>
       </Container>
@@ -35,7 +35,7 @@ const rest = allArticles.slice(1)
 
     <section v-if="featured" class="bg-surface pb-20">
       <Container>
-        <NuxtLink :to="`/blog/${featured.slug}`" class="group grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+        <NuxtLink :to="`/insights/${featured.slug}`" class="group grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
           <Reveal variant="clip" class="bg-charcoal-200 block aspect-4/3 overflow-hidden lg:col-span-7">
             <img :src="featured.image" :alt="featured.title" class="size-full object-cover transition-transform duration-700 group-hover:scale-105">
           </Reveal>
@@ -62,7 +62,7 @@ const rest = allArticles.slice(1)
       <Container>
         <div class="border-border-subtle border-t pt-16">
           <ScrollReveal as="div" class="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-            <NuxtLink v-for="article in rest" :key="article.slug" :to="`/blog/${article.slug}`">
+            <NuxtLink v-for="article in rest" :key="article.slug" :to="`/insights/${article.slug}`">
               <ArticleCard :article="article" />
             </NuxtLink>
           </ScrollReveal>

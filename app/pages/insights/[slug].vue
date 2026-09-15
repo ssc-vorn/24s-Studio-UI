@@ -16,9 +16,9 @@ const related = articleService.getRelated(article.slug, 3)
 const next = articleService.getNext(article.slug)
 
 useSeoMeta({
-  title: `${article.title} — 24 Twenty Four Studio Journal`,
+  title: `${article.title} — 24s Studio Insights`,
   description: article.excerpt,
-  ogTitle: `${article.title} — 24 Twenty Four Studio Journal`,
+  ogTitle: `${article.title} — 24s Studio Insights`,
   ogDescription: article.excerpt,
   ogImage: article.image,
   ogType: 'article',
@@ -26,7 +26,7 @@ useSeoMeta({
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: `https://24twentyfour.studio/blog/${article.slug}` }],
+  link: [{ rel: 'canonical', href: `https://24s.studio/insights/${article.slug}` }],
   script: [
     {
       type: 'application/ld+json',
@@ -38,7 +38,7 @@ useHead({
         image: article.image,
         datePublished: article.date,
         author: { '@type': 'Person', name: article.author },
-        publisher: { '@type': 'Organization', name: '24 Twenty Four Studio' }
+        publisher: { '@type': 'Organization', name: '24s Studio' }
       })
     }
   ]
@@ -146,7 +146,7 @@ async function copyLink() {
       <Container>
         <p class="text-label text-ink-muted mb-10">Related Articles</p>
         <div class="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-3">
-          <NuxtLink v-for="item in related" :key="item.slug" :to="`/blog/${item.slug}`">
+          <NuxtLink v-for="item in related" :key="item.slug" :to="`/insights/${item.slug}`">
             <ArticleCard :article="item" />
           </NuxtLink>
         </div>
@@ -154,7 +154,7 @@ async function copyLink() {
     </section>
 
     <section v-if="next" class="bg-surface">
-      <NuxtLink :to="`/blog/${next.slug}`" class="group border-border-subtle flex items-center justify-between border-t px-6 py-10 sm:px-10 lg:px-16">
+      <NuxtLink :to="`/insights/${next.slug}`" class="group border-border-subtle flex items-center justify-between border-t px-6 py-10 sm:px-10 lg:px-16">
         <div>
           <span class="text-label text-ink-muted">Next Article</span>
           <h2 class="text-subheading mt-2 text-ink transition-colors group-hover:text-accent">{{ next.title }}</h2>

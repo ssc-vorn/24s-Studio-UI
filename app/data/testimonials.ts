@@ -57,9 +57,9 @@ export const testimonials: Testimonial[] = [
     role: 'Creative Director',
     company: 'Aperture Film Co.',
     project: 'Brand Film & Social Cutdowns',
-    service: 'Video & Motion',
+    service: 'Video Editing',
     projectSlug: 'aperture-film-co',
-    serviceSlug: 'video-motion',
+    serviceSlug: 'video-editing',
     featured: true
   },
   {
@@ -70,9 +70,9 @@ export const testimonials: Testimonial[] = [
     role: 'Head of Marketing',
     company: 'Tidal Energy',
     project: 'European Campaign Platform',
-    service: 'Digital Marketing & Advertising',
+    service: 'Advertising',
     projectSlug: 'tidal-energy',
-    serviceSlug: 'digital-marketing-advertising',
+    serviceSlug: 'advertising',
     featured: true
   }
 ]

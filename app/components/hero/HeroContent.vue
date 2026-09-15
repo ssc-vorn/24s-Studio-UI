@@ -126,16 +126,16 @@ onUnmounted(() => {
     </div>
 
     <Container class="relative z-10 order-1 flex flex-1 flex-col justify-center pt-32 pb-12 lg:pb-20">
-      <span ref="eyebrowEl" class="text-label mb-6 text-white/70">Cambodia × Global — Creative Studio</span>
+      <span ref="eyebrowEl" class="text-label mb-6 text-white/70">Digital Creative Studio</span>
 
       <h1 ref="headingEl" class="text-display-xl max-w-5xl text-white">
-        Ideas<br>
-        <span class="text-white/55">That</span><br>
+        We Make<br>
+        <span class="text-white/55">Brands</span><br>
         Move.
       </h1>
 
       <p ref="paragraphEl" class="text-body-lg mt-8 max-w-md text-white/70">
-        We build brands, digital experiences and visual worlds for ambitious ideas.
+        Graphic design, brand identity, video editing, digital marketing and advertising — built as one continuous system, not five disconnected vendors.
       </p>
 
       <div ref="ctaEl" class="mt-10 flex flex-wrap items-center gap-4">

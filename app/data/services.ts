@@ -3,59 +3,25 @@ import type { Service } from '~/types/service'
 export const services: Service[] = [
   {
     id: 1,
-    slug: 'digital-product-design',
+    slug: 'graphic-design',
     index: '01',
-    title: 'Digital Product Design',
-    summary: 'Product strategy, UX and interface design that turns complex ideas into clear, usable experiences.',
+    title: 'Graphic Design',
+    summary: 'Print, packaging and digital graphics built with the same editorial discipline as the brand system around them.',
     description:
-      'We design digital products from early concept to scalable systems — combining product strategy, UX and interface design to help startups and established companies turn complex ideas into experiences people actually want to use.',
-    capabilities: ['Product Strategy', 'UX Design', 'UI Design', 'Design Systems'],
+      'From packaging and print collateral to digital layouts and campaign assets, we treat every graphic as a small piece of the larger brand system — considered typography, deliberate composition and a point of view, not decoration applied after the fact.',
+    capabilities: ['Print & Packaging', 'Layout & Composition', 'Typography Systems', 'Campaign Assets'],
     process: [
-      'Discovery and product strategy workshops',
-      'UX flows and information architecture',
-      'Interface design and prototyping',
-      'Design system documentation and handoff'
+      'Audit of existing assets and visual language',
+      'Concept exploration across real formats, not mockups',
+      'Refinement against production constraints',
+      'Production-ready files and usage guidelines'
     ],
     image: 'https://picsum.photos/1200/1500?random=501'
   },
   {
     id: 2,
-    slug: 'web-design-development',
-    index: '02',
-    title: 'Web Design & Development',
-    summary: 'Websites designed and engineered with the same rigour, from first sketch to production launch.',
-    description:
-      'Our web work pairs art direction with production-grade engineering — what you approve in design is exactly what ships. We build modular, maintainable sites your own team can extend long after we’re gone.',
-    capabilities: ['Web Design', 'Front-End Development', 'CMS Integration', 'Performance Optimisation'],
-    process: [
-      'Sitemap, wireframes and content strategy',
-      'Visual design in the browser, not just in the file',
-      'Front-end build with production-grade engineering',
-      'QA, launch and post-launch support'
-    ],
-    image: 'https://picsum.photos/1200/1500?random=502'
-  },
-  {
-    id: 3,
-    slug: 'digital-marketing-advertising',
-    index: '03',
-    title: 'Digital Marketing & Advertising',
-    summary: 'Campaign strategy and paid media that turns creative work into measurable momentum.',
-    description:
-      'We design campaign platforms and advertising systems that scale across markets and channels without losing their shape, then hand over a system your team can run independently long after launch.',
-    capabilities: ['Campaign Strategy', 'Paid Media', 'Social Advertising', 'Performance Reporting'],
-    process: [
-      'Channel and audience strategy',
-      'Creative system and campaign platform',
-      'Launch across paid, owned and earned channels',
-      'Reporting cadence and iteration'
-    ],
-    image: 'https://picsum.photos/1200/1500?random=503'
-  },
-  {
-    id: 4,
     slug: 'brand-identity',
-    index: '04',
+    index: '02',
     title: 'Brand Identity',
     summary: 'Strategy, identity and art direction built to hold up for a decade, not a trend cycle.',
     description:
@@ -68,5 +34,56 @@ export const services: Service[] = [
       'Documentation built for a team that isn’t us'
     ],
     image: 'https://picsum.photos/1200/1500?random=504'
+  },
+  {
+    id: 3,
+    slug: 'video-editing',
+    index: '03',
+    title: 'Video Editing',
+    summary: 'Cinematic edits and motion language that hold a brand together across every cut, from launch film to fifteen-second cutdown.',
+    description:
+      'We cut brand films, campaign content and social edits with the same rigour as the identity they carry — pacing, sound design and colour treated as brand decisions, not post-production afterthoughts.',
+    capabilities: ['Narrative Editing', 'Motion Graphics', 'Colour Grading', 'Sound Design'],
+    process: [
+      'Story and pacing plan before a single cut is made',
+      'Assembly edit reviewed against the brand’s motion language',
+      'Colour, sound and motion graphics pass',
+      'Delivery across every aspect ratio and platform'
+    ],
+    image: 'https://picsum.photos/1200/1500?random=502'
+  },
+  {
+    id: 4,
+    slug: 'digital-marketing',
+    index: '04',
+    title: 'Digital Marketing',
+    summary: 'Channel strategy and content systems that turn creative work into measurable, repeatable momentum.',
+    description:
+      'We design content and channel strategies that scale across markets without losing their shape, then hand over a system your team can run independently long after launch.',
+    capabilities: ['Channel Strategy', 'Content Systems', 'Social Strategy', 'Performance Reporting'],
+    process: [
+      'Audience and channel audit',
+      'Content system and editorial calendar',
+      'Launch across owned and earned channels',
+      'Reporting cadence and iteration'
+    ],
+    image: 'https://picsum.photos/1200/1500?random=503'
+  },
+  {
+    id: 5,
+    slug: 'advertising',
+    index: '05',
+    title: 'Advertising',
+    summary: 'Campaign platforms and paid media built to travel across markets without losing their voice.',
+    description:
+      'From concept to media buy, we build advertising campaigns as a coherent creative platform — one idea that flexes across formats and markets rather than a set of disconnected executions.',
+    capabilities: ['Campaign Strategy', 'Paid Media', 'Creative Production', 'Media Planning'],
+    process: [
+      'Campaign platform and creative territory',
+      'Production across every required format',
+      'Media planning and launch',
+      'Optimisation against real performance data'
+    ],
+    image: 'https://picsum.photos/1200/1500?random=505'
   }
 ]
