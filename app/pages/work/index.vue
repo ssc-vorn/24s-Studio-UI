@@ -1,24 +1,26 @@
 <script setup lang="ts">
 import type { gsap } from 'gsap'
 import { projectRepository } from '~/repositories/projectRepository'
+import { projectService } from '~/services/projectService'
 import type { ProjectCategory } from '~/types/project'
 import { filterEnter, filterExit } from '~/animations/sections/portfolio'
 
 type Category = 'All' | ProjectCategory
 
 const categories: Category[] = ['All', 'Branding', 'Digital', 'Video', 'Marketing']
+const reelProjects = projectService.getSelectedWork(6)
 
 useSeoMeta({
-  title: 'Work — 24 Twenty Four Studio',
-  description: 'An archive of branding, digital, video & motion and marketing work from the 24 Twenty Four Studio team.',
-  ogTitle: 'Work — 24 Twenty Four Studio',
-  ogDescription: 'An archive of branding, digital, video & motion and marketing work from the 24 Twenty Four Studio team.',
+  title: 'Work — 24s Studio',
+  description: 'An archive of branding, digital, video & motion and marketing work from the 24s Studio team.',
+  ogTitle: 'Work — 24s Studio',
+  ogDescription: 'An archive of branding, digital, video & motion and marketing work from the 24s Studio team.',
   ogImage: 'https://picsum.photos/1200/630?random=3',
   twitterCard: 'summary_large_image'
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: 'https://24twentyfour.studio/work' }]
+  link: [{ rel: 'canonical', href: 'https://24s.studio/work' }]
 })
 
 const activeCategory = ref<Category>('All')
@@ -73,6 +75,13 @@ async function setFilter(category: Category) {
           Branding, digital, video & motion and marketing work built for founders, institutions and everyone in between.
         </p>
       </Container>
+    </section>
+
+    <section class="bg-surface pb-20 lg:pb-28">
+      <div class="mb-10 px-6 sm:px-10 lg:px-16">
+        <span class="text-label text-ink-muted">Featured Reel</span>
+      </div>
+      <HorizontalProjectScroll :projects="reelProjects" />
     </section>
 
     <section class="bg-surface pb-28 lg:pb-40">

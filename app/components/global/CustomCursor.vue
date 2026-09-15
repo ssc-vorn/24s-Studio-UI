@@ -20,7 +20,9 @@
 const LABELS: Record<string, string> = {
   view: 'View →',
   explore: 'Explore →',
-  start: 'Start →'
+  start: 'Start →',
+  open: 'Open →',
+  play: 'Play →'
 }
 
 const { isDesktop } = useBreakpoints()

@@ -7,13 +7,12 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'Organization',
-        name: '24 Twenty Four Studio',
-        alternateName: '24s Studio',
-        url: 'https://24twentyfour.studio',
+        name: '24s Studio',
+        alternateName: 'Twenty Four S Studio',
+        url: 'https://24s.studio',
         description:
-          'A cinematic, art-directed creative studio building brands, digital experiences and visual stories — Cambodia × Global.',
-        email: 'hello@24twentyfour.studio',
-        address: { '@type': 'PostalAddress', addressLocality: 'Phnom Penh', addressCountry: 'KH' },
+          'A cinematic, art-directed digital creative studio working across graphic design, brand identity, video editing, digital marketing and advertising.',
+        email: 'hello@24s.studio',
         sameAs: ['https://instagram.com', 'https://behance.net', 'https://linkedin.com']
       })
     }

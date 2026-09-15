@@ -70,6 +70,7 @@ onUnmounted(() => {
           <Moon v-else class="size-4" aria-hidden="true" />
         </button>
 
+<<<<<<< HEAD
         <MagneticButton
           as="NuxtLink"
           href="/contact"
@@ -90,6 +91,22 @@ onUnmounted(() => {
           <Menu v-if="!navigation.isMenuOpen" class="size-4" aria-hidden="true" />
           <X v-else class="size-4" aria-hidden="true" />
         </button>
+=======
+          <button
+            type="button"
+            class="text-ui group hover:text-accent flex items-center gap-3 text-ink uppercase transition-colors"
+            aria-controls="fullscreen-menu"
+            :aria-expanded="navigation.isMenuOpen"
+            aria-label="Toggle navigation menu"
+            data-cursor="open"
+            @click="navigation.toggleMenu()"
+          >
+            <span class="tracking-[0.16em]">Menu</span>
+            <Menu v-if="!navigation.isMenuOpen" class="size-4" aria-hidden="true" />
+            <X v-else class="size-4" aria-hidden="true" />
+          </button>
+        </div>
+>>>>>>> 2b5263f8b05202dc6abcd9040f4527dde46fbbe0
       </div>
     </div>
   </header>

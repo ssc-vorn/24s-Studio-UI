@@ -49,7 +49,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
             <img
               data-reveal="image"
               src="https://picsum.photos/900/1100?random=210"
-              alt="24 Twenty Four Studio team at work in the Phnom Penh studio"
+              alt="24s Studio team at work in the studio"
               loading="lazy"
               class="size-full object-cover"
             >

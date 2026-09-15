@@ -7,9 +7,24 @@ export default defineNuxtConfig({
     compatibilityVersion: 4
   },
 
-  modules: ['@nuxt/ui', '@pinia/nuxt', '@vueuse/nuxt'],
+  modules: ['@nuxt/ui', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/sitemap'],
 
   components: [{ path: '~/components', pathPrefix: false }],
+
+  site: {
+    url: 'https://24s.studio'
+  },
+
+  sitemap: {
+    urls: async () => {
+      const { projects } = await import('./app/data/projects')
+      const { articles } = await import('./app/data/articles')
+      return [
+        ...projects.map((project) => ({ loc: `/work/${project.slug}` })),
+        ...articles.map((article) => ({ loc: `/insights/${article.slug}` }))
+      ]
+    }
+  },
 
   css: ['~/assets/css/main.css'],
 
@@ -22,7 +37,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: '24 Twenty Four Studio — Creative Studio, Cambodia × Global',
+      title: '24s Studio — Digital Creative Studio',
       titleTemplate: '%s',
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },

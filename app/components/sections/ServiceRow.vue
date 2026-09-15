@@ -21,13 +21,12 @@ defineExpose({ separatorEl, titleEl, metaEl })
 </script>
 
 <template>
-  <button
-    type="button"
+  <NuxtLink
+    :to="`/services/${service.slug}`"
     class="group block w-full py-8 text-left lg:py-10"
     data-cursor="explore"
     @mouseenter="emit('activate')"
     @focus="emit('activate')"
-    @click="emit('activate')"
   >
     <span ref="separatorEl" class="bg-border-subtle block h-px w-full origin-left" aria-hidden="true" />
 
@@ -67,5 +66,5 @@ defineExpose({ separatorEl, titleEl, metaEl })
     </span>
 
     <span v-if="isLast" class="bg-border-subtle mt-8 block h-px w-full lg:mt-10" aria-hidden="true" />
-  </button>
+  </NuxtLink>
 </template>

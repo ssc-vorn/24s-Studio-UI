@@ -16,9 +16,9 @@ const related = articleService.getRelated(article.slug, 3)
 const next = articleService.getNext(article.slug)
 
 useSeoMeta({
-  title: `${article.title} — 24 Twenty Four Studio Journal`,
+  title: `${article.title} — 24s Studio Insights`,
   description: article.excerpt,
-  ogTitle: `${article.title} — 24 Twenty Four Studio Journal`,
+  ogTitle: `${article.title} — 24s Studio Insights`,
   ogDescription: article.excerpt,
   ogImage: article.image,
   ogType: 'article',
@@ -26,7 +26,7 @@ useSeoMeta({
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: `https://24twentyfour.studio/blog/${article.slug}` }],
+  link: [{ rel: 'canonical', href: `https://24s.studio/insights/${article.slug}` }],
   script: [
     {
       type: 'application/ld+json',
@@ -38,33 +38,13 @@ useHead({
         image: article.image,
         datePublished: article.date,
         author: { '@type': 'Person', name: article.author },
-        publisher: { '@type': 'Organization', name: '24 Twenty Four Studio' }
+        publisher: { '@type': 'Organization', name: '24s Studio' }
       })
     }
   ]
 })
 
-const progressFillEl = ref<HTMLElement | null>(null)
 const copied = ref(false)
-
-/**
- * ARTICLE / reading progress — scroll — a thin top bar tracks how far the
- * reader is through the article body. Driven by the same ScrollTrigger
- * instance Lenis already keeps in sync (`onUpdate`), set directly via GSAP
- * on a `scaleX` transform rather than the `width` property, so this never
- * triggers a layout recalculation — no separate native scroll listener.
- * Not gated behind reduced motion: this is a functional reading indicator
- * driven 1:1 by the reader's own scrolling, not ambient/decorative motion.
- */
-const { root: articleBodyEl } = useScrollAnimation(({ gsap, root, ScrollTrigger }) => {
-  if (!progressFillEl.value) return
-  ScrollTrigger.create({
-    trigger: root,
-    start: 'top top',
-    end: 'bottom bottom',
-    onUpdate: (self) => gsap.set(progressFillEl.value, { scaleX: self.progress })
-  })
-})
 
 async function copyLink() {
   if (!import.meta.client) return
@@ -76,11 +56,9 @@ async function copyLink() {
 
 <template>
   <main id="main-content">
-    <div class="bg-border-subtle fixed inset-x-0 top-0 z-40 h-0.5">
-      <div ref="progressFillEl" class="bg-accent h-full w-full origin-left scale-x-0" aria-hidden="true" />
-    </div>
+    <ScrollProgress target="article" />
 
-    <article ref="articleBodyEl" class="bg-surface pt-44 pb-28 lg:pt-56 lg:pb-40">
+    <article class="bg-surface pt-44 pb-28 lg:pt-56 lg:pb-40">
       <Container narrow>
         <Reveal as="div">
           <div class="text-body-sm text-ink-muted flex flex-wrap items-center gap-3">
@@ -146,7 +124,7 @@ async function copyLink() {
       <Container>
         <p class="text-label text-ink-muted mb-10">Related Articles</p>
         <div class="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-3">
-          <NuxtLink v-for="item in related" :key="item.slug" :to="`/blog/${item.slug}`">
+          <NuxtLink v-for="item in related" :key="item.slug" :to="`/insights/${item.slug}`">
             <ArticleCard :article="item" />
           </NuxtLink>
         </div>
@@ -154,7 +132,7 @@ async function copyLink() {
     </section>
 
     <section v-if="next" class="bg-surface">
-      <NuxtLink :to="`/blog/${next.slug}`" class="group border-border-subtle flex items-center justify-between border-t px-6 py-10 sm:px-10 lg:px-16">
+      <NuxtLink :to="`/insights/${next.slug}`" class="group border-border-subtle flex items-center justify-between border-t px-6 py-10 sm:px-10 lg:px-16">
         <div>
           <span class="text-label text-ink-muted">Next Article</span>
           <h2 class="text-subheading mt-2 text-ink transition-colors group-hover:text-accent">{{ next.title }}</h2>

@@ -3,22 +3,22 @@ import { Mail, MapPin, Phone } from 'lucide-vue-next'
 import { testimonialService } from '~/services/testimonialService'
 
 useSeoMeta({
-  title: 'Contact — 24 Twenty Four Studio',
+  title: 'Contact — 24s Studio',
   description: 'Tell us about your project. We reply within two business days.',
-  ogTitle: 'Contact — 24 Twenty Four Studio',
+  ogTitle: 'Contact — 24s Studio',
   ogDescription: 'Tell us about your project. We reply within two business days.',
   ogImage: 'https://picsum.photos/1200/630?random=6',
   twitterCard: 'summary_large_image'
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: 'https://24twentyfour.studio/contact' }]
+  link: [{ rel: 'canonical', href: 'https://24s.studio/contact' }]
 })
 
 const contactDetails = [
-  { icon: Mail, label: 'Email', value: 'hello@24twentyfour.studio', href: 'mailto:hello@24twentyfour.studio' },
-  { icon: Phone, label: 'Phone', value: '+855 (0) 23 555 0182', href: 'tel:+85523555018' },
-  { icon: MapPin, label: 'Studio', value: 'Phnom Penh, Cambodia', href: undefined }
+  { icon: Mail, label: 'Email', value: 'hello@24s.studio', href: 'mailto:hello@24s.studio' },
+  { icon: MapPin, label: 'Studio', value: 'Working with clients worldwide', href: undefined },
+  { icon: Phone, label: 'Response Time', value: 'Within two business days', href: undefined }
 ]
 
 const trustQuote = testimonialService.getSecondary()
@@ -50,7 +50,9 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
           Get In Touch
         </span>
         <h1 class="text-display-xl max-w-4xl text-ink">
-          Let’s create something meaningful.
+          Let’s make<br>
+          something<br>
+          <span class="text-accent">matter.</span>
         </h1>
       </Container>
     </section>

@@ -1,2 +1,4 @@
 User-Agent: *
 Disallow:
+
+Sitemap: https://24s.studio/sitemap.xml

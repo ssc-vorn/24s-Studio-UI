@@ -41,7 +41,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
       </span>
 
       <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-        <div data-reveal="image" class="relative overflow-hidden lg:col-span-7">
+        <NuxtLink :to="`/work/${project.slug}`" data-reveal="image" data-cursor="play" class="relative block overflow-hidden lg:col-span-7">
           <img
             data-reveal="image-el"
             :src="project.coverImage"
@@ -49,7 +49,7 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
             loading="lazy"
             class="aspect-4/5 size-full scale-110 object-cover lg:aspect-auto"
           >
-        </div>
+        </NuxtLink>
 
         <div data-reveal="content" class="flex flex-col justify-center lg:col-span-5">
           <div class="text-body-sm text-white/50 flex flex-wrap items-center gap-3">

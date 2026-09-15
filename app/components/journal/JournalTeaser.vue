@@ -25,11 +25,11 @@ const { root } = useScrollAnimation(({ gsap, root }) => {
         <div>
           <span class="text-label text-accent mb-5 flex items-center gap-3">
             <span class="bg-accent h-px w-8" aria-hidden="true" />
-            Journal
+            Insights
           </span>
           <h2 class="text-heading text-ink">Notes on craft, strategy and process.</h2>
         </div>
-        <AnimatedLink to="/blog" class="shrink-0">View All Articles</AnimatedLink>
+        <AnimatedLink to="/insights" class="shrink-0">View All Articles</AnimatedLink>
       </div>
 
       <div data-reveal="list" class="mt-14 grid grid-cols-1 gap-10 lg:grid-cols-12">
@@ -37,7 +37,7 @@ const { root } = useScrollAnimation(({ gsap, root }) => {
           <NuxtLink
             v-for="(article, index) in latestArticles"
             :key="article.slug"
-            :to="`/blog/${article.slug}`"
+            :to="`/insights/${article.slug}`"
             class="group border-border-subtle grid grid-cols-1 items-center gap-3 border-b py-8 sm:grid-cols-12 sm:gap-6"
             @mouseenter="activeIndex = index"
           >
