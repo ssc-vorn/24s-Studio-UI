@@ -20,7 +20,7 @@ function onActivate() {
 </script>
 
 <template>
-  <NuxtLink :to="`/work/${project.slug}`" class="group block" @click="onActivate">
+  <NuxtLink :to="`/work/${project.slug}`" class="group block" data-cursor="view" @click="onActivate">
     <div data-reveal="media" class="relative aspect-16/10 overflow-hidden bg-charcoal-200">
       <img
         ref="mediaImgEl"

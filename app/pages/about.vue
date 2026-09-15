@@ -4,16 +4,16 @@ import { testimonialService } from '~/services/testimonialService'
 import { processStages, studioStats, studioValues, teamMembers } from '~/data/studio'
 
 useSeoMeta({
-  title: 'About — 24 Seven Studio',
+  title: 'About — 24 Twenty Four Studio',
   description: 'A cinematic Swiss-luxury creative studio based in Phnom Penh, working with clients across Cambodia and worldwide.',
-  ogTitle: 'About — 24 Seven Studio',
+  ogTitle: 'About — 24 Twenty Four Studio',
   ogDescription: 'A cinematic Swiss-luxury creative studio based in Phnom Penh, working with clients across Cambodia and worldwide.',
   ogImage: 'https://picsum.photos/1200/630?random=5',
   twitterCard: 'summary_large_image'
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: 'https://24seven.studio/about' }]
+  link: [{ rel: 'canonical', href: 'https://24twentyfour.studio/about' }]
 })
 
 const capabilities = serviceRepository.list()
@@ -38,7 +38,7 @@ const trustQuote = testimonialService.getSecondary()
       <Container narrow>
         <p class="text-heading text-ink text-balance">
           <Reveal as="span" class="block">
-            24 Seven Studio began with a simple frustration — too many brands looked expensive without being built to last.
+            24 Twenty Four Studio began with a simple frustration — too many brands looked expensive without being built to last.
           </Reveal>
           <Reveal as="span" :delay="0.25" class="text-ink-muted mt-2 block">
             We exist to close that gap.
@@ -69,7 +69,7 @@ const trustQuote = testimonialService.getSecondary()
 
           <div class="relative overflow-hidden lg:col-span-6">
             <Reveal variant="clip" class="block aspect-4/5">
-              <img src="https://picsum.photos/900/1100?random=221" alt="24 Seven Studio team reviewing work" loading="lazy" class="size-full object-cover">
+              <img src="https://picsum.photos/900/1100?random=221" alt="24 Twenty Four Studio team reviewing work" loading="lazy" class="size-full object-cover">
             </Reveal>
           </div>
         </div>

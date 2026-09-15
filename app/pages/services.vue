@@ -6,16 +6,16 @@ import { testimonialService } from '~/services/testimonialService'
 import type { ProjectCategory } from '~/types/project'
 
 useSeoMeta({
-  title: 'Services — 24 Seven Studio',
+  title: 'Services — 24 Twenty Four Studio',
   description: 'Digital product design, web design & development, digital marketing and brand identity — full-service creative work from strategy through execution.',
-  ogTitle: 'Services — 24 Seven Studio',
+  ogTitle: 'Services — 24 Twenty Four Studio',
   ogDescription: 'Digital product design, web design & development, digital marketing and brand identity — full-service creative work from strategy through execution.',
   ogImage: 'https://picsum.photos/1200/630?random=4',
   twitterCard: 'summary_large_image'
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: 'https://24seven.studio/services' }]
+  link: [{ rel: 'canonical', href: 'https://24twentyfour.studio/services' }]
 })
 
 const serviceList = serviceRepository.list()

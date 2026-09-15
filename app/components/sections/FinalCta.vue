@@ -56,8 +56,8 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
       </h2>
 
       <div data-reveal="cta" class="mt-12">
-        <MagneticButton as="NuxtLink" href="/contact" class="bg-white! text-black! hover:bg-accent! hover:text-white!">
-          Start a Project
+        <MagneticButton as="NuxtLink" href="/contact" data-cursor="start" class="bg-white! text-black! hover:bg-accent! hover:text-white!">
+          Start a Project →
         </MagneticButton>
       </div>
     </Container>

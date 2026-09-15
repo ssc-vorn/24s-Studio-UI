@@ -6,7 +6,7 @@ const props = defineProps<{ error: NuxtError }>()
 const isNotFound = computed(() => props.error.statusCode === 404)
 
 useSeoMeta({
-  title: isNotFound.value ? 'Page Not Found — 24 Seven Studio' : 'Something Went Wrong — 24 Seven Studio'
+  title: isNotFound.value ? 'Page Not Found — 24 Twenty Four Studio' : 'Something Went Wrong — 24 Twenty Four Studio'
 })
 
 function handleClear() {

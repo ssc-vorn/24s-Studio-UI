@@ -9,16 +9,16 @@ type Category = 'All' | ProjectCategory
 const categories: Category[] = ['All', 'Branding', 'Digital', 'Video', 'Marketing']
 
 useSeoMeta({
-  title: 'Work — 24 Seven Studio',
-  description: 'An archive of branding, digital, video & motion and marketing work from the 24 Seven Studio team.',
-  ogTitle: 'Work — 24 Seven Studio',
-  ogDescription: 'An archive of branding, digital, video & motion and marketing work from the 24 Seven Studio team.',
+  title: 'Work — 24 Twenty Four Studio',
+  description: 'An archive of branding, digital, video & motion and marketing work from the 24 Twenty Four Studio team.',
+  ogTitle: 'Work — 24 Twenty Four Studio',
+  ogDescription: 'An archive of branding, digital, video & motion and marketing work from the 24 Twenty Four Studio team.',
   ogImage: 'https://picsum.photos/1200/630?random=3',
   twitterCard: 'summary_large_image'
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: 'https://24seven.studio/work' }]
+  link: [{ rel: 'canonical', href: 'https://24twentyfour.studio/work' }]
 })
 
 const activeCategory = ref<Category>('All')

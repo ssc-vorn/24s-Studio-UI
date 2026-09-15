@@ -9,9 +9,9 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
   { index: '01', label: 'Work', to: '/work' },
-  { index: '02', label: 'About', to: '/about' },
-  { index: '03', label: 'Services', to: '/services' },
-  { index: '04', label: 'Journal', to: '/blog' },
+  { index: '02', label: 'Services', to: '/services' },
+  { index: '03', label: 'Studio', to: '/about' },
+  { index: '04', label: 'Insights', to: '/blog' },
   { index: '05', label: 'Contact', to: '/contact' }
 ]
 
@@ -160,8 +160,8 @@ onUnmounted(() => {
         </nav>
 
         <div class="flex flex-col gap-4 pt-8 text-white/50 sm:flex-row sm:items-center sm:justify-between">
-          <a href="mailto:hello@24seven.studio" class="text-body-sm transition-colors hover:text-white">hello@24seven.studio</a>
-          <p class="text-body-sm">Cambodia × Worldwide</p>
+          <a href="mailto:hello@24twentyfour.studio" class="text-body-sm transition-colors hover:text-white">hello@24twentyfour.studio</a>
+          <p class="text-body-sm">Cambodia × Global</p>
         </div>
       </div>
     </div>

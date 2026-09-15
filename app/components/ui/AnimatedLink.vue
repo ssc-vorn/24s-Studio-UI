@@ -15,6 +15,7 @@ withDefaults(defineProps<Props>(), { showArrow: true })
     :is="to ? 'NuxtLink' : 'a'"
     :to="to"
     :href="href"
+    data-cursor="explore"
     class="group relative inline-flex items-center gap-1.5 text-body font-medium text-ink"
   >
     <span class="relative">

@@ -4,16 +4,16 @@ import { articleRepository } from '~/repositories/articleRepository'
 import { formatDate } from '~/utils/formatters'
 
 useSeoMeta({
-  title: 'Journal — 24 Seven Studio',
-  description: 'Notes on brand craft, motion design, digital product and strategy from the 24 Seven Studio team.',
-  ogTitle: 'Journal — 24 Seven Studio',
-  ogDescription: 'Notes on brand craft, motion design, digital product and strategy from the 24 Seven Studio team.',
+  title: 'Journal — 24 Twenty Four Studio',
+  description: 'Notes on brand craft, motion design, digital product and strategy from the 24 Twenty Four Studio team.',
+  ogTitle: 'Journal — 24 Twenty Four Studio',
+  ogDescription: 'Notes on brand craft, motion design, digital product and strategy from the 24 Twenty Four Studio team.',
   ogImage: 'https://picsum.photos/1200/630?random=2',
   twitterCard: 'summary_large_image'
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: 'https://24seven.studio/blog' }]
+  link: [{ rel: 'canonical', href: 'https://24twentyfour.studio/blog' }]
 })
 
 const allArticles = articleRepository.list()

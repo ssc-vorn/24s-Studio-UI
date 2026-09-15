@@ -16,9 +16,9 @@ const related = articleService.getRelated(article.slug, 3)
 const next = articleService.getNext(article.slug)
 
 useSeoMeta({
-  title: `${article.title} — 24 Seven Studio Journal`,
+  title: `${article.title} — 24 Twenty Four Studio Journal`,
   description: article.excerpt,
-  ogTitle: `${article.title} — 24 Seven Studio Journal`,
+  ogTitle: `${article.title} — 24 Twenty Four Studio Journal`,
   ogDescription: article.excerpt,
   ogImage: article.image,
   ogType: 'article',
@@ -26,7 +26,7 @@ useSeoMeta({
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: `https://24seven.studio/blog/${article.slug}` }]
+  link: [{ rel: 'canonical', href: `https://24twentyfour.studio/blog/${article.slug}` }]
 })
 
 const progressFillEl = ref<HTMLElement | null>(null)

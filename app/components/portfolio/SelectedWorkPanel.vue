@@ -26,6 +26,7 @@ function onActivate() {
     :to="`/work/${project.slug}`"
     class="group relative flex items-end overflow-hidden bg-black"
     :class="size === 'large' ? 'aspect-4/5 sm:aspect-2/1' : 'aspect-4/3'"
+    data-cursor="view"
     @click="onActivate"
   >
     <div data-reveal="media" class="absolute inset-0">

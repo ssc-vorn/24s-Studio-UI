@@ -77,23 +77,24 @@ onUnmounted(() => {
   </div>
 
   <Container class="relative z-10 flex min-h-screen flex-col justify-end pt-32 pb-24 lg:justify-center lg:pb-0">
-    <span ref="eyebrowEl" class="text-label mb-6 text-white/70">Creative Studio</span>
+    <span ref="eyebrowEl" class="text-label mb-6 text-white/70">Cambodia × Global — Creative Studio</span>
 
     <h1 class="text-display-xl max-w-5xl text-white">
-      <span :ref="(el) => setLineRef(el as Element | null,0)" class="block overflow-hidden">Ideas That Inspire,</span>
-      <span :ref="(el) => setLineRef(el as Element | null,1)" class="block overflow-hidden text-white/55">Designs That Deliver.</span>
+      <span :ref="(el) => setLineRef(el as Element | null,0)" class="block overflow-hidden">Ideas</span>
+      <span :ref="(el) => setLineRef(el as Element | null,1)" class="block overflow-hidden text-white/55">That</span>
+      <span :ref="(el) => setLineRef(el as Element | null,2)" class="block overflow-hidden">Move.</span>
     </h1>
 
     <p ref="paragraphEl" class="text-body-lg mt-8 max-w-md text-white/70">
-      A creative studio building brands, digital experiences and visual stories that move people.
+      We build brands, digital experiences and visual worlds for ambitious ideas.
     </p>
 
     <div ref="ctaEl" class="mt-10 flex flex-wrap items-center gap-4">
-      <MagneticButton as="NuxtLink" href="/contact" class="bg-white! text-black! hover:bg-accent! hover:text-white!">
+      <MagneticButton as="NuxtLink" href="/contact" data-cursor="start" class="bg-white! text-black! hover:bg-accent! hover:text-white!">
         Start a Project
       </MagneticButton>
       <MagneticButton as="NuxtLink" href="/work" variant="outline" class="border-white/40! text-white! hover:border-accent! hover:text-accent!">
-        Explore Work
+        Explore Our Work →
       </MagneticButton>
     </div>
   </Container>

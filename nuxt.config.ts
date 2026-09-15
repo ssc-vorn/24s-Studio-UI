@@ -22,7 +22,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      title: '24 Seven Studio — Creative Studio, Cambodia × Worldwide',
+      title: '24 Twenty Four Studio — Creative Studio, Cambodia × Global',
       titleTemplate: '%s',
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },

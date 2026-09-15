@@ -17,6 +17,7 @@ const isDev = import.meta.dev
       <PageTransition />
     </NuxtLayout>
     <ProjectMediaTransitionLayer />
+    <CustomCursor />
     <MotionDebugPanel v-if="isDev" />
   </UApp>
 </template>

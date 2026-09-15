@@ -26,9 +26,9 @@ const closingSteps = [
 ]
 
 useSeoMeta({
-  title: `${project.title} — 24 Seven Studio`,
+  title: `${project.title} — 24 Twenty Four Studio`,
   description: project.excerpt,
-  ogTitle: `${project.title} — 24 Seven Studio`,
+  ogTitle: `${project.title} — 24 Twenty Four Studio`,
   ogDescription: project.excerpt,
   ogImage: project.coverImage,
   ogType: 'article',
@@ -36,7 +36,7 @@ useSeoMeta({
 })
 
 useHead({
-  link: [{ rel: 'canonical', href: `https://24seven.studio/work/${project.slug}` }]
+  link: [{ rel: 'canonical', href: `https://24twentyfour.studio/work/${project.slug}` }]
 })
 </script>
 
