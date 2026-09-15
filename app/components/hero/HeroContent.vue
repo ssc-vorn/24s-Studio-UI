@@ -29,6 +29,7 @@ const reduced = useReducedMotion()
 let ctx: ReturnType<typeof import('gsap').gsap.context> | undefined
 let headlineSplit: InstanceType<typeof import('gsap/SplitText').SplitText> | undefined
 let cleanupParallax: (() => void) | undefined
+let cleanupSkew: (() => void) | undefined
 
 function isFinePointer() {
   return typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches && window.matchMedia('(hover: hover)').matches
@@ -67,6 +68,24 @@ function setupParallax(gsapInstance: typeof import('gsap').gsap) {
 
   heroRootEl.value.addEventListener('pointermove', onPointerMove, { passive: true })
   cleanupParallax = () => heroRootEl.value?.removeEventListener('pointermove', onPointerMove)
+}
+
+/**
+ * Reactive scroll — the headline picks up a small, tightly clamped skew
+ * from scroll velocity (faster scroll = more tilt), easing back toward 0
+ * as the scroll settles via the same quickTo call rather than a separate
+ * idle-reset tween. Clamped to ±4deg specifically so it reads as the type
+ * responding to momentum, not as motion sickness.
+ */
+function setupVelocitySkew(gsapInstance: typeof import('gsap').gsap) {
+  if (!headingEl.value || reduced.value) return
+  const { lenis } = useLenis()
+  if (!lenis) return
+
+  const skewTo = gsapInstance.quickTo(headingEl.value, 'skewX', { duration: 0.5, ease: 'power3.out' })
+  cleanupSkew = lenis.on('scroll', (instance) => {
+    skewTo(gsapInstance.utils.clamp(-4, 4, instance.velocity * -0.6))
+  })
 }
 
 onMounted(() => {
@@ -125,6 +144,7 @@ onMounted(() => {
     if (reduced.value) return
 
     setupParallax(gsap)
+    setupVelocitySkew(gsap)
 
     // Continuous background zoom for as long as Hero is scrolling past —
     // independent of the entrance tween above (different element: this
@@ -176,6 +196,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   cleanupParallax?.()
+  cleanupSkew?.()
   headlineSplit?.revert()
   ctx?.revert()
 })

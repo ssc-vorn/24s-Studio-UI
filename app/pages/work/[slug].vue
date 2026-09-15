@@ -17,13 +17,23 @@ const testimonial = computed(() => testimonialService.getByProject(project.slug)
 
 const openingSteps = [
   { label: 'Challenge', text: project.challenge },
-  { label: 'Strategy', text: project.strategy }
+  { label: 'Concept', text: project.strategy }
 ]
 const closingSteps = [
-  { label: 'Creative Direction', text: project.creativeDirection },
+  { label: 'Identity', text: project.creativeDirection },
   { label: 'Execution', text: project.execution },
   { label: 'Result', text: project.result }
 ]
+
+// Only labelled when it maps to a real distinct stage for this project's
+// discipline — a video project's breather is its "Video" moment, a
+// marketing project's is its "Campaign," everything else stays an
+// unlabelled visual pause rather than a manufactured section.
+const visualBreakLabel = computed(() => {
+  if (project.category === 'Video') return 'Video'
+  if (project.category === 'Marketing') return 'Campaign'
+  return undefined
+})
 
 useSeoMeta({
   title: `${project.title} — 24s Studio`,
@@ -52,13 +62,15 @@ useHead({
       </Container>
 
       <div class="my-24 lg:my-32">
-        <CaseStudyVisualBreak :image="project.coverImage" :alt="`${project.title} — ${project.client}`" />
+        <CaseStudyVisualBreak :image="project.coverImage" :alt="`${project.title} — ${project.client}`" :label="visualBreakLabel" />
       </div>
 
       <Container>
         <CaseStudyNarrative :steps="closingSteps" :images="project.gallery" />
       </Container>
     </section>
+
+    <CaseStudyGallery :images="project.gallery" :title="project.title" :client="project.client" />
 
     <section v-if="testimonial" class="bg-charcoal py-28 lg:py-40">
       <Container narrow>

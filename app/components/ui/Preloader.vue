@@ -12,7 +12,7 @@ const uiStore = useUiStore()
 const reduced = useReducedMotion()
 
 const el = ref<HTMLElement | null>(null)
-const textEl = ref<HTMLElement | null>(null)
+const logoEl = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   if (reduced.value) {
@@ -31,20 +31,30 @@ onMounted(() => {
   const failsafe = setTimeout(finish, PRELOADER_FAILSAFE_MS)
 
   try {
-    if (!el.value || !textEl.value) throw new Error('preloader refs not bound')
+    if (!el.value || !logoEl.value) throw new Error('preloader refs not bound')
 
     document.documentElement.style.overflow = 'hidden'
     const { gsap } = useGsap()
 
+    // Target ~950ms end to end (brief spec: perceived duration 500-1200ms):
+    // a clip-path wipe reveals the logo (0 → 0.45s) while it scales/fades
+    // in, a short hold (0.45 → 0.57s), then the whole panel releases
+    // upward as the logo continues scaling — one continuous motion, not a
+    // fade-then-slide handoff.
     gsap.timeline({
+      defaults: { ease: 'power3.out' },
       onComplete: () => {
         clearTimeout(failsafe)
         finish()
       }
     })
-      .fromTo(textEl.value, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
-      .to(textEl.value, { opacity: 0, duration: 0.35, ease: 'power2.in' }, '+=0.35')
-      .to(el.value, { yPercent: -100, duration: 0.75, ease: 'power4.inOut' }, '-=0.05')
+      .fromTo(
+        logoEl.value,
+        { clipPath: 'inset(0 100% 0 0)', scale: 0.9, opacity: 0 },
+        { clipPath: 'inset(0 0% 0 0)', scale: 1, opacity: 1, duration: 0.45 }
+      )
+      .to(el.value, { yPercent: -100, duration: 0.4, ease: 'power4.inOut' }, '+=0.12')
+      .to(logoEl.value, { scale: 1.08, duration: 0.4, ease: 'power4.inOut' }, '<')
   } catch (error) {
     if (import.meta.dev) console.error('[motion] preloader animation failed', error)
     clearTimeout(failsafe)
@@ -55,7 +65,7 @@ onMounted(() => {
 
 <template>
   <div v-if="!uiStore.isPreloaderDone" ref="el" class="fixed inset-0 z-[100] flex items-center justify-center bg-black" aria-hidden="true">
-    <span ref="textEl" class="scale-150">
+    <span ref="logoEl" class="inline-block scale-150">
       <BrandLogo inverse />
     </span>
   </div>
