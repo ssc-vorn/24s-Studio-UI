@@ -78,24 +78,50 @@ const trustQuote = testimonialService.getSecondary()
 
     <TrustedBySection variant="compact" />
 
+    <!-- Approach — an asymmetric lead statement beside a connected list of
+         stages (not a 4-up grid of boxes), on the studio's dark charcoal
+         band. Uses each stage's fuller `detail` copy rather than the
+         one-line `description` Home's teaser uses, since this page has
+         room for the longer version. -->
     <section class="bg-charcoal py-28 lg:py-40">
       <Container>
         <span class="text-label text-accent mb-5 flex items-center gap-3">
           <span class="bg-accent h-px w-8" aria-hidden="true" />
           Approach
         </span>
-        <h2 class="text-heading max-w-2xl text-white">Four stages, no shortcuts.</h2>
 
-        <ScrollReveal as="div" variant="split-left" :stagger="0.12" class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          <div v-for="stage in processStages" :key="stage.index" class="border-t border-white/15 pt-6">
-            <span class="text-body-sm text-white/40">{{ stage.index }}</span>
-            <h3 class="text-subheading mt-2 text-white">{{ stage.title }}</h3>
-            <p class="text-body-sm mt-3 text-white/60">{{ stage.description }}</p>
+        <div class="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-16">
+          <Reveal as="div" class="lg:col-span-4">
+            <h2 class="text-heading text-white">Four stages, no shortcuts.</h2>
+            <p class="text-body-lg mt-6 max-w-sm text-white/60">
+              Every engagement moves through the same discipline regardless of scope — skipping a stage is how brands end up expensive-looking but forgettable.
+            </p>
+          </Reveal>
+
+          <div class="lg:col-span-8">
+            <ScrollReveal as="div" :stagger="0.12" class="flex flex-col">
+              <div
+                v-for="stage in processStages"
+                :key="stage.index"
+                class="border-t border-white/15 py-8 first:pt-0 lg:grid lg:grid-cols-12 lg:gap-8 lg:py-10"
+              >
+                <div class="flex items-baseline gap-4 lg:col-span-4">
+                  <span class="text-body-sm text-white/40 tabular-nums">{{ stage.index }}</span>
+                  <h3 class="text-subheading text-white">{{ stage.title }}</h3>
+                </div>
+                <p class="text-body mt-3 text-white/60 lg:col-span-8 lg:mt-0">{{ stage.detail }}</p>
+              </div>
+            </ScrollReveal>
           </div>
-        </ScrollReveal>
+        </div>
       </Container>
     </section>
 
+    <!-- Capabilities — full-width divided rows rather than bordered grid
+         cells, each surfacing the service's own capability list (already in
+         the data, just unused here before) for real hierarchy between the
+         service name and its specifics rather than index/title/summary
+         repeated four times identically. -->
     <section class="bg-surface py-28 lg:py-40">
       <Container>
         <span class="text-label text-accent mb-5 flex items-center gap-3">
@@ -104,16 +130,29 @@ const trustQuote = testimonialService.getSecondary()
         </span>
         <h2 class="text-heading max-w-2xl text-ink">Everything a brand needs, under one studio.</h2>
 
-        <ScrollReveal as="div" class="border-border-subtle mt-14 grid grid-cols-1 border-t sm:grid-cols-2 lg:grid-cols-4">
-          <div v-for="capability in capabilities" :key="capability.id" class="border-border-subtle border-b py-8 pr-6 sm:border-r sm:last:border-r-0">
-            <span class="text-body-sm text-ink-muted">{{ capability.index }}</span>
-            <h3 class="text-subheading mt-2 text-ink">{{ capability.title }}</h3>
-            <p class="text-body-sm text-ink-muted mt-3">{{ capability.summary }}</p>
+        <ScrollReveal as="div" class="border-border-subtle mt-14 border-t">
+          <div
+            v-for="capability in capabilities"
+            :key="capability.id"
+            class="border-border-subtle border-b py-10 lg:grid lg:grid-cols-12 lg:items-baseline lg:gap-8"
+          >
+            <div class="flex items-baseline gap-4 lg:col-span-4">
+              <span class="text-body-sm text-ink-muted tabular-nums">{{ capability.index }}</span>
+              <h3 class="text-subheading text-ink">{{ capability.title }}</h3>
+            </div>
+            <p class="text-body text-ink-muted mt-3 lg:col-span-3 lg:mt-0">{{ capability.summary }}</p>
+            <p class="text-body-sm text-ink-muted/80 mt-3 lg:col-span-5 lg:mt-0 lg:text-right">
+              {{ capability.capabilities.join(' · ') }}
+            </p>
           </div>
         </ScrollReveal>
       </Container>
     </section>
 
+    <!-- Values — the most expressive of the three: large ghost numerals,
+         no borders/dividers at all, generous whitespace. Reads as a pause
+         rather than another data list, deliberately unlike the two
+         denser sections above it. -->
     <section class="bg-surface pb-28 lg:pb-40">
       <Container>
         <span class="text-label text-accent mb-5 flex items-center gap-3">
@@ -122,10 +161,13 @@ const trustQuote = testimonialService.getSecondary()
         </span>
         <h2 class="text-heading max-w-2xl text-ink">What we protect on every project.</h2>
 
-        <ScrollReveal as="div" :stagger="0.16" class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          <div v-for="value in studioValues" :key="value.title">
-            <h3 class="text-subheading text-ink">{{ value.title }}</h3>
-            <p class="text-body-sm text-ink-muted mt-3">{{ value.description }}</p>
+        <ScrollReveal as="div" :stagger="0.16" class="mt-20 grid grid-cols-1 gap-x-12 gap-y-16 lg:grid-cols-2">
+          <div v-for="(value, index) in studioValues" :key="value.title" class="flex gap-6">
+            <span class="text-display shrink-0 leading-none text-ink/10" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
+            <div class="pt-2">
+              <h3 class="text-subheading text-ink">{{ value.title }}</h3>
+              <p class="text-body text-ink-muted mt-3 max-w-sm">{{ value.description }}</p>
+            </div>
           </div>
         </ScrollReveal>
       </Container>
