@@ -3,14 +3,20 @@ import type { TrustedBrand } from '~/types/trustedBrand'
 
 interface Props {
   brand: TrustedBrand
+  /** White-toned wordmark for placement on a permanently dark surface (e.g. the Hero) — same naming convention as BrandLogo/ScrollIndicator's own `inverse` prop. Default preserves every existing (light-surface) usage unchanged. */
+  inverse?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), { inverse: false })
 
 const el = ref<HTMLElement | { $el: HTMLElement } | null>(null)
 useMagnetic(el, { strength: 0.15 })
 
-const wordmarkClass = 'font-serif text-lg text-ink-muted italic transition-colors duration-300 sm:text-xl'
+const wordmarkClass = computed(() => [
+  'font-serif text-lg italic transition-colors duration-300 sm:text-xl',
+  props.inverse ? 'text-white/60' : 'text-ink-muted'
+])
+const hoverClass = computed(() => (props.inverse ? 'group-hover:text-white' : 'group-hover:text-ink'))
 </script>
 
 <template>
@@ -21,7 +27,7 @@ const wordmarkClass = 'font-serif text-lg text-ink-muted italic transition-color
     class="group relative inline-block will-change-transform"
     :aria-label="`View the ${brand.name} case study`"
   >
-    <span :class="[wordmarkClass, 'group-hover:text-ink']">{{ brand.name }}</span>
+    <span :class="[wordmarkClass, hoverClass]">{{ brand.name }}</span>
     <span
       class="bg-accent absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
       aria-hidden="true"

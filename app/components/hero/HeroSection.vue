@@ -1,5 +1,5 @@
 <template>
-  <section id="hero" class="relative min-h-screen overflow-hidden bg-black">
+  <section id="hero" class="relative min-h-[100svh] overflow-hidden bg-black">
     <HeroContent />
   </section>
 </template>

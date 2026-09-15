@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { NuxtLink } from '#components'
+
 interface Props {
   as?: 'button' | 'a' | 'NuxtLink'
   href?: string
@@ -16,11 +18,21 @@ const emit = defineEmits<{ click: [MouseEvent] }>()
 
 const el = ref<HTMLElement | { $el: HTMLElement } | null>(null)
 useMagnetic(el)
+
+// `:is="'NuxtLink'"` (a bare string) never resolves: Nuxt's component
+// auto-import only rewrites literal `<NuxtLink>` tags found in a
+// template, not a string buried inside a JS ternary — so at runtime Vue
+// falls back to rendering an unknown native element `<nuxtlink>` with no
+// `to`-to-`href` translation and no router click handling at all. Silent:
+// no console warning, no visual difference, just a dead link. Importing
+// the component itself from #components and binding `:is` to that
+// reference (not a string) resolves it correctly.
+const tag = computed(() => (props.as === 'NuxtLink' ? NuxtLink : props.as))
 </script>
 
 <template>
   <component
-    :is="props.as === 'NuxtLink' ? 'NuxtLink' : props.as"
+    :is="tag"
     ref="el"
     :href="props.as === 'a' ? href : undefined"
     :to="props.as === 'NuxtLink' ? href : undefined"

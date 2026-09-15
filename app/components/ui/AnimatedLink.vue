@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ArrowUpRight } from 'lucide-vue-next'
+import { NuxtLink } from '#components'
 
 interface Props {
   to?: string
@@ -7,12 +8,17 @@ interface Props {
   showArrow?: boolean
 }
 
-withDefaults(defineProps<Props>(), { showArrow: true })
+const props = withDefaults(defineProps<Props>(), { showArrow: true })
+
+// See MagneticButton.vue for why this can't be `:is="to ? 'NuxtLink' : 'a'"`
+// — a bare string never resolves to the real component, only to a dead
+// native element with no navigation behavior.
+const tag = computed(() => (props.to ? NuxtLink : 'a'))
 </script>
 
 <template>
   <component
-    :is="to ? 'NuxtLink' : 'a'"
+    :is="tag"
     :to="to"
     :href="href"
     data-cursor="explore"

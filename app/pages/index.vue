@@ -24,7 +24,6 @@ useHead({
   <main id="main-content">
     <HeroSection />
     <ManifestoSection />
-    <TrustedBySection />
     <StatsSection />
     <ServiceList />
     <SelectedWork />
