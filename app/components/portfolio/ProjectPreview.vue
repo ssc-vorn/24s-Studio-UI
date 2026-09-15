@@ -7,13 +7,23 @@ interface Props {
   index: number
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const reduced = useReducedMotion()
+const { capture } = useSharedProjectTransition()
+const mediaImgEl = ref<HTMLImageElement | null>(null)
+
+function onActivate() {
+  if (reduced.value) return
+  capture(props.project.slug, mediaImgEl.value)
+}
 </script>
 
 <template>
-  <NuxtLink :to="`/work/${project.slug}`" class="group block">
+  <NuxtLink :to="`/work/${project.slug}`" class="group block" @click="onActivate">
     <div data-reveal="media" class="relative aspect-16/10 overflow-hidden bg-charcoal-200">
       <img
+        ref="mediaImgEl"
         :src="project.coverImage"
         :alt="`${project.title} — ${project.client}`"
         loading="lazy"

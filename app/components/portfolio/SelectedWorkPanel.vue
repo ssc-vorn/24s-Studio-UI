@@ -10,6 +10,15 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), { size: 'large' })
+
+const reduced = useReducedMotion()
+const { capture } = useSharedProjectTransition()
+const mediaImgEl = ref<HTMLImageElement | null>(null)
+
+function onActivate() {
+  if (reduced.value) return
+  capture(props.project.slug, mediaImgEl.value)
+}
 </script>
 
 <template>
@@ -17,10 +26,12 @@ const props = withDefaults(defineProps<Props>(), { size: 'large' })
     :to="`/work/${project.slug}`"
     class="group relative flex items-end overflow-hidden bg-black"
     :class="size === 'large' ? 'aspect-4/5 sm:aspect-2/1' : 'aspect-4/3'"
+    @click="onActivate"
   >
     <div data-reveal="media" class="absolute inset-0">
       <div data-reveal="media-el" class="size-full">
         <img
+          ref="mediaImgEl"
           :src="project.coverImage"
           :alt="`${project.title} — ${project.client}`"
           loading="lazy"
