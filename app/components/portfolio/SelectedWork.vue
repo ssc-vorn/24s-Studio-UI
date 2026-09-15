@@ -7,6 +7,7 @@ const projects = projectService.getSelectedWork(5)
 const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
   const heading = root.querySelector('[data-reveal="heading"]')
   const rows = Array.from(root.querySelectorAll('[data-project-row]'))
+  const heroMedia = rows[0]?.querySelector('[data-reveal="media-el"]')
 
   if (heading) {
     gsap.fromTo(
@@ -24,6 +25,20 @@ const { root } = useScrollAnimation(({ gsap, root, reduced }) => {
     }
     animateCardReveal(gsap, row, 'top 85%')
   })
+
+  // Extra cinematic weight on just the hero tile — a slow continuous drift
+  // for as long as it's in view, independent of its own entrance tween
+  // (different element: the media-el wrapper, not the clip-path media div
+  // animateCardReveal already owns) and of the image's own CSS hover-scale
+  // (a third, innermost element) — three separate elements sharing one
+  // visual stack so none of their transforms fight each other.
+  if (!reduced && heroMedia) {
+    gsap.fromTo(
+      heroMedia,
+      { yPercent: -5, scale: 1.15 },
+      { yPercent: 5, scale: 1.15, ease: 'none', scrollTrigger: { trigger: rows[0], start: 'top bottom', end: 'bottom top', scrub: 0.6 } }
+    )
+  }
 })
 </script>
 

@@ -32,6 +32,7 @@ useHead({
     <FeaturedCaseStudy />
     <TestimonialSection />
     <JournalTeaser />
+    <FinalStatementSection />
     <FinalCta />
   </main>
 </template>

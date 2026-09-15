@@ -19,12 +19,14 @@ const props = withDefaults(defineProps<Props>(), { size: 'large' })
     :class="size === 'large' ? 'aspect-4/5 sm:aspect-2/1' : 'aspect-4/3'"
   >
     <div data-reveal="media" class="absolute inset-0">
-      <img
-        :src="project.coverImage"
-        :alt="`${project.title} — ${project.client}`"
-        loading="lazy"
-        class="size-full object-cover opacity-80 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-      >
+      <div data-reveal="media-el" class="size-full">
+        <img
+          :src="project.coverImage"
+          :alt="`${project.title} — ${project.client}`"
+          loading="lazy"
+          class="size-full object-cover opacity-80 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+        >
+      </div>
       <div class="from-black/95 via-black/30 absolute inset-0 bg-gradient-to-t to-transparent" aria-hidden="true" />
     </div>
 
